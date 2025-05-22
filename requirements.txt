@@ -1,0 +1,12 @@
+langchain_openai
+langchain-google-genai
+langchain_community
+langchain
+pymysql
+chromadb
+langchain_chroma
+pandas
+sqlalchemy
+qdrant-client
+langchain-qdrant
+streamlit
