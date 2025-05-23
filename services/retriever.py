@@ -1,10 +1,12 @@
-"""Vector store and retrieval functionality for the RAG application."""
+"""Enhanced vector store and retrieval functionality for the RAG application."""
 
 import os
 import pandas as pd
 import numpy as np
+from typing import List, Optional, Dict, Any, Tuple
 from langchain_core.documents import Document
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
+from dataclasses import dataclass
 
 from config.settings import (
     SCHEMA_CSV_PATH,
@@ -12,293 +14,337 @@ from config.settings import (
 )
 
 
-class VectorStoreFactory:
-    """Factory for creating vector stores."""
+@dataclass
+class RetrievalConfig:
+    """Configuration for retrieval parameters."""
+    k: int = 5
+    similarity_threshold: float = 0.7
+    max_tokens_per_doc: int = 2000
+    include_metadata: bool = True
 
+
+class DocumentProcessor:
+    """Handles document processing and enhancement."""
+    
     @staticmethod
-    def create_faiss(nlist=None, embedding_function=None):
-        """Create a FAISS vector store.
-
+    def create_enhanced_document(row: pd.Series) -> Document:
+        """Create an enhanced document with better structure and metadata.
+        
         Args:
-            nlist (int, optional): Number of clusters for IVF indexing.
-                                 If None, will be automatically determined based on dataset size.
-            embedding_function (object, optional): Embedding function to use.
-                Defaults to GoogleGenerativeAIEmbeddings.
-
+            row: DataFrame row containing table information
+            
         Returns:
-            FAISSRetriever: The FAISS retriever instance.
+            Document: Enhanced document with structured content
         """
-        embedding_function = embedding_function or GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-        return FAISSRetriever(nlist=nlist, embeddings_model=embedding_function)
+        # Extract table information
+        table_name = row['table_name']
+        ddl = row['DDL']
+        
+        # Parse DDL to extract column information (basic parsing)
+        columns_info = DocumentProcessor._extract_column_info(ddl)
+        
+        # Create structured content
+        content_parts = [
+            f"Table Name: {table_name}",
+            f"Schema Definition:\n{ddl}",
+        ]
+        
+        if columns_info:
+            content_parts.append(f"Columns: {', '.join(columns_info)}")
+        
+        page_content = "\n\n".join(content_parts)
+        
+        # Enhanced metadata
+        metadata = {
+            "table": table_name,
+            "type": "schema",
+            "column_count": len(columns_info),
+            "columns": columns_info,
+            "content_length": len(page_content)
+        }
+        
+        return Document(page_content=page_content, metadata=metadata)
+    
+    @staticmethod
+    def _extract_column_info(ddl: str) -> List[str]:
+        """Extract column names from DDL (basic implementation)."""
+        columns = []
+        lines = ddl.split('\n')
+        for line in lines:
+            line = line.strip()
+            if line and not line.startswith('CREATE') and not line.startswith('(') and not line.startswith(')'):
+                # Basic column extraction - could be enhanced with proper SQL parsing
+                if ' ' in line:
+                    column_name = line.split()[0].strip('`,')
+                    if column_name and not column_name.upper() in ['PRIMARY', 'FOREIGN', 'KEY', 'CONSTRAINT']:
+                        columns.append(column_name)
+        return columns
 
 
 class FAISSRetriever:
-    """
-    FAISS-based vector store solution that retrieves table schemas
-    Uses IVF-FAISS for optimized retrieval performance
-    """
+    """Enhanced FAISS-based vector store with improved functionality."""
 
-    def __init__(self, nlist=None, embeddings_model=None):
-        """
-        Initialize the FAISSRetriever with IVF-FAISS
-
-        Args:
-            nlist (int, optional): Number of clusters for IVF indexing.
-                                 If None, will be automatically determined based on dataset size.
-            embeddings_model (object, optional): Embedding model to use.
-                                               Defaults to GoogleGenerativeAIEmbeddings.
-        """
-        self.nlist = nlist  # Will be set dynamically if None
+    def __init__(self, nlist: Optional[int] = None, embeddings_model=None, config: Optional[RetrievalConfig] = None):
+        """Initialize the enhanced FAISS retriever."""
+        self.nlist = nlist
         self.embeddings_model = embeddings_model or GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
-
-        # Use FAISS from langchain which has better error handling
+        self.config = config or RetrievalConfig()
+        
+        # Import FAISS from langchain
         from langchain_community.vectorstores import FAISS
         self.FAISS_cls = FAISS
-
-        # Set index paths for IVF-FAISS
+        
+        # Index management
         self.index_dir = "faiss_ivf_index"
         self.index_file = f"{self.index_dir}/index.faiss"
         self.pkl_file = f"{self.index_dir}/index.pkl"
+        self.metadata_file = f"{self.index_dir}/metadata.json"
+        
+        # State tracking
+        self.vector_store = None
+        self._is_initialized = False
+        self._document_count = 0
+        
+        # Initialize if index exists
+        self._try_load_existing_index()
 
-        self.vector_store = self._initialize_store()
-
-    def _initialize_store(self):
-        """Initialize the IVF-FAISS vector store"""
-        from langchain_community.vectorstores import FAISS
-
-        # Check if index exists
+    def _try_load_existing_index(self) -> bool:
+        """Try to load existing index."""
         if os.path.exists(self.index_file) and os.path.exists(self.pkl_file):
             try:
-                # Load existing index
-                print(f"Loading existing IVF-FAISS index from {self.index_dir}")
-                return FAISS.load_local(self.index_dir, self.embeddings_model, allow_dangerous_deserialization=True)
+                print(f"Loading existing FAISS index from {self.index_dir}")
+                self.vector_store = self.FAISS_cls.load_local(
+                    self.index_dir, 
+                    self.embeddings_model, 
+                    allow_dangerous_deserialization=True
+                )
+                self._is_initialized = True
+                self._load_metadata()
+                return True
             except Exception as e:
-                print(f"Error loading index: {e}")
-                print("Creating new index instead...")
+                print(f"Failed to load existing index: {e}")
+                return False
+        return False
 
-        # Create new index
-        return self._create_store()
+    def _load_metadata(self):
+        """Load metadata about the index."""
+        import json
+        try:
+            if os.path.exists(self.metadata_file):
+                with open(self.metadata_file, 'r') as f:
+                    metadata = json.load(f)
+                    self._document_count = metadata.get('document_count', 0)
+                    self.nlist = metadata.get('nlist', self.nlist)
+        except Exception as e:
+            print(f"Failed to load metadata: {e}")
 
-    def _create_store(self):
-        """Create IVF-FAISS vector store - requires manual document loading"""
-        print("⚠️  FAISS vector store not found. Please load documents manually using load_documents_from_csv() method.")
+    def _save_metadata(self):
+        """Save metadata about the index."""
+        import json
+        try:
+            metadata = {
+                'document_count': self._document_count,
+                'nlist': self.nlist,
+                'created_at': pd.Timestamp.now().isoformat()
+            }
+            os.makedirs(self.index_dir, exist_ok=True)
+            with open(self.metadata_file, 'w') as f:
+                json.dump(metadata, f, indent=2)
+        except Exception as e:
+            print(f"Failed to save metadata: {e}")
 
-        # Create a minimal empty store for now
-        from langchain_community.vectorstores import FAISS
+    def is_ready(self) -> bool:
+        """Check if the retriever is ready for use."""
+        return self._is_initialized and self.vector_store is not None
 
-        # Create a dummy document to initialize the store
-        dummy_doc = Document(
-            page_content="PLACEHOLDER: No documents loaded yet",
-            metadata={"table": "placeholder"}
-        )
-
-        return FAISS.from_documents([dummy_doc], self.embeddings_model)
-
-    def _calculate_optimal_nlist(self, num_documents):
-        """Calculate optimal number of clusters based on dataset size"""
-        if num_documents <= 10:
-            # For very small datasets, use 1-2 clusters
-            return min(2, num_documents)
+    def _calculate_optimal_nlist(self, num_documents: int) -> int:
+        """Calculate optimal number of clusters based on dataset size."""
+        if num_documents <= 4:
+            return max(1, num_documents // 2)
         elif num_documents <= 100:
-            # For small datasets, use sqrt(n) but ensure it's reasonable
-            return min(int(np.sqrt(num_documents)), num_documents // 2)
+            return max(2, int(np.sqrt(num_documents)))
         elif num_documents <= 1000:
-            # For medium datasets, use sqrt(n)
             return int(np.sqrt(num_documents))
         else:
-            # For large datasets, use 4*sqrt(n)
             return int(4 * np.sqrt(num_documents))
 
-    def _create_ivf_faiss_store(self, documents):
-        """Create IVF-FAISS index for better performance with large datasets"""
+    def load_documents_from_csv(self, csv_path: str = "./table_schema.csv", force_recreate: bool = False) -> bool:
+        """Load documents from CSV with enhanced processing."""
         try:
-            import faiss
-
-            # Get embeddings for all documents
-            texts = [doc.page_content for doc in documents]
-            embeddings = self.embeddings_model.embed_documents(texts)
-            embeddings_array = np.array(embeddings).astype('float32')
-
-            # Get dimension
-            dimension = embeddings_array.shape[1]
-
-            # For very small datasets, use regular FAISS instead
-            if len(documents) < 4:
-                print(f"Dataset too small ({len(documents)} documents), using regular FAISS instead of IVF")
-                return self.FAISS_cls.from_documents(documents, self.embeddings_model)
-
-            # Create IVF index
-            quantizer = faiss.IndexFlatL2(dimension)
-            index = faiss.IndexIVFFlat(quantizer, dimension, self.nlist)
-
-            # Train the index
-            print(f"Training IVF index with {len(embeddings)} vectors and {self.nlist} clusters...")
-            index.train(embeddings_array)
-
-            # Add vectors to index
-            index.add(embeddings_array)
-
-            # Create FAISS vector store with the custom index
-            vector_store = self.FAISS_cls(
-                embedding_function=self.embeddings_model,
-                index=index,
-                docstore=self._create_docstore(documents),
-                index_to_docstore_id={i: str(i) for i in range(len(documents))}
-            )
-
-            return vector_store
-
-        except Exception as e:
-            print(f"Error creating IVF-FAISS index: {e}")
-            print("Falling back to regular FAISS...")
-            return self.FAISS_cls.from_documents(documents, self.embeddings_model)
-
-    def _create_docstore(self, documents):
-        """Create a docstore for the documents"""
-        from langchain_community.docstore.in_memory import InMemoryDocstore
-
-        docstore_dict = {str(i): doc for i, doc in enumerate(documents)}
-        return InMemoryDocstore(docstore_dict)
-
-    def retrieve(self, query, k=1):
-        """Retrieve relevant table schemas"""
-        # Use the built-in retriever
-        retriever = self.vector_store.as_retriever(search_kwargs={"k": k})
-        return retriever.invoke(query)
-
-    def get_retrieval_info(self):
-        """Get information about the current retrieval method"""
-        return f"Using IVF-FAISS for retrieval with {self.nlist} clusters"
-
-    def load_documents_from_csv(self, csv_path="./table_schema.csv", force_recreate=False):
-        """Load documents from CSV and create/update the FAISS index.
-
-        Args:
-            csv_path (str): Path to the CSV file containing table schemas
-            force_recreate (bool): Whether to force recreation of the index
-
-        Returns:
-            bool: True if successful, False otherwise
-        """
-        try:
-            # Check if we should recreate or if index doesn't exist
-            if force_recreate or not (os.path.exists(self.index_file) and os.path.exists(self.pkl_file)):
-                print(f"Loading documents from {csv_path}...")
-
-                # Load data
-                df = pd.read_csv(csv_path)
-
-                # Prepare documents - only table schemas
-                documents = []
-
-                for _, row in df.iterrows():
-                    # Create document with full schema
-                    doc = Document(
-                        page_content=f"TABLE: {row['table_name']}\n{row['DDL']}",
-                        metadata={"table": row['table_name']}
-                    )
-                    documents.append(doc)
-
-                # Determine optimal number of clusters if not set
-                if self.nlist is None:
-                    self.nlist = self._calculate_optimal_nlist(len(documents))
-
-                print(f"Using {self.nlist} clusters for {len(documents)} documents")
-
-                # Create IVF-FAISS index
-                vector_store = self._create_ivf_faiss_store(documents)
-
-                # Create directory if it doesn't exist
-                os.makedirs(self.index_dir, exist_ok=True)
-
-                # Save the index to disk
-                vector_store.save_local(self.index_dir)
-                print(f"✅ IVF-FAISS index created and saved to {self.index_dir}")
-
-                # Update the vector store
-                self.vector_store = vector_store
-
+            # Check if recreation is needed
+            if not force_recreate and self.is_ready():
+                print("FAISS index already loaded and ready.")
                 return True
+
+            print(f"Loading documents from {csv_path}...")
+            
+            # Load and validate data
+            if not os.path.exists(csv_path):
+                raise FileNotFoundError(f"CSV file not found: {csv_path}")
+                
+            df = pd.read_csv(csv_path)
+            
+            if df.empty:
+                raise ValueError("CSV file is empty")
+                
+            if 'table_name' not in df.columns or 'DDL' not in df.columns:
+                raise ValueError("CSV must contain 'table_name' and 'DDL' columns")
+
+            # Process documents with enhanced metadata
+            documents = []
+            for _, row in df.iterrows():
+                doc = DocumentProcessor.create_enhanced_document(row)
+                documents.append(doc)
+
+            self._document_count = len(documents)
+            
+            # Calculate optimal clusters
+            if self.nlist is None:
+                self.nlist = self._calculate_optimal_nlist(len(documents))
+
+            print(f"Creating FAISS index with {len(documents)} documents and {self.nlist} clusters")
+
+            # Create vector store
+            if len(documents) >= 4:
+                self.vector_store = self._create_ivf_faiss_store(documents)
             else:
-                print("FAISS index already exists. Use force_recreate=True to recreate.")
-                return True
+                print("Small dataset - using regular FAISS")
+                self.vector_store = self.FAISS_cls.from_documents(documents, self.embeddings_model)
+
+            # Save to disk
+            os.makedirs(self.index_dir, exist_ok=True)
+            self.vector_store.save_local(self.index_dir)
+            self._save_metadata()
+            
+            self._is_initialized = True
+            print(f"✅ FAISS index created and saved to {self.index_dir}")
+            
+            return True
 
         except Exception as e:
             print(f"❌ Error loading documents: {str(e)}")
             return False
 
+    def _create_ivf_faiss_store(self, documents: List[Document]):
+        """Create IVF-FAISS index with error handling."""
+        try:
+            import faiss
+            
+            # Get embeddings
+            texts = [doc.page_content for doc in documents]
+            embeddings = self.embeddings_model.embed_documents(texts)
+            embeddings_array = np.array(embeddings, dtype='float32')
+            
+            dimension = embeddings_array.shape[1]
+            
+            # Create IVF index
+            quantizer = faiss.IndexFlatL2(dimension)
+            index = faiss.IndexIVFFlat(quantizer, dimension, self.nlist)
+            
+            # Train and add vectors
+            print("Training IVF index...")
+            index.train(embeddings_array)
+            index.add(embeddings_array)
+            
+            # Create docstore
+            from langchain_community.docstore.in_memory import InMemoryDocstore
+            docstore = InMemoryDocstore({str(i): doc for i, doc in enumerate(documents)})
+            
+            # Create FAISS vector store
+            vector_store = self.FAISS_cls(
+                embedding_function=self.embeddings_model,
+                index=index,
+                docstore=docstore,
+                index_to_docstore_id={i: str(i) for i in range(len(documents))}
+            )
+            
+            return vector_store
+            
+        except Exception as e:
+            print(f"IVF-FAISS creation failed: {e}")
+            print("Falling back to regular FAISS...")
+            return self.FAISS_cls.from_documents(documents, self.embeddings_model)
+
+    def retrieve_with_scores(self, query: str, k: Optional[int] = None) -> List[Tuple[Document, float]]:
+        """Retrieve documents with similarity scores."""
+        if not self.is_ready():
+            raise RuntimeError("Retriever not initialized. Call load_documents_from_csv() first.")
+        
+        k = k or self.config.k
+        
+        # Use similarity search with scores
+        results = self.vector_store.similarity_search_with_score(query, k=k)
+        
+        # Filter by similarity threshold if configured
+        if self.config.similarity_threshold > 0:
+            results = [(doc, score) for doc, score in results 
+                      if score >= self.config.similarity_threshold]
+        
+        return results
+
+    def retrieve(self, query: str, k: Optional[int] = None) -> List[Document]:
+        """Standard retrieve method returning documents only."""
+        results_with_scores = self.retrieve_with_scores(query, k)
+        return [doc for doc, _ in results_with_scores]
+
+    def get_stats(self) -> Dict[str, Any]:
+        """Get retriever statistics."""
+        return {
+            "is_initialized": self._is_initialized,
+            "document_count": self._document_count,
+            "nlist_clusters": self.nlist,
+            "similarity_threshold": self.config.similarity_threshold,
+            "retrieval_k": self.config.k
+        }
+
+
+class VectorStoreFactory:
+    """Enhanced factory for creating vector stores."""
+
+    @staticmethod
+    def create_faiss(nlist: Optional[int] = None, 
+                    embedding_function=None, 
+                    config: Optional[RetrievalConfig] = None) -> FAISSRetriever:
+        """Create a FAISS vector store with enhanced configuration."""
+        embedding_function = embedding_function or GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+        return FAISSRetriever(nlist=nlist, embeddings_model=embedding_function, config=config)
+
 
 class RetrieverService:
-    """Service for document retrieval using FAISS."""
+    """Enhanced service for document retrieval."""
 
-    def __init__(self, k=None):
-        """Initialize the retriever service.
-
-        Args:
-            k (int, optional): Number of documents to retrieve.
-                Defaults to RETRIEVER_K from settings.
-        """
-        self.k = k or RETRIEVER_K
+    def __init__(self, config: Optional[RetrievalConfig] = None):
+        """Initialize the retriever service with configuration."""
+        self.config = config or RetrievalConfig()
         self._vector_store = None
-        self._retriever = None
-
-    def _create_vector_store(self):
-        """Create the FAISS vector store.
-
-        Returns:
-            FAISSRetriever: The FAISS vector store.
-        """
-        return VectorStoreFactory.create_faiss()
 
     @property
-    def vector_store(self):
-        """Get the vector store, creating it if necessary.
-
-        Returns:
-            object: The vector store.
-        """
+    def vector_store(self) -> FAISSRetriever:
+        """Get the vector store, creating it if necessary."""
         if self._vector_store is None:
-            self._vector_store = self._create_vector_store()
+            self._vector_store = VectorStoreFactory.create_faiss(config=self.config)
         return self._vector_store
 
-    @property
-    def retriever(self):
-        """Get the retriever, creating it if necessary.
+    def retrieve(self, query: str, include_scores: bool = False) -> List[Document] | List[Tuple[Document, float]]:
+        """Retrieve documents with optional scores."""
+        if include_scores:
+            return self.vector_store.retrieve_with_scores(query, k=self.config.k)
+        else:
+            return self.vector_store.retrieve(query, k=self.config.k)
 
-        Returns:
-            FAISSRetriever: The FAISS retriever.
-        """
-        if self._retriever is None:
-            # For FAISS, the vector_store is already a FAISSRetriever instance
-            self._retriever = self.vector_store
-        return self._retriever
-
-
-
-    def retrieve(self, query):
-        """Retrieve documents relevant to a query.
-
-        Args:
-            query (str): The query to retrieve documents for.
-
-        Returns:
-            list: The retrieved documents.
-        """
-        # For FAISS, use the retrieve method with k parameter
-        return self.retriever.retrieve(query, k=self.k)
-
-    def load_documents_from_csv(self, csv_path="./table_schema.csv", force_recreate=False):
-        """Load documents from CSV file into the FAISS vector store.
-
-        Args:
-            csv_path (str): Path to the CSV file containing table schemas
-            force_recreate (bool): Whether to force recreation of the index
-
-        Returns:
-            bool: True if successful, False otherwise
-        """
+    def load_documents_from_csv(self, csv_path: str = "./table_schema.csv", force_recreate: bool = False) -> bool:
+        """Load documents from CSV file."""
         return self.vector_store.load_documents_from_csv(csv_path, force_recreate)
 
+    def is_ready(self) -> bool:
+        """Check if the service is ready for retrieval."""
+        return self.vector_store.is_ready()
 
-# Create default instance
-faiss_retriever_service = RetrieverService()
+    def get_stats(self) -> Dict[str, Any]:
+        """Get service statistics."""
+        return self.vector_store.get_stats()
+
+
+# Create default instance with configuration
+default_config = RetrievalConfig(k=RETRIEVER_K)
+faiss_retriever_service = RetrieverService(config=default_config)
