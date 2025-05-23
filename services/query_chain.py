@@ -3,7 +3,6 @@
 import re
 from langchain.chains import create_sql_query_chain
 from langchain_community.tools import QuerySQLDataBaseTool
-from langchain_core.output_parsers import StrOutputParser
 
 from models.database import db_manager
 from models.llm import llm_manager
@@ -137,5 +136,4 @@ class QueryChainService:
             return f"Error executing query: {str(e)}"
 
 
-# Create a default instance
 query_chain_service = QueryChainService()
