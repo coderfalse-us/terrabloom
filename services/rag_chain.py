@@ -8,7 +8,7 @@ from langchain_core.messages import SystemMessage
 
 from models.llm import llm_manager
 from services.query_chain import query_chain_service
-from services.retriever import chroma_retriever_service, qdrant_retriever_service
+from services.retriever import chroma_retriever_service
 
 
 class RAGChainService:
@@ -29,6 +29,8 @@ class RAGChainService:
         self.query_service = query_service or query_chain_service
         self.retriever_service = retriever_service or chroma_retriever_service
         self._chain = None
+        self.waiting_for_table = False
+        self.last_ambiguous_question = None
 
     def create_prompt(self, include_schema=True, use_chat_prompt=True):
         """Create a prompt for the RAG chain.
@@ -43,11 +45,18 @@ class RAGChainService:
             object: The prompt.
         """
         if use_chat_prompt:
-            return ChatPromptTemplate.from_messages([
-                SystemMessage(content="You are a data analyst who provides definitive, precise answers based on SQL query results. Provide only the direct answer without any technical details, SQL queries, or schema information. Be concise and conversational."),
-                ("human", "Question: {question}\nSQL Query: {query}\nSQL Result: {result}" +
-                 ("\nSchema Context: {schema}" if include_schema else ""))
-            ])
+            system_message = SystemMessage(content="You are a data analyst who provides definitive, precise answers based on SQL query results. Provide only the direct answer without any technical details, SQL queries, or schema information. Be concise and conversational.")
+
+            # Create a template that includes the current question and the chat history
+            messages = [system_message]
+
+            # Add the human message with the current question and context
+            human_message = ("human", "Question: {question}\nSQL Query: {query}\nSQL Result: {result}" +
+                            ("\nSchema Context: {schema}" if include_schema else ""))
+
+            messages.append(human_message)
+
+            return ChatPromptTemplate.from_messages(messages)
         else:
             # Return a regular prompt template for non-chat mode
             template = """Given the following user question, corresponding SQL query, and SQL result, answer the user question.
@@ -125,11 +134,44 @@ Provide a clear, concise answer to the question. Do not include any technical de
             question (str): The question to answer.
 
         Returns:
-            str: The answer.
+            str: The answer or a request for clarification if the question is ambiguous.
         """
-        return self.chain.invoke({"question": question})
+        # Check if we're waiting for a table specification from a previous ambiguous question
+        if self.waiting_for_table and self.last_ambiguous_question:
+            # Check if the user's response contains a table name
+            tables = self.query_service.db.get_usable_table_names()
+            table_mentioned = next((table for table in tables if table.lower() in question.lower()), None)
+
+            if table_mentioned:
+                # Combine the previous question with the table specification
+                combined_question = f"{self.last_ambiguous_question} from {table_mentioned}"
+
+                # Reset the waiting state
+                self.waiting_for_table = False
+                self.last_ambiguous_question = None
+
+                # Process the combined question
+                result = self.chain.invoke({"question": combined_question})
+
+                return result
+
+        # If not waiting for a table or no table was mentioned, process as a new question
+        # Check if the new question is ambiguous
+        is_ambiguous, message = self.query_service.is_question_ambiguous(question)
+
+        if is_ambiguous:
+            # Set the waiting state
+            self.waiting_for_table = True
+            self.last_ambiguous_question = question
+
+            # Return the clarification request
+            return message
+
+        # If not ambiguous, proceed with the normal chain
+        result = self.chain.invoke({"question": question})
+
+        return result
 
 
-# Create default instances
-chroma_rag_chain_service = RAGChainService(retriever_service=chroma_retriever_service)
-qdrant_rag_chain_service = RAGChainService(retriever_service=qdrant_retriever_service)
+# Create default instance
+rag_chain_service = RAGChainService(retriever_service=chroma_retriever_service)

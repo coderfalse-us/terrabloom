@@ -7,6 +7,5 @@ chromadb
 langchain_chroma
 pandas
 sqlalchemy
-qdrant-client
-langchain-qdrant
 streamlit
+colorama

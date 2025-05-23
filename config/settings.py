@@ -36,7 +36,7 @@ DB_CONFIG = {
 
 # Vector store configuration
 VECTOR_STORE_DIR = BASE_DIR / "chrome_langchain_db1"
-VECTOR_STORE_DIR_STR = ''
+VECTOR_STORE_DIR_STR = 'str(VECTOR_STORE_DIR)'
 COLLECTION_NAME = "table_schema"
 SCHEMA_CSV_PATH = DATA_DIR / "table_schema.csv"
 SCHEMA_CSV_PATH_STR = str(SCHEMA_CSV_PATH)
@@ -47,4 +47,4 @@ LLM_TEMPERATURE = 0
 EMBEDDING_MODEL = "models/text-embedding-004"
 
 # Retriever configuration
-RETRIEVER_K = 2  # Number of documents to retrieve
+RETRIEVER_K = 1  # Number of documents to retrieve
