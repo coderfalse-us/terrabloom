@@ -5,8 +5,25 @@ import os
 
 from utils.helpers import setup_environment_variables
 from models.database import db_manager
-from services.retriever import chroma_retriever_service
+from services.retriever import chroma_retriever_service, faiss_retriever_service
 from services.rag_chain import rag_chain_service
+
+
+class RetrieverAdapter:
+    """Adapter to make retriever services compatible with RAG chain service."""
+
+    def __init__(self, retriever_service):
+        self.retriever_service = retriever_service
+
+    def retrieve(self, query):
+        """Retrieve documents and format them for RAG chain."""
+        docs = self.retriever_service.retrieve(query)
+        # Format the documents as a string for the RAG chain
+        formatted_docs = []
+        for doc in docs:
+            table_name = doc.metadata.get('table', doc.metadata.get('table_name', 'Unknown'))
+            formatted_docs.append(f"Table: {table_name}\n{doc.page_content}")
+        return "\n\n".join(formatted_docs)
 
 
 # Set up environment variables
@@ -20,7 +37,9 @@ st.title("Terrabloom")
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# No need for vector store selection anymore as we only use Chroma
+# Initialize session state for retriever selection
+if "retriever_type" not in st.session_state:
+    st.session_state.retriever_type = "chroma"
 
 # Initialize session state for conversation state
 if "waiting_for_table" not in st.session_state:
@@ -34,8 +53,24 @@ with st.sidebar:
     st.title("Terrabloom")
     st.header("Configuration")
 
+    # Retriever selection
+    st.subheader("Retriever Type")
+    retriever_type = st.radio(
+        "Select Retriever",
+        ["Chroma", "IVF-FAISS"],
+        index=0 if st.session_state.retriever_type == "chroma" else 1,
+        help="Choose between Chroma vector store or IVF-FAISS schema retriever"
+    )
+    st.session_state.retriever_type = retriever_type.lower().replace("-", "_")
+
+    # Show retriever info
+    if st.session_state.retriever_type == "ivf_faiss":
+        st.info(f"🚀 {faiss_retriever_service.vector_store.get_retrieval_info()}")
+    else:
+        st.info("🔍 Using Chroma vector store for retrieval")
+
     # Database information
-    st.header("Database Info")
+    st.subheader("Database Info")
     st.write(f"Tables: {', '.join(db_manager.get_table_names())}")
 
     # Conversation state
@@ -74,6 +109,12 @@ def initialize_vector_store():
 # Initialize vector store
 initialize_vector_store()
 
+# Display current retriever info
+if st.session_state.retriever_type == "ivf_faiss":
+    st.info(f"🚀 Currently using: {faiss_retriever_service.vector_store.get_retrieval_info()}")
+else:
+    st.info("🔍 Currently using: Chroma vector store for retrieval")
+
 # Display chat history
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -86,9 +127,21 @@ if prompt := st.chat_input("Ask a question about your data"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Rebuild the chain with chat prompt for concise answers
-    rag_chain_service._chain = rag_chain_service.build_chain(include_schema=True, use_chat_prompt=True)
-    rag_chain = rag_chain_service
+    # Select the appropriate retriever and rebuild the chain
+    from services.rag_chain import RAGChainService
+
+    if st.session_state.retriever_type == "ivf_faiss":
+        # Use IVF-FAISS retriever
+        st.info("🚀 Using IVF-FAISS retriever for this query")
+        faiss_adapter = RetrieverAdapter(faiss_retriever_service)
+        rag_chain = RAGChainService(retriever_service=faiss_adapter)
+        rag_chain._chain = rag_chain.build_chain(include_schema=True, use_chat_prompt=True)
+    else:
+        # Use Chroma retriever - create fresh instance to ensure proper switching
+        st.info("🔍 Using Chroma retriever for this query")
+        chroma_adapter = RetrieverAdapter(chroma_retriever_service)
+        rag_chain = RAGChainService(retriever_service=chroma_adapter)
+        rag_chain._chain = rag_chain.build_chain(include_schema=True, use_chat_prompt=True)
 
     # Display assistant response
     with st.chat_message("assistant"):

@@ -8,4 +8,5 @@ langchain_chroma
 pandas
 sqlalchemy
 streamlit
-colorama
+faiss-cpu
+numpy
