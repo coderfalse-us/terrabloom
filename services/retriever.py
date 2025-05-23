@@ -4,49 +4,16 @@ import os
 import pandas as pd
 import numpy as np
 from langchain_core.documents import Document
-from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 
 from config.settings import (
-    VECTOR_STORE_DIR,
-    COLLECTION_NAME,
     SCHEMA_CSV_PATH,
     RETRIEVER_K
 )
-from models.embeddings import embedding_manager
 
 
 class VectorStoreFactory:
     """Factory for creating vector stores."""
-
-    @staticmethod
-    def create_chroma(persist_directory=None, collection_name=None, embedding_function=None):
-        """Create a Chroma vector store.
-
-        Args:
-            persist_directory (str, optional): Directory to persist the vector store.
-                Defaults to VECTOR_STORE_DIR from settings.
-            collection_name (str, optional): Name of the collection.
-                Defaults to COLLECTION_NAME from settings.
-            embedding_function (object, optional): Embedding function to use.
-                Defaults to embedding_manager.embeddings.
-
-        Returns:
-            Chroma: The Chroma vector store.
-        """
-        persist_directory = persist_directory or VECTOR_STORE_DIR
-        collection_name = collection_name or COLLECTION_NAME
-        embedding_function = embedding_function or embedding_manager.embeddings
-
-        # Convert Path object to string to avoid TypeError
-        if hasattr(persist_directory, 'as_posix'):
-            persist_directory = str(persist_directory)
-
-        return Chroma(
-            collection_name=collection_name,
-            persist_directory=persist_directory,
-            embedding_function=embedding_function
-        )
 
     @staticmethod
     def create_faiss(nlist=None, embedding_function=None):
@@ -113,40 +80,19 @@ class FAISSRetriever:
         return self._create_store()
 
     def _create_store(self):
-        """Create IVF-FAISS vector store with table schemas only"""
-        print("Creating new IVF-FAISS index...")
+        """Create IVF-FAISS vector store - requires manual document loading"""
+        print("⚠️  FAISS vector store not found. Please load documents manually using load_documents_from_csv() method.")
 
-        # Load data
-        df = pd.read_csv("./table_schema.csv")
+        # Create a minimal empty store for now
+        from langchain_community.vectorstores import FAISS
 
-        # Prepare documents - only table schemas
-        documents = []
+        # Create a dummy document to initialize the store
+        dummy_doc = Document(
+            page_content="PLACEHOLDER: No documents loaded yet",
+            metadata={"table": "placeholder"}
+        )
 
-        for _, row in df.iterrows():
-            # Create document with full schema
-            doc = Document(
-                page_content=f"TABLE: {row['table_name']}\n{row['DDL']}",
-                metadata={"table": row['table_name']}
-            )
-            documents.append(doc)
-
-        # Determine optimal number of clusters if not set
-        if self.nlist is None:
-            self.nlist = self._calculate_optimal_nlist(len(documents))
-
-        print(f"Using {self.nlist} clusters for {len(documents)} documents")
-
-        # Create IVF-FAISS index
-        vector_store = self._create_ivf_faiss_store(documents)
-
-        # Create directory if it doesn't exist
-        os.makedirs(self.index_dir, exist_ok=True)
-
-        # Save the index to disk
-        vector_store.save_local(self.index_dir)
-        print(f"IVF-FAISS index saved to {self.index_dir}")
-
-        return vector_store
+        return FAISS.from_documents([dummy_doc], self.embeddings_model)
 
     def _calculate_optimal_nlist(self, num_documents):
         """Calculate optimal number of clusters based on dataset size"""
@@ -224,34 +170,85 @@ class FAISSRetriever:
         """Get information about the current retrieval method"""
         return f"Using IVF-FAISS for retrieval with {self.nlist} clusters"
 
+    def load_documents_from_csv(self, csv_path="./table_schema.csv", force_recreate=False):
+        """Load documents from CSV and create/update the FAISS index.
+
+        Args:
+            csv_path (str): Path to the CSV file containing table schemas
+            force_recreate (bool): Whether to force recreation of the index
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        try:
+            # Check if we should recreate or if index doesn't exist
+            if force_recreate or not (os.path.exists(self.index_file) and os.path.exists(self.pkl_file)):
+                print(f"Loading documents from {csv_path}...")
+
+                # Load data
+                df = pd.read_csv(csv_path)
+
+                # Prepare documents - only table schemas
+                documents = []
+
+                for _, row in df.iterrows():
+                    # Create document with full schema
+                    doc = Document(
+                        page_content=f"TABLE: {row['table_name']}\n{row['DDL']}",
+                        metadata={"table": row['table_name']}
+                    )
+                    documents.append(doc)
+
+                # Determine optimal number of clusters if not set
+                if self.nlist is None:
+                    self.nlist = self._calculate_optimal_nlist(len(documents))
+
+                print(f"Using {self.nlist} clusters for {len(documents)} documents")
+
+                # Create IVF-FAISS index
+                vector_store = self._create_ivf_faiss_store(documents)
+
+                # Create directory if it doesn't exist
+                os.makedirs(self.index_dir, exist_ok=True)
+
+                # Save the index to disk
+                vector_store.save_local(self.index_dir)
+                print(f"✅ IVF-FAISS index created and saved to {self.index_dir}")
+
+                # Update the vector store
+                self.vector_store = vector_store
+
+                return True
+            else:
+                print("FAISS index already exists. Use force_recreate=True to recreate.")
+                return True
+
+        except Exception as e:
+            print(f"❌ Error loading documents: {str(e)}")
+            return False
+
 
 class RetrieverService:
-    """Service for document retrieval."""
+    """Service for document retrieval using FAISS."""
 
-    def __init__(self, k=None, retriever_type="chroma"):
+    def __init__(self, k=None):
         """Initialize the retriever service.
 
         Args:
             k (int, optional): Number of documents to retrieve.
                 Defaults to RETRIEVER_K from settings.
-            retriever_type (str, optional): Type of retriever to use.
-                Options: "chroma", "faiss". Defaults to "chroma".
         """
         self.k = k or RETRIEVER_K
-        self.retriever_type = retriever_type
         self._vector_store = None
         self._retriever = None
 
     def _create_vector_store(self):
-        """Create the vector store based on retriever type.
+        """Create the FAISS vector store.
 
         Returns:
-            object: The vector store (Chroma or FAISS).
+            FAISSRetriever: The FAISS vector store.
         """
-        if self.retriever_type == "faiss":
-            return VectorStoreFactory.create_faiss()
-        else:
-            return VectorStoreFactory.create_chroma()
+        return VectorStoreFactory.create_faiss()
 
     @property
     def vector_store(self):
@@ -269,55 +266,14 @@ class RetrieverService:
         """Get the retriever, creating it if necessary.
 
         Returns:
-            object: The retriever.
+            FAISSRetriever: The FAISS retriever.
         """
         if self._retriever is None:
-            if self.retriever_type == "faiss":
-                # For FAISS, the vector_store is already a FAISSRetriever instance
-                self._retriever = self.vector_store
-            else:
-                # For Chroma, use the standard as_retriever method
-                self._retriever = self.vector_store.as_retriever(
-                    search_kwargs={"k": self.k}
-                )
+            # For FAISS, the vector_store is already a FAISSRetriever instance
+            self._retriever = self.vector_store
         return self._retriever
 
-    def load_documents_from_csv(self, csv_path=None):
-        """Load documents from a CSV file and add them to the vector store.
 
-        Args:
-            csv_path (str, optional): Path to the CSV file.
-                Defaults to SCHEMA_CSV_PATH from settings.
-
-        Returns:
-            RetrieverService: Self for method chaining.
-        """
-        if self.retriever_type == "faiss":
-            # FAISS retriever loads documents automatically during initialization
-            # No need to manually load documents
-            print("FAISS retriever loads documents automatically during initialization.")
-            return self
-
-        csv_path = csv_path or SCHEMA_CSV_PATH
-        df = pd.read_csv(csv_path)
-
-        documents = []
-        ids = []
-
-        for i, row in df.iterrows():
-            document = Document(
-                page_content=row["table_name"] + " " + row["DDL"],
-                metadata={"table_name": row["table_name"]}
-            )
-
-            doc_id = str(i)
-            ids.append(doc_id)
-            documents.append(document)
-
-        # Add documents to the vector store (only for Chroma)
-        self.vector_store.add_documents(documents=documents, ids=ids)
-
-        return self
 
     def retrieve(self, query):
         """Retrieve documents relevant to a query.
@@ -328,15 +284,21 @@ class RetrieverService:
         Returns:
             list: The retrieved documents.
         """
-        if self.retriever_type == "faiss":
-            # For FAISS, use the retrieve method with k parameter
-            print(self.retriever.retrieve(query, k=self.k))
-            return self.retriever.retrieve(query, k=self.k)
-        else:
-            # For Chroma, use the standard invoke method
-            return self.retriever.invoke(query)
+        # For FAISS, use the retrieve method with k parameter
+        return self.retriever.retrieve(query, k=self.k)
+
+    def load_documents_from_csv(self, csv_path="./table_schema.csv", force_recreate=False):
+        """Load documents from CSV file into the FAISS vector store.
+
+        Args:
+            csv_path (str): Path to the CSV file containing table schemas
+            force_recreate (bool): Whether to force recreation of the index
+
+        Returns:
+            bool: True if successful, False otherwise
+        """
+        return self.vector_store.load_documents_from_csv(csv_path, force_recreate)
 
 
-# Create default instances
-chroma_retriever_service = RetrieverService(retriever_type="chroma")
-faiss_retriever_service = RetrieverService(retriever_type="faiss")
+# Create default instance
+faiss_retriever_service = RetrieverService()

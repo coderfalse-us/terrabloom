@@ -3,8 +3,6 @@ langchain-google-genai
 langchain_community
 langchain
 pymysql
-chromadb
-langchain_chroma
 pandas
 sqlalchemy
 streamlit

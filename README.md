@@ -20,10 +20,11 @@ project/
 ## Features
 
 - Natural language queries to SQL database
-- Multiple vector database support (Chroma and Qdrant)
+- IVF-FAISS vector database for optimized retrieval
 - Modular, maintainable code structure
 - Web interface with Streamlit
 - Command-line interface
+- Manual vector database loading from schema
 
 ## Installation
 
@@ -65,24 +66,20 @@ Run in interactive mode:
 python main.py
 ```
 
-Use Qdrant instead of Chroma:
-```
-python main.py --vector-store qdrant
-```
-
 ## Configuration
 
 Configuration settings are stored in `config/settings.py`. You can modify these settings or override them with environment variables.
 
-## Vector Databases
+## Vector Database
 
-### Chroma
+### IVF-FAISS
 
-Chroma is the default vector database. It's lightweight and easy to use, with good performance for most use cases.
+The application uses IVF-FAISS (Inverted File with Flat compression) for vector similarity search. This provides:
 
-### Qdrant
-
-Qdrant is an alternative vector database with excellent filtering capabilities. It's used in-memory by default in this project.
+- **High Performance**: Optimized for large-scale similarity search
+- **Automatic Clustering**: Dynamically determines optimal number of clusters
+- **Memory Efficient**: Uses inverted file structure for faster retrieval
+- **Manual Control**: Load and recreate vector database as needed
 
 ## Development
 
