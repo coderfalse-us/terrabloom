@@ -35,9 +35,6 @@ DB_CONFIG = {
 }
 
 # Vector store configuration
-VECTOR_STORE_DIR = BASE_DIR / "chrome_langchain_db1"
-VECTOR_STORE_DIR_STR = 'str(VECTOR_STORE_DIR)'
-COLLECTION_NAME = "table_schema"
 SCHEMA_CSV_PATH = DATA_DIR / "table_schema.csv"
 SCHEMA_CSV_PATH_STR = str(SCHEMA_CSV_PATH)
 

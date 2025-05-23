@@ -8,7 +8,7 @@ from langchain_core.messages import SystemMessage
 
 from models.llm import llm_manager
 from services.query_chain import query_chain_service
-from services.retriever import chroma_retriever_service
+from services.retriever import faiss_retriever_service
 
 
 class RAGChainService:
@@ -23,11 +23,11 @@ class RAGChainService:
             query_service (QueryChainService, optional): The query service to use.
                 Defaults to query_chain_service.
             retriever_service (RetrieverService, optional): The retriever service to use.
-                Defaults to chroma_retriever_service.
+                Defaults to faiss_retriever_service.
         """
         self.llm = llm or llm_manager.llm
         self.query_service = query_service or query_chain_service
-        self.retriever_service = retriever_service or chroma_retriever_service
+        self.retriever_service = retriever_service or faiss_retriever_service
         self._chain = None
         self.waiting_for_table = False
         self.last_ambiguous_question = None
@@ -174,4 +174,4 @@ Provide a clear, concise answer to the question. Do not include any technical de
 
 
 # Create default instance
-rag_chain_service = RAGChainService(retriever_service=chroma_retriever_service)
+rag_chain_service = RAGChainService(retriever_service=faiss_retriever_service)
