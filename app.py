@@ -7,7 +7,33 @@ from utils.helpers import setup_environment_variables
 from models.database import db_manager
 from services.retriever import faiss_retriever_service
 
+import logging
+logging.basicConfig(level=logging.INFO, 
+                   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
+
+
+st.set_page_config(page_title="Terrabloom", layout="centered")
+
+if "schema_extracted" not in st.session_state:
+    st.session_state.schema_extracted = False
+
+# Run schema extraction only once when the app starts
+if not st.session_state.schema_extracted:
+    # Show initialization message
+    init_message = st.info("🔄 Initializing database schema... Please wait.")
+    
+    try:
+        from utils.schema_extract import extract_all_table_schemas
+        schemas = extract_all_table_schemas()
+        logger.info(f"Extracted {len(schemas) if schemas else 0} table schemas")
+        st.session_state.schema_extracted = True
+    except Exception as e:
+        logger.error(f"Error extracting schemas: {e}")
+    
+    # Clear initialization message
+    init_message.empty()
 
 class RetrieverAdapter:
     """Adapter to make retriever services compatible with RAG chain service."""
@@ -30,7 +56,7 @@ class RetrieverAdapter:
 setup_environment_variables()
 
 # Page config
-st.set_page_config(page_title="Terrabloom", layout="centered")
+
 st.title("Terrabloom")
 
 # Initialize session state for chat history
@@ -56,7 +82,6 @@ with st.sidebar:
     # Retriever info
     st.subheader("Retriever Type")
     st.info(f"🚀 Using IVF-FAISS for retrieval")
-    st.info(f"📊 {faiss_retriever_service.vector_store.get_retrieval_info()}")
 
     # Vector Database Management
     st.subheader("Vector Database")
@@ -110,7 +135,6 @@ with st.sidebar:
         st.rerun()
 
 # Display current retriever info
-st.info(f"🚀 Currently using: {faiss_retriever_service.vector_store.get_retrieval_info()}")
 
 # Display chat history
 for message in st.session_state.messages:

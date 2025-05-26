@@ -217,12 +217,12 @@ class FAISSRetriever:
             self._save_metadata()
             
             self._is_initialized = True
-            print(f"✅ FAISS index created and saved to {self.index_dir}")
+            print(f"FAISS index created and saved to {self.index_dir}")
             
             return True
 
         except Exception as e:
-            print(f"❌ Error loading documents: {str(e)}")
+            print(f" Error loading documents: {str(e)}")
             return False
 
     def _create_ivf_faiss_store(self, documents: List[Document]):
