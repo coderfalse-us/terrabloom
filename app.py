@@ -16,24 +16,8 @@ logger = logging.getLogger(__name__)
 
 st.set_page_config(page_title="Terrabloom", layout="centered")
 
-if "schema_extracted" not in st.session_state:
-    st.session_state.schema_extracted = False
 
-# Run schema extraction only once when the app starts
-if not st.session_state.schema_extracted:
-    # Show initialization message
-    init_message = st.info("🔄 Initializing database schema... Please wait.")
-    
-    try:
-        from utils.schema_extract import extract_all_table_schemas
-        schemas = extract_all_table_schemas()
-        logger.info(f"Extracted {len(schemas) if schemas else 0} table schemas")
-        st.session_state.schema_extracted = True
-    except Exception as e:
-        logger.error(f"Error extracting schemas: {e}")
-    
-    # Clear initialization message
-    init_message.empty()
+
 
 class RetrieverAdapter:
     """Adapter to make retriever services compatible with RAG chain service."""
@@ -77,11 +61,25 @@ if "last_ambiguous_question" not in st.session_state:
 # Sidebar for configuration
 with st.sidebar:
     st.title("Terrabloom")
-    st.header("Configuration")
 
     # Retriever info
-    st.subheader("Retriever Type")
-    st.info(f"🚀 Using IVF-FAISS for retrieval")
+    st.subheader("DB Schema Initialization")
+    if st.button("Extract Database Schema", help="Extract schemas from all tables in the database"):
+        # Show initialization message
+        init_message = st.info("🔄Initializing database schema... Please wait.")
+        
+        try:
+            from utils.schema_extract import extract_all_table_schemas
+            schemas = extract_all_table_schemas()
+            logger.info(f"Extracted {len(schemas) if schemas else 0} table schemas")
+            st.session_state.schema_extracted = True
+            st.success(f"Successfully extracted {len(schemas) if schemas else 0} table schemas!")
+            st.rerun()
+        except Exception as e:
+            logger.error(f"Error extracting schemas: {e}")
+            st.error(f"Error extracting schemas: {str(e)}")
+            st.success("✅ Done")
+        init_message.empty()
 
     # Vector Database Management
     st.subheader("Vector Database")
@@ -90,7 +88,7 @@ with st.sidebar:
     faiss_index_exists = os.path.exists("faiss_ivf_index/index.faiss") and os.path.exists("faiss_ivf_index/index.pkl")
 
     if faiss_index_exists:
-        st.success("✅ FAISS index loaded")
+        st.success("Using FAISS Index")
         if st.button("🔄 Recreate Index", help="Recreate FAISS index from table_schema.csv"):
             with st.spinner("Recreating FAISS index..."):
                 success = faiss_retriever_service.load_documents_from_csv(force_recreate=True)
@@ -112,7 +110,7 @@ with st.sidebar:
 
     # Database information
     st.subheader("Database Info")
-    st.write(f"Tables: {', '.join(db_manager.get_table_names())}")
+    st.write(f"Using Tables \n: {', '.join(db_manager.get_table_names())}")
 
     # Conversation state
     st.header("Conversation State")
