@@ -38,7 +38,7 @@ class RAGChainService:
         self.waiting_for_table = False
         self.last_ambiguous_question = None
         self.chat_history = []  # Initialize empty chat history
-        self.max_history_pairs = 1  # Store only the last Q&A pair (2 messages)
+        self.max_history_pairs = 2  # Store the last 2 Q&A pairs (4 messages total)
 
     def create_prompt(self, include_schema=True, use_chat_prompt=True):
         """Create a prompt for the RAG chain.
@@ -47,23 +47,21 @@ class RAGChainService:
             include_schema (bool, optional): Whether to include schema context.
                 Defaults to True.
             use_chat_prompt (bool, optional): Whether to use a chat prompt.
-                Defaults to False.
+                Defaults to True.
 
         Returns:
             object: The prompt.
         """
         if use_chat_prompt:
-            system_message = SystemMessage(content="""You are a data analyst who provides definitive, precise answers based on SQL query results. 
-Provide only the direct answer without any technical details, SQL queries, or schema information. Be concise and conversational.
+            system_message = SystemMessage(content="""Data analyst providing precise answers from SQL results. Be conversational, focus on insights not technical details.
 
-IMPORTANT INSTRUCTIONS FOR FOLLOW-UP QUESTIONS:
-1. When a user asks if something exists (e.g., "Is there a customer similar to X?") and then follows up with "What's the name?", you MUST provide the SPECIFIC names that are similar to X, not just any names.
-2. For questions about similarity, provide the actual items that are similar to the referenced entity, with clear explanations of how they are similar.
-3. Always maintain context between questions - if a follow-up question refers to a previous question, your answer must directly address the specific entity mentioned in the previous question.
-4. When asked about names or specific values, provide the exact names or values from the database that relate to the previous question.""")
-            # Create a template that includes the current question and the chat history
+Always check chat history to:
+- Connect current question to previous Q&A
+- Resolve vague references using context
+- Identify what follow-ups reference from prior discussion
+
+For unclear questions, reference most recent relevant data/entity. Stay natural while being data-precise.""")      
             messages = [system_message]
-
             messages.append(MessagesPlaceholder(variable_name="chat_history"))
 
             # Add the human message with the current question and context
@@ -88,11 +86,11 @@ Provide a clear, concise answer to the question. Do not include any technical de
 
             return PromptTemplate.from_template(template)
 
-
-    def build_chain(self, include_schema=True, use_chat_prompt=False):
+    def build_chain(self, include_schema=True, use_chat_prompt=True):
         """Build the RAG chain."""
         prompt = self.create_prompt(include_schema, use_chat_prompt)
         rephrase_answer = prompt | self.llm | StrOutputParser()
+        print("schema:",self.retriever_service.retrieve(["question"]))
 
         if include_schema:
             chain = (
@@ -133,6 +131,15 @@ Provide a clear, concise answer to the question. Do not include any technical de
             self._chain = self.build_chain()
         return self._chain
 
+    def get_recent_history(self):
+        """Get the most recent chat history limited to max_history_pairs.
+        
+        Returns:
+            list: List of recent HumanMessage and AIMessage objects
+        """
+        max_messages = 2 * self.max_history_pairs
+        return self.chat_history[-max_messages:] if len(self.chat_history) > 0 else []
+
     def invoke(self, question):
         """Invoke the RAG chain with a question."""
         # Check if the question is ambiguous
@@ -142,27 +149,28 @@ Provide a clear, concise answer to the question. Do not include any technical de
             self.last_ambiguous_question = question
             return message
         
-        # Get only the most recent messages for context (limited to max_history_pairs)
-        recent_history = self.chat_history[-2*self.max_history_pairs:] if self.chat_history else []
+        # Get the recent chat history BEFORE processing the current question
+        recent_history = self.get_recent_history()
         
-        # Process the question with the recent history
+        print(f"Recent chat history being passed to model: {recent_history}")
+
+        # Invoke the chain with the current question and chat history
         result = self.chain.invoke({
             "question": question,
-            "chat_history": recent_history
+            "chat_history": recent_history  # Pass as 'chat_history' to match the prompt placeholder
         })
         
-        
-        # Update chat history with this Q&A pair
+        # AFTER getting the result, update chat history with this Q&A pair
         self.chat_history.append(HumanMessage(content=question))
         self.chat_history.append(AIMessage(content=result))
+
         
-        # Limit chat history to only the specified number of Q&A pairs
+        # Trim chat history to maintain only the specified number of Q&A pairs
         max_messages = 2 * self.max_history_pairs
         if len(self.chat_history) > max_messages:
+            old_length = len(self.chat_history)
             self.chat_history = self.chat_history[-max_messages:]
-
-        print(self.chat_history)
-        
+            print(f"Trimmed chat history from {old_length} to {len(self.chat_history)} messages")
         
         return result
 
