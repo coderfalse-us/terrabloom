@@ -5,11 +5,17 @@ from langchain_core.runnables import RunnablePassthrough, RunnableLambda
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from langchain_core.messages import SystemMessage
+from langchain_core.prompts import MessagesPlaceholder
+from langchain_core.messages import HumanMessage, AIMessage
 
 from models.llm import llm_manager
 from services.query_chain import query_chain_service
 from services.retriever import faiss_retriever_service
 
+import logging
+logging.basicConfig(level=logging.INFO, 
+                   format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 class RAGChainService:
     """Service for the main RAG chain."""
@@ -31,6 +37,8 @@ class RAGChainService:
         self._chain = None
         self.waiting_for_table = False
         self.last_ambiguous_question = None
+        self.chat_history = []  # Initialize empty chat history
+        self.max_history_pairs = 1  # Store only the last Q&A pair (2 messages)
 
     def create_prompt(self, include_schema=True, use_chat_prompt=True):
         """Create a prompt for the RAG chain.
@@ -45,10 +53,18 @@ class RAGChainService:
             object: The prompt.
         """
         if use_chat_prompt:
-            system_message = SystemMessage(content="You are a data analyst who provides definitive, precise answers based on SQL query results. Provide only the direct answer without any technical details, SQL queries, or schema information. Be concise and conversational.")
+            system_message = SystemMessage(content="""You are a data analyst who provides definitive, precise answers based on SQL query results. 
+Provide only the direct answer without any technical details, SQL queries, or schema information. Be concise and conversational.
 
+IMPORTANT INSTRUCTIONS FOR FOLLOW-UP QUESTIONS:
+1. When a user asks if something exists (e.g., "Is there a customer similar to X?") and then follows up with "What's the name?", you MUST provide the SPECIFIC names that are similar to X, not just any names.
+2. For questions about similarity, provide the actual items that are similar to the referenced entity, with clear explanations of how they are similar.
+3. Always maintain context between questions - if a follow-up question refers to a previous question, your answer must directly address the specific entity mentioned in the previous question.
+4. When asked about names or specific values, provide the exact names or values from the database that relate to the previous question.""")
             # Create a template that includes the current question and the chat history
             messages = [system_message]
+
+            messages.append(MessagesPlaceholder(variable_name="chat_history"))
 
             # Add the human message with the current question and context
             human_message = ("human", "Question: {question}\nSQL Query: {query}\nSQL Result: {result}" +
@@ -74,17 +90,7 @@ Provide a clear, concise answer to the question. Do not include any technical de
 
 
     def build_chain(self, include_schema=True, use_chat_prompt=False):
-        """Build the RAG chain.
-
-        Args:
-            include_schema (bool, optional): Whether to include schema context.
-                Defaults to True.
-            use_chat_prompt (bool, optional): Whether to use a chat prompt.
-                Defaults to False.
-
-        Returns:
-            object: The RAG chain.
-        """
+        """Build the RAG chain."""
         prompt = self.create_prompt(include_schema, use_chat_prompt)
         rephrase_answer = prompt | self.llm | StrOutputParser()
 
@@ -128,48 +134,36 @@ Provide a clear, concise answer to the question. Do not include any technical de
         return self._chain
 
     def invoke(self, question):
-        """Invoke the RAG chain with a question.
-
-        Args:
-            question (str): The question to answer.
-
-        Returns:
-            str: The answer or a request for clarification if the question is ambiguous.
-        """
-        # Check if we're waiting for a table specification from a previous ambiguous question
-        if self.waiting_for_table and self.last_ambiguous_question:
-            # Check if the user's response contains a table name
-            tables = self.query_service.db.get_usable_table_names()
-            table_mentioned = next((table for table in tables if table.lower() in question.lower()), None)
-
-            if table_mentioned:
-                # Combine the previous question with the table specification
-                combined_question = f"{self.last_ambiguous_question} from {table_mentioned}"
-
-                # Reset the waiting state
-                self.waiting_for_table = False
-                self.last_ambiguous_question = None
-
-                # Process the combined question
-                result = self.chain.invoke({"question": combined_question})
-
-                return result
-
-        # If not waiting for a table or no table was mentioned, process as a new question
-        # Check if the new question is ambiguous
+        """Invoke the RAG chain with a question."""
+        # Check if the question is ambiguous
         is_ambiguous, message = self.query_service.is_question_ambiguous(question)
-
         if is_ambiguous:
-            # Set the waiting state
             self.waiting_for_table = True
             self.last_ambiguous_question = question
-
-            # Return the clarification request
             return message
+        
+        # Get only the most recent messages for context (limited to max_history_pairs)
+        recent_history = self.chat_history[-2*self.max_history_pairs:] if self.chat_history else []
+        
+        # Process the question with the recent history
+        result = self.chain.invoke({
+            "question": question,
+            "chat_history": recent_history
+        })
+        
+        
+        # Update chat history with this Q&A pair
+        self.chat_history.append(HumanMessage(content=question))
+        self.chat_history.append(AIMessage(content=result))
+        
+        # Limit chat history to only the specified number of Q&A pairs
+        max_messages = 2 * self.max_history_pairs
+        if len(self.chat_history) > max_messages:
+            self.chat_history = self.chat_history[-max_messages:]
 
-        # If not ambiguous, proceed with the normal chain
-        result = self.chain.invoke({"question": question})
-
+        print(self.chat_history)
+        
+        
         return result
 
 
