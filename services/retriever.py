@@ -9,7 +9,7 @@ from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from dataclasses import dataclass
 
 from config.settings import (
-    SCHEMA_CSV_PATH,
+    SCHEMA_CSV_PATH_STR,
     RETRIEVER_K
 )
 
@@ -168,7 +168,7 @@ class FAISSRetriever:
         else:
             return int(4 * np.sqrt(num_documents))
 
-    def load_documents_from_csv(self, csv_path: str = "./table_schema.csv", force_recreate: bool = False) -> bool:
+    def load_documents_from_csv(self, csv_path: str = SCHEMA_CSV_PATH_STR, force_recreate: bool = False) -> bool:
         """Load documents from CSV with enhanced processing."""
         try:
             # Check if recreation is needed
@@ -332,7 +332,7 @@ class RetrieverService:
         else:
             return self.vector_store.retrieve(query, k=self.config.k)
 
-    def load_documents_from_csv(self, csv_path: str = "./table_schema.csv", force_recreate: bool = False) -> bool:
+    def load_documents_from_csv(self, csv_path: str = SCHEMA_CSV_PATH_STR, force_recreate: bool = False) -> bool:
         """Load documents from CSV file."""
         return self.vector_store.load_documents_from_csv(csv_path, force_recreate)
 
