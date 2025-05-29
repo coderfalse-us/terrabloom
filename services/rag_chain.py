@@ -40,6 +40,13 @@ class RAGChainService:
         self.chat_history = []  # Initialize empty chat history
         self.max_history_pairs = 2  # Store the last 2 Q&A pairs (4 messages total)
 
+
+    def handle_empty_result(self, result):
+        if not result or result in (None, [], {}, ''):
+            return "NO_DATA"
+        return result
+
+
     def create_prompt(self, include_schema=True, use_chat_prompt=True):
         """Create a prompt for the RAG chain.
 
@@ -53,6 +60,7 @@ class RAGChainService:
             object: The prompt.
         """
         if use_chat_prompt:
+            # Token-Efficient System Message
             system_message = SystemMessage(content="""Data analyst providing precise answers from SQL results. Be conversational, focus on insights not technical details.
 
 Always check chat history to:
@@ -60,7 +68,8 @@ Always check chat history to:
 - Resolve vague references using context
 - Identify what follow-ups reference from prior discussion
 
-For unclear questions, reference most recent relevant data/entity. Stay natural while being data-precise.""")      
+For unclear questions, reference most recent relevant data/entity. If query lacks necessary context (table/column info), ask for clarification instead of making assumptions. Only answer what the SQL results actually show.
+                                           STRICTLY NEVER MAKE ASSUMPTIONS OR GUESS ABOUT DATA NOT IN THE SQL RESULT.""")    
             messages = [system_message]
             messages.append(MessagesPlaceholder(variable_name="chat_history"))
 
@@ -89,8 +98,23 @@ Provide a clear, concise answer to the question. Do not include any technical de
     def build_chain(self, include_schema=True, use_chat_prompt=True):
         """Build the RAG chain."""
         prompt = self.create_prompt(include_schema, use_chat_prompt)
-        rephrase_answer = prompt | self.llm | StrOutputParser()
-        print("schema:",self.retriever_service.retrieve(["question"]))
+        
+        # Add debug print before the LLM call
+        def debug_prompt(inputs):
+            print("\n" + "="*50)
+            print("🔍 COMPLETE PROMPT BEING SENT TO LLM:")
+            print("="*50)
+            formatted_prompt = prompt.format(**inputs)
+            print(formatted_prompt)
+            print("="*50 + "\n")
+            return inputs
+
+        rephrase_answer = (
+            RunnableLambda(debug_prompt) 
+            | prompt 
+            | self.llm 
+            | StrOutputParser()
+        )
 
         if include_schema:
             chain = (
@@ -102,8 +126,9 @@ Provide a clear, concise answer to the question. Do not include any technical de
                 )
                 .assign(
                     result=itemgetter("query") |
-                    RunnableLambda(lambda q: self.query_service.safe_execute(q))
-                )
+                    RunnableLambda(lambda q: self.handle_empty_result(self.query_service.safe_execute(q)))
+            )
+
                 | rephrase_answer
             )
         else:
@@ -154,6 +179,7 @@ Provide a clear, concise answer to the question. Do not include any technical de
         
         print(f"Recent chat history being passed to model: {recent_history}")
 
+        print(f"Current question: {question}")
         # Invoke the chain with the current question and chat history
         result = self.chain.invoke({
             "question": question,
