@@ -119,6 +119,7 @@ class QueryChainService:
             str: The query result.
         """
         clean_query = strip_sql_markdown(query)
+        print(f"Executing query: {clean_query}")
         return self.execute_query.invoke(clean_query)
 
     def safe_execute(self, query):

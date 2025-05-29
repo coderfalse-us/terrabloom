@@ -12,12 +12,7 @@ logging.basicConfig(level=logging.INFO,
                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
-
 st.set_page_config(page_title="Terrabloom", layout="centered")
-
-
-
 
 class RetrieverAdapter:
     """Adapter to make retriever services compatible with RAG chain service."""
@@ -35,12 +30,10 @@ class RetrieverAdapter:
             formatted_docs.append(f"Table: {table_name}\n{doc.page_content}")
         return "\n\n".join(formatted_docs)
 
-
 # Set up environment variables
 setup_environment_variables()
 
 # Page config
-
 st.title("Terrabloom")
 
 # Initialize session state for chat history
@@ -57,6 +50,13 @@ if "waiting_for_table" not in st.session_state:
 
 if "last_ambiguous_question" not in st.session_state:
     st.session_state.last_ambiguous_question = None
+
+# Initialize RAG chain in session state (PERSISTENT INSTANCE)
+if "rag_chain" not in st.session_state:
+    from services.rag_chain import RAGChainService
+    faiss_adapter = RetrieverAdapter(faiss_retriever_service)
+    st.session_state.rag_chain = RAGChainService(retriever_service=faiss_adapter)
+    st.session_state.rag_chain._chain = st.session_state.rag_chain.build_chain(include_schema=True, use_chat_prompt=True)
 
 # Sidebar for configuration
 with st.sidebar:
@@ -130,9 +130,17 @@ with st.sidebar:
         st.session_state.messages = []
         st.session_state.waiting_for_table = False
         st.session_state.last_ambiguous_question = None
+        # Clear the RAG chain's chat history too
+        st.session_state.rag_chain.chat_history = []
         st.rerun()
-
-# Display current retriever info
+    
+    # Debug: Show RAG chain history
+    st.subheader("Debug: RAG Chain History")
+    if hasattr(st.session_state, 'rag_chain'):
+        st.write(f"History messages: {len(st.session_state.rag_chain.chat_history)}")
+        if st.session_state.rag_chain.chat_history:
+            for i, msg in enumerate(st.session_state.rag_chain.chat_history):
+                st.write(f"{i}: {type(msg).__name__}: {msg.content[:50]}...")
 
 # Display chat history
 for message in st.session_state.messages:
@@ -146,13 +154,9 @@ if prompt := st.chat_input("Ask a question about your data"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # Use FAISS retriever and rebuild the chain
-    from services.rag_chain import RAGChainService
-
+    # Use the PERSISTENT RAG chain instance from session state
+    rag_chain = st.session_state.rag_chain
     st.info("🚀 Using IVF-FAISS retriever for this query")
-    faiss_adapter = RetrieverAdapter(faiss_retriever_service)
-    rag_chain = RAGChainService(retriever_service=faiss_adapter)
-    rag_chain._chain = rag_chain.build_chain(include_schema=True, use_chat_prompt=True)
 
     # Display assistant response
     with st.chat_message("assistant"):
