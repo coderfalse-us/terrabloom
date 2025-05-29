@@ -1,0 +1,11 @@
+langchain_openai
+langchain-google-genai
+langchain_community
+langchain
+pymysql
+pandas
+psycopg2-binary
+sqlalchemy
+streamlit
+faiss-cpu
+numpy
