@@ -8,6 +8,12 @@ class Config:
         # API Keys
         self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBc_8Ls8yQQsgOgeMusRW3Y8jcC3EO1E_k")
         self.GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyCKHLCrRFIlREEr37RMuqf83E0ezWxdghY")
+        self.LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY", "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") # Add LangSmith API Key
+
+        # LangSmith Configuration
+        self.LANGCHAIN_TRACING_V2 = os.getenv("LANGCHAIN_TRACING_V2", "true")
+        self.LANGCHAIN_ENDPOINT = os.getenv("LANGCHAIN_ENDPOINT", "https://api.smith.langchain.com")
+        self.LANGCHAIN_PROJECT = os.getenv("LANGCHAIN_PROJECT", "terrabloom-rag")
         
         # Database Configuration
         self.DB_USER = os.getenv("DB_USER", "usr_reporting")
@@ -36,6 +42,11 @@ class Config:
         """Set environment variables for API keys"""
         os.environ["GEMINI_API_KEY"] = self.GEMINI_API_KEY
         os.environ["GOOGLE_API_KEY"] = self.GOOGLE_API_KEY
+        os.environ["LANGCHAIN_API_KEY"] = self.LANGCHAIN_API_KEY
+        os.environ["LANGCHAIN_TRACING_V2"] = self.LANGCHAIN_TRACING_V2
+        os.environ["LANGCHAIN_ENDPOINT"] = self.LANGCHAIN_ENDPOINT
+        os.environ["LANGCHAIN_PROJECT"] = self.LANGCHAIN_PROJECT
 
 # Global config instance
 config = Config()
+config.set_environment_variables() # Ensure env vars are set at import time

@@ -4,6 +4,15 @@ from langchain_core.messages import HumanMessage, AIMessage
 from vector_store.retriever import IVFFAISSRetriever
 from database.connection import db_manager
 from llm.chat_models import llm_manager
+from config.config import config # Import config
+
+# LangSmith Tracing (optional, for debugging and monitoring)
+if config.LANGCHAIN_TRACING_V2 == "true":
+    from langsmith import Client
+    client = Client(
+        api_url=config.LANGCHAIN_ENDPOINT,
+        api_key=config.LANGCHAIN_API_KEY
+    )
 
 class RAGChain:
     """Main RAG chain that orchestrates retrieval, generation, and execution"""
