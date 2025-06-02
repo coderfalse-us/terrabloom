@@ -168,7 +168,7 @@ locationorganizations,"CREATE TABLE customersetup.locationorganizations (
 	businessunitnumber varchar(50) NULL,
 	CONSTRAINT locationorganizations_id PRIMARY KEY (id)
 );"
-customer,"CREATE TABLE customersetup.customers (
+customers,"CREATE TABLE customersetup.customers (
 	id varchar(50) NOT NULL,
 	""name"" varchar(50) NULL,
 	abbreviation varchar(50) NULL,
