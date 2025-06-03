@@ -110,7 +110,8 @@ def get_table_schema(schema_name, table_name, connection):
         
         # Add primary key constraint
         if primary_keys:
-            ddl += f",\n    PRIMARY KEY ({', '.join(primary_keys)})"
+            primary_keys_str = ", ".join(primary_keys)
+            ddl += f",\n\tCONSTRAINT {table_name}_id PRIMARY KEY ({primary_keys_str})"
         
         ddl += "\n);"
         
@@ -143,8 +144,7 @@ def get_all_schemas(connection):
         ORDER BY schema_name;
         """
         cursor.execute(query)
-        #schemas = [row[0] for row in cursor.fetchall()]
-        schemas=['automation', 'customersetup', 'document', 'inventorycontrol', 'item', 'orders','picking', 'receiving', 'returns', 'returnsmanagement', 'shipping', 'tracking', 'wave']
+        schemas = [row[0] for row in cursor.fetchall()]
         cursor.close()
         return schemas
     except Exception as e:

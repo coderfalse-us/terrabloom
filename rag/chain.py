@@ -47,6 +47,7 @@ class RAGChain:
     
     def _generate_query(self, inputs):
         """Generate SQL query using LLM"""
+        print("Schema----",inputs["schema"])
         return llm_manager.generate_sql_query(
             question=inputs["question"],
             schema=inputs["schema"],

@@ -1,4 +1,17 @@
 table_name,DDL
+automation.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE automation.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
+);"
 automation.ordersubtasks,"CREATE TABLE automation.ordersubtasks (
     id varchar(40) NOT NULL,
     ordertaskid varchar(40),
@@ -30,7 +43,7 @@ automation.ordersubtasks,"CREATE TABLE automation.ordersubtasks (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT ordersubtasks_id PRIMARY KEY (id)
 );"
 automation.ordersubtaskstages,"CREATE TABLE automation.ordersubtaskstages (
     id varchar(40) NOT NULL,
@@ -50,7 +63,7 @@ automation.ordersubtaskstages,"CREATE TABLE automation.ordersubtaskstages (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT ordersubtaskstages_id PRIMARY KEY (id)
 );"
 automation.ordertasks,"CREATE TABLE automation.ordertasks (
     id varchar(40) NOT NULL,
@@ -90,7 +103,7 @@ automation.ordertasks,"CREATE TABLE automation.ordertasks (
     vendor varchar(50),
     messagename varchar(50),
     trackingnumber varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT ordertasks_id PRIMARY KEY (id)
 );"
 automation.ordertaskstages,"CREATE TABLE automation.ordertaskstages (
     id varchar(40) NOT NULL,
@@ -109,7 +122,7 @@ automation.ordertaskstages,"CREATE TABLE automation.ordertaskstages (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT ordertaskstages_id PRIMARY KEY (id)
 );"
 automation.ordertasktags,"CREATE TABLE automation.ordertasktags (
     id varchar(40) NOT NULL,
@@ -126,7 +139,33 @@ automation.ordertasktags,"CREATE TABLE automation.ordertasktags (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT ordertasktags_id PRIMARY KEY (id)
+);"
+customersetup.SQL_MIGRATION_HISTORY_2025-16,"CREATE TABLE customersetup.SQL_MIGRATION_HISTORY_2025-16 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-16_id PRIMARY KEY (installed_rank)
+);"
+customersetup.SQL_MIGRATION_HISTORY_2025-2200,"CREATE TABLE customersetup.SQL_MIGRATION_HISTORY_2025-2200 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-2200_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 customersetup.accounts,"CREATE TABLE customersetup.accounts (
     id varchar(50) NOT NULL,
@@ -179,7 +218,7 @@ customersetup.accounts,"CREATE TABLE customersetup.accounts (
     emergencyintlcontact varchar(25),
     returncontactname varchar(100),
     returnwindow int4,
-    PRIMARY KEY (id)
+	CONSTRAINT accounts_id PRIMARY KEY (id)
 );"
 customersetup.building,"CREATE TABLE customersetup.building (
     id varchar(50) NOT NULL,
@@ -215,7 +254,7 @@ customersetup.building,"CREATE TABLE customersetup.building (
     warehouseid varchar(50),
     timezonedescription varchar(40),
     addressline3 varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT building_id PRIMARY KEY (id)
 );"
 customersetup.businessunits,"CREATE TABLE customersetup.businessunits (
     id varchar(50) NOT NULL,
@@ -237,7 +276,7 @@ customersetup.businessunits,"CREATE TABLE customersetup.businessunits (
     channelid varchar(40),
     businessunitname varchar(100),
     isexternal bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT businessunits_id PRIMARY KEY (id)
 );"
 customersetup.cartposition,"CREATE TABLE customersetup.cartposition (
     id varchar(40) NOT NULL,
@@ -262,7 +301,7 @@ customersetup.cartposition,"CREATE TABLE customersetup.cartposition (
     accountid varchar(50),
     businessunitid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT cartposition_id PRIMARY KEY (id)
 );"
 customersetup.container,"CREATE TABLE customersetup.container (
     id varchar(40) NOT NULL,
@@ -297,7 +336,7 @@ customersetup.container,"CREATE TABLE customersetup.container (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT container_id PRIMARY KEY (id)
 );"
 customersetup.customers,"CREATE TABLE customersetup.customers (
     id varchar(50) NOT NULL,
@@ -339,7 +378,7 @@ customersetup.customers,"CREATE TABLE customersetup.customers (
     marketlineleader varchar(100),
     marketlineowner varchar(100),
     imageurl varchar(150),
-    PRIMARY KEY (id)
+	CONSTRAINT customers_id PRIMARY KEY (id)
 );"
 customersetup.locationorganizations,"CREATE TABLE customersetup.locationorganizations (
     id varchar(50) NOT NULL,
@@ -362,7 +401,7 @@ customersetup.locationorganizations,"CREATE TABLE customersetup.locationorganiza
     warehouseid varchar(50),
     accountcode varchar(15),
     businessunitnumber varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT locationorganizations_id PRIMARY KEY (id)
 );"
 customersetup.locations,"CREATE TABLE customersetup.locations (
     id varchar(50) NOT NULL,
@@ -482,7 +521,7 @@ customersetup.locations,"CREATE TABLE customersetup.locations (
     lastpick timestamp,
     lastpickuser varchar(50),
     uomid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT locations_id PRIMARY KEY (id)
 );"
 customersetup.organizations,"CREATE TABLE customersetup.organizations (
     id varchar(50) NOT NULL,
@@ -536,7 +575,7 @@ customersetup.organizations,"CREATE TABLE customersetup.organizations (
     emergencydomesticcontact varchar(25),
     emergencyintlcontact varchar(25),
     emergencyinternationalcontact varchar(25),
-    PRIMARY KEY (id)
+	CONSTRAINT organizations_id PRIMARY KEY (id)
 );"
 customersetup.organizationshifts,"CREATE TABLE customersetup.organizationshifts (
     id varchar(50) NOT NULL,
@@ -567,7 +606,7 @@ customersetup.organizationshifts,"CREATE TABLE customersetup.organizationshifts 
     customerid varchar(50),
     warehouseid varchar(50),
     shiftcode varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT organizationshifts_id PRIMARY KEY (id)
 );"
 customersetup.organizationstores,"CREATE TABLE customersetup.organizationstores (
     id varchar(40) NOT NULL,
@@ -602,7 +641,7 @@ customersetup.organizationstores,"CREATE TABLE customersetup.organizationstores 
     accountcode varchar(15),
     businessunitnumber varchar(50),
     platform varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT organizationstores_id PRIMARY KEY (id)
 );"
 customersetup.pickcart,"CREATE TABLE customersetup.pickcart (
     id varchar(40) NOT NULL,
@@ -628,7 +667,7 @@ customersetup.pickcart,"CREATE TABLE customersetup.pickcart (
     accountid varchar(50),
     businessunitid varchar(50),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT pickcart_id PRIMARY KEY (id)
 );"
 customersetup.vendor,"CREATE TABLE customersetup.vendor (
     id varchar(50) NOT NULL,
@@ -661,7 +700,7 @@ customersetup.vendor,"CREATE TABLE customersetup.vendor (
     warehouseid varchar(50),
     addressline3 varchar(50),
     phonenumber varchar(20),
-    PRIMARY KEY (id)
+	CONSTRAINT vendor_id PRIMARY KEY (id)
 );"
 customersetup.warehousedocuments,"CREATE TABLE customersetup.warehousedocuments (
     id varchar(50) NOT NULL,
@@ -684,7 +723,7 @@ customersetup.warehousedocuments,"CREATE TABLE customersetup.warehousedocuments 
     accountid varchar(50),
     businessunitid varchar(50),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT warehousedocuments_id PRIMARY KEY (id)
 );"
 customersetup.warehouseorganizations,"CREATE TABLE customersetup.warehouseorganizations (
     id varchar(50) NOT NULL,
@@ -711,7 +750,7 @@ customersetup.warehouseorganizations,"CREATE TABLE customersetup.warehouseorgani
     accountcode varchar(15),
     businessunitnumber varchar(50),
     customer varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT warehouseorganizations_id PRIMARY KEY (id)
 );"
 customersetup.warehouses,"CREATE TABLE customersetup.warehouses (
     id varchar(50) NOT NULL,
@@ -748,7 +787,7 @@ customersetup.warehouses,"CREATE TABLE customersetup.warehouses (
     statedescription varchar(40),
     countrydescription varchar(40),
     timezonedescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT warehouses_id PRIMARY KEY (id)
 );"
 customersetup.warehousesites,"CREATE TABLE customersetup.warehousesites (
     id varchar(50) NOT NULL,
@@ -769,7 +808,20 @@ customersetup.warehousesites,"CREATE TABLE customersetup.warehousesites (
     businessunitid varchar(50),
     customerid varchar(50),
     sitecode varchar(40) NOT NULL,
-    PRIMARY KEY (id)
+	CONSTRAINT warehousesites_id PRIMARY KEY (id)
+);"
+document.SQL_MIGRATION_HISTORY_2025-22,"CREATE TABLE document.SQL_MIGRATION_HISTORY_2025-22 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-22_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 document.labeltemplates,"CREATE TABLE document.labeltemplates (
     id varchar(50) NOT NULL,
@@ -799,7 +851,7 @@ document.labeltemplates,"CREATE TABLE document.labeltemplates (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT labeltemplates_id PRIMARY KEY (id, id)
 );"
 document.labeltypes,"CREATE TABLE document.labeltypes (
     id varchar(50) NOT NULL,
@@ -822,7 +874,7 @@ document.labeltypes,"CREATE TABLE document.labeltypes (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT labeltypes_id PRIMARY KEY (id, id)
 );"
 document.shiplabeltemplates,"CREATE TABLE document.shiplabeltemplates (
     id varchar(50) NOT NULL,
@@ -852,7 +904,7 @@ document.shiplabeltemplates,"CREATE TABLE document.shiplabeltemplates (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT shiplabeltemplates_id PRIMARY KEY (id, id)
 );"
 document.shipservices,"CREATE TABLE document.shipservices (
     id varchar(50) NOT NULL,
@@ -876,7 +928,7 @@ document.shipservices,"CREATE TABLE document.shipservices (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT shipservices_id PRIMARY KEY (id, id)
 );"
 document.templatecodes,"CREATE TABLE document.templatecodes (
     id varchar(50) NOT NULL,
@@ -899,7 +951,59 @@ document.templatecodes,"CREATE TABLE document.templatecodes (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT templatecodes_id PRIMARY KEY (id, id)
+);"
+inventorycontrol.SQL_MIGRATION_HISTORY_2024-48,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2024-48 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2024-48_id PRIMARY KEY (installed_rank)
+);"
+inventorycontrol.SQL_MIGRATION_HISTORY_2025-08,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2025-08 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-08_id PRIMARY KEY (installed_rank)
+);"
+inventorycontrol.SQL_MIGRATION_HISTORY_2025-14,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2025-14 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-14_id PRIMARY KEY (installed_rank)
+);"
+inventorycontrol.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 inventorycontrol.cyclecountactivitydetail,"CREATE TABLE inventorycontrol.cyclecountactivitydetail (
     id varchar(40) NOT NULL,
@@ -979,7 +1083,7 @@ inventorycontrol.cyclecountactivitydetail,"CREATE TABLE inventorycontrol.cycleco
     unitofmeasure varchar(4),
     caseqrcode varchar(80),
     inventoryclass varchar(4),
-    PRIMARY KEY (id)
+	CONSTRAINT cyclecountactivitydetail_id PRIMARY KEY (id)
 );"
 inventorycontrol.cyclecountadjustment,"CREATE TABLE inventorycontrol.cyclecountadjustment (
     id varchar(40) NOT NULL,
@@ -1026,7 +1130,7 @@ inventorycontrol.cyclecountadjustment,"CREATE TABLE inventorycontrol.cyclecounta
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT cyclecountadjustment_id PRIMARY KEY (id)
 );"
 inventorycontrol.cyclecountsubtask,"CREATE TABLE inventorycontrol.cyclecountsubtask (
     id varchar(40) NOT NULL,
@@ -1064,7 +1168,7 @@ inventorycontrol.cyclecountsubtask,"CREATE TABLE inventorycontrol.cyclecountsubt
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT cyclecountsubtask_id PRIMARY KEY (id)
 );"
 inventorycontrol.cyclecounttask,"CREATE TABLE inventorycontrol.cyclecounttask (
     id varchar(40) NOT NULL,
@@ -1153,7 +1257,7 @@ inventorycontrol.cyclecounttask,"CREATE TABLE inventorycontrol.cyclecounttask (
     systembusinessunitid varchar(50),
     systemaccountid varchar(50),
     systemplatenumber varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT cyclecounttask_id PRIMARY KEY (id)
 );"
 inventorycontrol.inventoryadjustmentactivity,"CREATE TABLE inventorycontrol.inventoryadjustmentactivity (
     id varchar(40) NOT NULL,
@@ -1225,7 +1329,7 @@ inventorycontrol.inventoryadjustmentactivity,"CREATE TABLE inventorycontrol.inve
     originalitemcode varchar(10),
     locationcode varchar(10),
     itemcode varchar(10),
-    PRIMARY KEY (id)
+	CONSTRAINT inventoryadjustmentactivity_id PRIMARY KEY (id)
 );"
 inventorycontrol.inventoryplate,"CREATE TABLE inventorycontrol.inventoryplate (
     id varchar(50) NOT NULL,
@@ -1309,7 +1413,7 @@ inventorycontrol.inventoryplate,"CREATE TABLE inventorycontrol.inventoryplate (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     lastsyncdate timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT inventoryplate_id PRIMARY KEY (id)
 );"
 inventorycontrol.itempickfront,"CREATE TABLE inventorycontrol.itempickfront (
     id varchar(40) NOT NULL,
@@ -1372,7 +1476,7 @@ inventorycontrol.itempickfront,"CREATE TABLE inventorycontrol.itempickfront (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     productgroupcode varchar(4),
-    PRIMARY KEY (id)
+	CONSTRAINT itempickfront_id PRIMARY KEY (id)
 );"
 inventorycontrol.itempickfrontpickuoms,"CREATE TABLE inventorycontrol.itempickfrontpickuoms (
     id varchar(40) NOT NULL,
@@ -1394,7 +1498,7 @@ inventorycontrol.itempickfrontpickuoms,"CREATE TABLE inventorycontrol.itempickfr
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT itempickfrontpickuoms_id PRIMARY KEY (id)
 );"
 inventorycontrol.movementtask,"CREATE TABLE inventorycontrol.movementtask (
     id varchar(40) NOT NULL,
@@ -1478,7 +1582,7 @@ inventorycontrol.movementtask,"CREATE TABLE inventorycontrol.movementtask (
     updatedlocation varchar(200),
     traceid varchar(40),
     spanid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT movementtask_id PRIMARY KEY (id)
 );"
 inventorycontrol.physicalinventorycountactivity,"CREATE TABLE inventorycontrol.physicalinventorycountactivity (
     id varchar(40) NOT NULL,
@@ -1513,7 +1617,7 @@ inventorycontrol.physicalinventorycountactivity,"CREATE TABLE inventorycontrol.p
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT physicalinventorycountactivity_id PRIMARY KEY (id)
 );"
 inventorycontrol.physicalinventorycountstatus,"CREATE TABLE inventorycontrol.physicalinventorycountstatus (
     id varchar(40) NOT NULL,
@@ -1570,7 +1674,7 @@ inventorycontrol.physicalinventorycountstatus,"CREATE TABLE inventorycontrol.phy
     updatedlocation varchar(200),
     countlocationid varchar(40),
     countlocationcode varchar(10),
-    PRIMARY KEY (id)
+	CONSTRAINT physicalinventorycountstatus_id PRIMARY KEY (id)
 );"
 inventorycontrol.physicalinventorydetail,"CREATE TABLE inventorycontrol.physicalinventorydetail (
     id varchar(40) NOT NULL,
@@ -1617,7 +1721,7 @@ inventorycontrol.physicalinventorydetail,"CREATE TABLE inventorycontrol.physical
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT physicalinventorydetail_id PRIMARY KEY (id)
 );"
 inventorycontrol.physicalinventorysubtask,"CREATE TABLE inventorycontrol.physicalinventorysubtask (
     id varchar(40) NOT NULL,
@@ -1656,7 +1760,7 @@ inventorycontrol.physicalinventorysubtask,"CREATE TABLE inventorycontrol.physica
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT physicalinventorysubtask_id PRIMARY KEY (id)
 );"
 inventorycontrol.physicalinventorytask,"CREATE TABLE inventorycontrol.physicalinventorytask (
     id varchar(40) NOT NULL,
@@ -1729,7 +1833,7 @@ inventorycontrol.physicalinventorytask,"CREATE TABLE inventorycontrol.physicalin
     createdlocation varchar(200),
     updatedlocation varchar(200),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT physicalinventorytask_id PRIMARY KEY (id)
 );"
 inventorycontrol.pirequest,"CREATE TABLE inventorycontrol.pirequest (
     id varchar(40) NOT NULL,
@@ -1756,7 +1860,33 @@ inventorycontrol.pirequest,"CREATE TABLE inventorycontrol.pirequest (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT pirequest_id PRIMARY KEY (id)
+);"
+item.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE item.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
+);"
+item.SQL_MIGRATION_HISTORY_2025-2200,"CREATE TABLE item.SQL_MIGRATION_HISTORY_2025-2200 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-2200_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 item.biologicsubstancesregulations,"CREATE TABLE item.biologicsubstancesregulations (
     id varchar(40) NOT NULL,
@@ -1785,7 +1915,7 @@ item.biologicsubstancesregulations,"CREATE TABLE item.biologicsubstancesregulati
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id, id)
+	CONSTRAINT biologicsubstancesregulations_id PRIMARY KEY (id, id)
 );"
 item.controlledsubstancesregulations,"CREATE TABLE item.controlledsubstancesregulations (
     id varchar(40) NOT NULL,
@@ -1814,7 +1944,7 @@ item.controlledsubstancesregulations,"CREATE TABLE item.controlledsubstancesregu
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT controlledsubstancesregulations_id PRIMARY KEY (id)
 );"
 item.exchangeitem,"CREATE TABLE item.exchangeitem (
     id varchar(40) NOT NULL,
@@ -1841,7 +1971,7 @@ item.exchangeitem,"CREATE TABLE item.exchangeitem (
     itemdescription varchar(40),
     productgroupcode varchar(20),
     productgroupdescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT exchangeitem_id PRIMARY KEY (id)
 );"
 item.itemactivelot,"CREATE TABLE item.itemactivelot (
     id varchar(40) NOT NULL,
@@ -1866,7 +1996,7 @@ item.itemactivelot,"CREATE TABLE item.itemactivelot (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     inventorystatusdescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT itemactivelot_id PRIMARY KEY (id)
 );"
 item.itemactivityinfo,"CREATE TABLE item.itemactivityinfo (
     id varchar(40) NOT NULL,
@@ -1892,7 +2022,7 @@ item.itemactivityinfo,"CREATE TABLE item.itemactivityinfo (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT itemactivityinfo_id PRIMARY KEY (id)
 );"
 item.itemalias,"CREATE TABLE item.itemalias (
     id varchar(40) NOT NULL,
@@ -1916,7 +2046,7 @@ item.itemalias,"CREATE TABLE item.itemalias (
     businessunitid varchar(50),
     warehouseid varchar(50),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT itemalias_id PRIMARY KEY (id)
 );"
 item.itembusinessunit,"CREATE TABLE item.itembusinessunit (
     id varchar(40) NOT NULL,
@@ -1971,7 +2101,7 @@ item.itembusinessunit,"CREATE TABLE item.itembusinessunit (
     extlines varchar(40),
     condition varchar(40),
     producttype varchar(40),
-    PRIMARY KEY (id, id)
+	CONSTRAINT itembusinessunit_id PRIMARY KEY (id, id)
 );"
 item.itemclassificationcodes,"CREATE TABLE item.itemclassificationcodes (
     id varchar(40) NOT NULL,
@@ -1994,7 +2124,7 @@ item.itemclassificationcodes,"CREATE TABLE item.itemclassificationcodes (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT itemclassificationcodes_id PRIMARY KEY (id)
 );"
 item.itemcountryoforigin,"CREATE TABLE item.itemcountryoforigin (
     id varchar(40) NOT NULL,
@@ -2016,7 +2146,7 @@ item.itemcountryoforigin,"CREATE TABLE item.itemcountryoforigin (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT itemcountryoforigin_id PRIMARY KEY (id)
 );"
 item.itemcriticalinventorylevel,"CREATE TABLE item.itemcriticalinventorylevel (
     id varchar(40) NOT NULL,
@@ -2039,7 +2169,7 @@ item.itemcriticalinventorylevel,"CREATE TABLE item.itemcriticalinventorylevel (
     businessunitid varchar(50),
     warehouseid varchar(50),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT itemcriticalinventorylevel_id PRIMARY KEY (id)
 );"
 item.itemcyclecountdatacapture,"CREATE TABLE item.itemcyclecountdatacapture (
     id varchar(40) NOT NULL,
@@ -2077,7 +2207,7 @@ item.itemcyclecountdatacapture,"CREATE TABLE item.itemcyclecountdatacapture (
     enablecyclecounttolerance bpchar,
     cyclecounttolerancevalue numeric,
     cyclecounttolerancemode varchar(20),
-    PRIMARY KEY (id)
+	CONSTRAINT itemcyclecountdatacapture_id PRIMARY KEY (id)
 );"
 item.itemhandlingunit,"CREATE TABLE item.itemhandlingunit (
     id varchar(40) NOT NULL,
@@ -2102,7 +2232,7 @@ item.itemhandlingunit,"CREATE TABLE item.itemhandlingunit (
     warehouseid varchar(50),
     businessunitid varchar(50),
     unitofmeasuredescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT itemhandlingunit_id PRIMARY KEY (id)
 );"
 item.itemimages,"CREATE TABLE item.itemimages (
     id varchar(40) NOT NULL,
@@ -2125,7 +2255,7 @@ item.itemimages,"CREATE TABLE item.itemimages (
     isdeleted bpchar,
     isarchived bpchar,
     isdefault bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT itemimages_id PRIMARY KEY (id)
 );"
 item.iteminbound,"CREATE TABLE item.iteminbound (
     id varchar(40) NOT NULL,
@@ -2164,7 +2294,7 @@ item.iteminbound,"CREATE TABLE item.iteminbound (
     businessunitid varchar(40),
     warehouseid varchar(50),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT iteminbound_id PRIMARY KEY (id)
 );"
 item.iteminboundasncapture,"CREATE TABLE item.iteminboundasncapture (
     id varchar(40) NOT NULL,
@@ -2188,7 +2318,7 @@ item.iteminboundasncapture,"CREATE TABLE item.iteminboundasncapture (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     itembusinessunitid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT iteminboundasncapture_id PRIMARY KEY (id)
 );"
 item.iteminboundcapture,"CREATE TABLE item.iteminboundcapture (
     id varchar(40) NOT NULL,
@@ -2218,7 +2348,7 @@ item.iteminboundcapture,"CREATE TABLE item.iteminboundcapture (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     lotnumbercapturetypedescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT iteminboundcapture_id PRIMARY KEY (id)
 );"
 item.iteminboundconfigcode,"CREATE TABLE item.iteminboundconfigcode (
     id varchar(40) NOT NULL,
@@ -2242,7 +2372,7 @@ item.iteminboundconfigcode,"CREATE TABLE item.iteminboundconfigcode (
     warehouseid varchar(50),
     customerid varchar(50),
     itembusinessunitid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT iteminboundconfigcode_id PRIMARY KEY (id)
 );"
 item.iteminboundentryfieldparsing,"CREATE TABLE item.iteminboundentryfieldparsing (
     id varchar(40) NOT NULL,
@@ -2267,7 +2397,7 @@ item.iteminboundentryfieldparsing,"CREATE TABLE item.iteminboundentryfieldparsin
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT iteminboundentryfieldparsing_id PRIMARY KEY (id)
 );"
 item.itemkitmaintenance,"CREATE TABLE item.itemkitmaintenance (
     id varchar(40) NOT NULL,
@@ -2290,7 +2420,7 @@ item.itemkitmaintenance,"CREATE TABLE item.itemkitmaintenance (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT itemkitmaintenance_id PRIMARY KEY (id)
 );"
 item.itemmaintenance,"CREATE TABLE item.itemmaintenance (
     id varchar(40) NOT NULL,
@@ -2321,7 +2451,7 @@ item.itemmaintenance,"CREATE TABLE item.itemmaintenance (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id, id)
+	CONSTRAINT itemmaintenance_id PRIMARY KEY (id, id)
 );"
 item.itemoutbound,"CREATE TABLE item.itemoutbound (
     id varchar(40) NOT NULL,
@@ -2387,7 +2517,7 @@ item.itemoutbound,"CREATE TABLE item.itemoutbound (
     captureexpirationdate bpchar,
     captureimei bpchar,
     obgs1picking bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT itemoutbound_id PRIMARY KEY (id)
 );"
 item.itemoutboundpickingcapture,"CREATE TABLE item.itemoutboundpickingcapture (
     id varchar(40) NOT NULL,
@@ -2412,7 +2542,7 @@ item.itemoutboundpickingcapture,"CREATE TABLE item.itemoutboundpickingcapture (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     itembusinessunitid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT itemoutboundpickingcapture_id PRIMARY KEY (id)
 );"
 item.itempicktotypes,"CREATE TABLE item.itempicktotypes (
     id varchar(40) NOT NULL,
@@ -2436,7 +2566,7 @@ item.itempicktotypes,"CREATE TABLE item.itempicktotypes (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT itempicktotypes_id PRIMARY KEY (id)
 );"
 item.itempricinglabel,"CREATE TABLE item.itempricinglabel (
     id varchar(40) NOT NULL,
@@ -2459,7 +2589,7 @@ item.itempricinglabel,"CREATE TABLE item.itempricinglabel (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT itempricinglabel_id PRIMARY KEY (id)
 );"
 item.itemreturn,"CREATE TABLE item.itemreturn (
     id varchar(40) NOT NULL,
@@ -2495,7 +2625,7 @@ item.itemreturn,"CREATE TABLE item.itemreturn (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT itemreturn_id PRIMARY KEY (id)
 );"
 item.itemsite,"CREATE TABLE item.itemsite (
     id varchar(40) NOT NULL,
@@ -2520,7 +2650,7 @@ item.itemsite,"CREATE TABLE item.itemsite (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT itemsite_id PRIMARY KEY (id)
 );"
 item.itemstackheight,"CREATE TABLE item.itemstackheight (
     id varchar(40) NOT NULL,
@@ -2544,7 +2674,7 @@ item.itemstackheight,"CREATE TABLE item.itemstackheight (
     warehouseid varchar(50),
     customerid varchar(50),
     unitofmeasuredescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT itemstackheight_id PRIMARY KEY (id)
 );"
 item.itemsubstitute,"CREATE TABLE item.itemsubstitute (
     id varchar(40) NOT NULL,
@@ -2569,7 +2699,7 @@ item.itemsubstitute,"CREATE TABLE item.itemsubstitute (
     warehouseid varchar(50),
     itemnumber varchar(40),
     description varchar(250),
-    PRIMARY KEY (id)
+	CONSTRAINT itemsubstitute_id PRIMARY KEY (id)
 );"
 item.itemunitofmeasure,"CREATE TABLE item.itemunitofmeasure (
     id varchar(40) NOT NULL,
@@ -2612,7 +2742,7 @@ item.itemunitofmeasure,"CREATE TABLE item.itemunitofmeasure (
     casesperlayer int4,
     layersperpallet int4,
     palletstackheight float8,
-    PRIMARY KEY (id)
+	CONSTRAINT itemunitofmeasure_id PRIMARY KEY (id)
 );"
 item.itemunitofmeasureconversion,"CREATE TABLE item.itemunitofmeasureconversion (
     id varchar(40) NOT NULL,
@@ -2647,7 +2777,7 @@ item.itemunitofmeasureconversion,"CREATE TABLE item.itemunitofmeasureconversion 
     fromuomdescription varchar(40),
     touomdescription varchar(40),
     velocitydescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT itemunitofmeasureconversion_id PRIMARY KEY (id)
 );"
 item.itemvendor,"CREATE TABLE item.itemvendor (
     id varchar(40) NOT NULL,
@@ -2693,7 +2823,7 @@ item.itemvendor,"CREATE TABLE item.itemvendor (
     email varchar(50),
     issupplier bpchar,
     isvendor bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT itemvendor_id PRIMARY KEY (id)
 );"
 item.itemwcs,"CREATE TABLE item.itemwcs (
     id varchar(40) NOT NULL,
@@ -2717,7 +2847,7 @@ item.itemwcs,"CREATE TABLE item.itemwcs (
     businessunitid varchar(50),
     warehouseid varchar(50),
     customerid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT itemwcs_id PRIMARY KEY (id)
 );"
 item.kitcomponent,"CREATE TABLE item.kitcomponent (
     id varchar(40) NOT NULL,
@@ -2744,7 +2874,7 @@ item.kitcomponent,"CREATE TABLE item.kitcomponent (
     itembusinessunitid varchar(50),
     itemaccountid varchar(50),
     itemnumber varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT kitcomponent_id PRIMARY KEY (id)
 );"
 item.productgroupactivityinfo,"CREATE TABLE item.productgroupactivityinfo (
     id varchar(40) NOT NULL,
@@ -2766,7 +2896,7 @@ item.productgroupactivityinfo,"CREATE TABLE item.productgroupactivityinfo (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupactivityinfo_id PRIMARY KEY (id)
 );"
 item.productgroupbusinessunit,"CREATE TABLE item.productgroupbusinessunit (
     id varchar(40) NOT NULL,
@@ -2793,7 +2923,7 @@ item.productgroupbusinessunit,"CREATE TABLE item.productgroupbusinessunit (
     customerid varchar(50),
     warehouseid varchar(50),
     businessunitcode varchar(20),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupbusinessunit_id PRIMARY KEY (id)
 );"
 item.productgroupcyclecountcapture,"CREATE TABLE item.productgroupcyclecountcapture (
     id varchar(40) NOT NULL,
@@ -2818,7 +2948,7 @@ item.productgroupcyclecountcapture,"CREATE TABLE item.productgroupcyclecountcapt
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupcyclecountcapture_id PRIMARY KEY (id)
 );"
 item.productgroupinbound,"CREATE TABLE item.productgroupinbound (
     id varchar(40) NOT NULL,
@@ -2851,7 +2981,7 @@ item.productgroupinbound,"CREATE TABLE item.productgroupinbound (
     customerid varchar(50),
     warehouseid varchar(50),
     businessunitid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupinbound_id PRIMARY KEY (id)
 );"
 item.productgroupinboundasncapture,"CREATE TABLE item.productgroupinboundasncapture (
     id varchar(40) NOT NULL,
@@ -2874,7 +3004,7 @@ item.productgroupinboundasncapture,"CREATE TABLE item.productgroupinboundasncapt
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupinboundasncapture_id PRIMARY KEY (id)
 );"
 item.productgroupinboundcapture,"CREATE TABLE item.productgroupinboundcapture (
     id varchar(40) NOT NULL,
@@ -2903,7 +3033,7 @@ item.productgroupinboundcapture,"CREATE TABLE item.productgroupinboundcapture (
     customerid varchar(50),
     warehouseid varchar(50),
     productgroupbusinessunitid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupinboundcapture_id PRIMARY KEY (id)
 );"
 item.productgroupinboundentryfieldparsing,"CREATE TABLE item.productgroupinboundentryfieldparsing (
     id varchar(40) NOT NULL,
@@ -2928,7 +3058,7 @@ item.productgroupinboundentryfieldparsing,"CREATE TABLE item.productgroupinbound
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupinboundentryfieldparsing_id PRIMARY KEY (id)
 );"
 item.productgroupmaintenance,"CREATE TABLE item.productgroupmaintenance (
     id varchar(40) NOT NULL,
@@ -2951,7 +3081,7 @@ item.productgroupmaintenance,"CREATE TABLE item.productgroupmaintenance (
     updatedlocation varchar(200),
     shortdateoffset numeric,
     businessunitid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupmaintenance_id PRIMARY KEY (id)
 );"
 item.productgroupoutbound,"CREATE TABLE item.productgroupoutbound (
     id varchar(40) NOT NULL,
@@ -2988,7 +3118,7 @@ item.productgroupoutbound,"CREATE TABLE item.productgroupoutbound (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupoutbound_id PRIMARY KEY (id)
 );"
 item.productgrouppickingcapture,"CREATE TABLE item.productgrouppickingcapture (
     id varchar(40) NOT NULL,
@@ -3013,7 +3143,7 @@ item.productgrouppickingcapture,"CREATE TABLE item.productgrouppickingcapture (
     updatedlocation varchar(200),
     productgroupbusinessunitid varchar(40),
     productgroupoutboundid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT productgrouppickingcapture_id PRIMARY KEY (id)
 );"
 item.productgroupreturn,"CREATE TABLE item.productgroupreturn (
     id varchar(40) NOT NULL,
@@ -3045,7 +3175,7 @@ item.productgroupreturn,"CREATE TABLE item.productgroupreturn (
     isdeleted bpchar,
     isarchived bpchar,
     disposition bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT productgroupreturn_id PRIMARY KEY (id)
 );"
 item.vendorunitofmeasure,"CREATE TABLE item.vendorunitofmeasure (
     id varchar(40) NOT NULL,
@@ -3078,7 +3208,7 @@ item.vendorunitofmeasure,"CREATE TABLE item.vendorunitofmeasure (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT vendorunitofmeasure_id PRIMARY KEY (id)
 );"
 item.vendorunitofmeasureconversion,"CREATE TABLE item.vendorunitofmeasureconversion (
     id varchar(40) NOT NULL,
@@ -3120,7 +3250,20 @@ item.vendorunitofmeasureconversion,"CREATE TABLE item.vendorunitofmeasureconvers
     fromuomdescription varchar(40),
     touomdescription varchar(40),
     velocitydescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT vendorunitofmeasureconversion_id PRIMARY KEY (id)
+);"
+orders.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE orders.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 orders.billing,"CREATE TABLE orders.billing (
     id varchar(40) NOT NULL,
@@ -3313,7 +3456,7 @@ orders.billing,"CREATE TABLE orders.billing (
     brokerphone varchar(50),
     brokerfax varchar(50),
     brokermetafields bytea,
-    PRIMARY KEY (id)
+	CONSTRAINT billing_id PRIMARY KEY (id)
 );"
 orders.cartinformation,"CREATE TABLE orders.cartinformation (
     id varchar(40) NOT NULL,
@@ -3346,7 +3489,7 @@ orders.cartinformation,"CREATE TABLE orders.cartinformation (
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
     confirmationnumber varchar(256),
-    PRIMARY KEY (id)
+	CONSTRAINT cartinformation_id PRIMARY KEY (id)
 );"
 orders.cartstatuses,"CREATE TABLE orders.cartstatuses (
     id varchar(40) NOT NULL,
@@ -3376,7 +3519,7 @@ orders.cartstatuses,"CREATE TABLE orders.cartstatuses (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT cartstatuses_id PRIMARY KEY (id)
 );"
 orders.customerinformation,"CREATE TABLE orders.customerinformation (
     id varchar(40) NOT NULL,
@@ -3419,7 +3562,7 @@ orders.customerinformation,"CREATE TABLE orders.customerinformation (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT customerinformation_id PRIMARY KEY (id)
 );"
 orders.customerinformationaddresses,"CREATE TABLE orders.customerinformationaddresses (
     id varchar(40) NOT NULL,
@@ -3465,7 +3608,7 @@ orders.customerinformationaddresses,"CREATE TABLE orders.customerinformationaddr
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT customerinformationaddresses_id PRIMARY KEY (id)
 );"
 orders.customerinformationdefaultaddresses,"CREATE TABLE orders.customerinformationdefaultaddresses (
     id varchar(40) NOT NULL,
@@ -3511,7 +3654,7 @@ orders.customerinformationdefaultaddresses,"CREATE TABLE orders.customerinformat
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT customerinformationdefaultaddresses_id PRIMARY KEY (id)
 );"
 orders.deliveryoptions,"CREATE TABLE orders.deliveryoptions (
     id varchar(40) NOT NULL,
@@ -3603,7 +3746,7 @@ orders.deliveryoptions,"CREATE TABLE orders.deliveryoptions (
     nonmachineable bool,
     isguaranteed bool,
     signaturerequired bool,
-    PRIMARY KEY (id)
+	CONSTRAINT deliveryoptions_id PRIMARY KEY (id)
 );"
 orders.duties,"CREATE TABLE orders.duties (
     id varchar(40) NOT NULL,
@@ -3631,7 +3774,7 @@ orders.duties,"CREATE TABLE orders.duties (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT duties_id PRIMARY KEY (id)
 );"
 orders.dutytaxes,"CREATE TABLE orders.dutytaxes (
     id varchar(40) NOT NULL,
@@ -3662,7 +3805,7 @@ orders.dutytaxes,"CREATE TABLE orders.dutytaxes (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT dutytaxes_id PRIMARY KEY (id)
 );"
 orders.dutytaxrates,"CREATE TABLE orders.dutytaxrates (
     id varchar(40) NOT NULL,
@@ -3685,7 +3828,7 @@ orders.dutytaxrates,"CREATE TABLE orders.dutytaxrates (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT dutytaxrates_id PRIMARY KEY (id)
 );"
 orders.fees,"CREATE TABLE orders.fees (
     id varchar(40) NOT NULL,
@@ -3718,7 +3861,7 @@ orders.fees,"CREATE TABLE orders.fees (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fees_id PRIMARY KEY (id)
 );"
 orders.feetaxes,"CREATE TABLE orders.feetaxes (
     id varchar(40) NOT NULL,
@@ -3749,7 +3892,7 @@ orders.feetaxes,"CREATE TABLE orders.feetaxes (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT feetaxes_id PRIMARY KEY (id)
 );"
 orders.fulfillmentdeliveryoptions,"CREATE TABLE orders.fulfillmentdeliveryoptions (
     id varchar(40) NOT NULL,
@@ -3826,7 +3969,7 @@ orders.fulfillmentdeliveryoptions,"CREATE TABLE orders.fulfillmentdeliveryoption
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentdeliveryoptions_id PRIMARY KEY (id)
 );"
 orders.fulfillmentduties,"CREATE TABLE orders.fulfillmentduties (
     id varchar(40) NOT NULL,
@@ -3854,7 +3997,7 @@ orders.fulfillmentduties,"CREATE TABLE orders.fulfillmentduties (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentduties_id PRIMARY KEY (id)
 );"
 orders.fulfillmentdutytaxes,"CREATE TABLE orders.fulfillmentdutytaxes (
     id varchar(40) NOT NULL,
@@ -3885,7 +4028,7 @@ orders.fulfillmentdutytaxes,"CREATE TABLE orders.fulfillmentdutytaxes (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentdutytaxes_id PRIMARY KEY (id)
 );"
 orders.fulfillmentdutytaxrates,"CREATE TABLE orders.fulfillmentdutytaxrates (
     id varchar(40) NOT NULL,
@@ -3908,7 +4051,7 @@ orders.fulfillmentdutytaxrates,"CREATE TABLE orders.fulfillmentdutytaxrates (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentdutytaxrates_id PRIMARY KEY (id)
 );"
 orders.fulfillmentgiftcertificates,"CREATE TABLE orders.fulfillmentgiftcertificates (
     id varchar(40) NOT NULL,
@@ -3939,7 +4082,7 @@ orders.fulfillmentgiftcertificates,"CREATE TABLE orders.fulfillmentgiftcertifica
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentgiftcertificates_id PRIMARY KEY (id)
 );"
 orders.fulfillmentgiftwraps,"CREATE TABLE orders.fulfillmentgiftwraps (
     id varchar(40) NOT NULL,
@@ -3970,7 +4113,7 @@ orders.fulfillmentgiftwraps,"CREATE TABLE orders.fulfillmentgiftwraps (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentgiftwraps_id PRIMARY KEY (id)
 );"
 orders.fulfillmentinformation,"CREATE TABLE orders.fulfillmentinformation (
     id varchar(40) NOT NULL,
@@ -4010,7 +4153,7 @@ orders.fulfillmentinformation,"CREATE TABLE orders.fulfillmentinformation (
     updatedlocation varchar(200),
     receivedat timestamp,
     deliveredat timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentinformation_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetaildiscountamounts,"CREATE TABLE orders.fulfillmentorderdetaildiscountamounts (
     id varchar(40) NOT NULL,
@@ -4042,7 +4185,7 @@ orders.fulfillmentorderdetaildiscountamounts,"CREATE TABLE orders.fulfillmentord
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetaildiscountamounts_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetailmessages,"CREATE TABLE orders.fulfillmentorderdetailmessages (
     id varchar(40) NOT NULL,
@@ -4077,7 +4220,7 @@ orders.fulfillmentorderdetailmessages,"CREATE TABLE orders.fulfillmentorderdetai
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetailmessages_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetailoptions,"CREATE TABLE orders.fulfillmentorderdetailoptions (
     id varchar(40) NOT NULL,
@@ -4125,7 +4268,7 @@ orders.fulfillmentorderdetailoptions,"CREATE TABLE orders.fulfillmentorderdetail
     isgift bool,
     optionsetid numeric,
     isrefunded bool,
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetailoptions_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetailpriceamounts,"CREATE TABLE orders.fulfillmentorderdetailpriceamounts (
     id varchar(40) NOT NULL,
@@ -4157,7 +4300,7 @@ orders.fulfillmentorderdetailpriceamounts,"CREATE TABLE orders.fulfillmentorderd
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetailpriceamounts_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetailrowamounts,"CREATE TABLE orders.fulfillmentorderdetailrowamounts (
     id varchar(40) NOT NULL,
@@ -4185,7 +4328,7 @@ orders.fulfillmentorderdetailrowamounts,"CREATE TABLE orders.fulfillmentorderdet
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetailrowamounts_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetails,"CREATE TABLE orders.fulfillmentorderdetails (
     id varchar(40) NOT NULL,
@@ -4303,7 +4446,7 @@ orders.fulfillmentorderdetails,"CREATE TABLE orders.fulfillmentorderdetails (
     refundrequested numeric,
     consigneesku varchar(256),
     serialnumber varchar(256),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetails_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetailtaxamounts,"CREATE TABLE orders.fulfillmentorderdetailtaxamounts (
     id varchar(40) NOT NULL,
@@ -4338,7 +4481,7 @@ orders.fulfillmentorderdetailtaxamounts,"CREATE TABLE orders.fulfillmentorderdet
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetailtaxamounts_id PRIMARY KEY (id)
 );"
 orders.fulfillmentorderdetailtaxes,"CREATE TABLE orders.fulfillmentorderdetailtaxes (
     id varchar(40) NOT NULL,
@@ -4369,7 +4512,7 @@ orders.fulfillmentorderdetailtaxes,"CREATE TABLE orders.fulfillmentorderdetailta
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillmentorderdetailtaxes_id PRIMARY KEY (id)
 );"
 orders.fulfillments,"CREATE TABLE orders.fulfillments (
     id varchar(40) NOT NULL,
@@ -4447,7 +4590,7 @@ orders.fulfillments,"CREATE TABLE orders.fulfillments (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT fulfillments_id PRIMARY KEY (id)
 );"
 orders.giftcertificates,"CREATE TABLE orders.giftcertificates (
     id varchar(40) NOT NULL,
@@ -4478,7 +4621,7 @@ orders.giftcertificates,"CREATE TABLE orders.giftcertificates (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT giftcertificates_id PRIMARY KEY (id)
 );"
 orders.giftwraps,"CREATE TABLE orders.giftwraps (
     id varchar(40) NOT NULL,
@@ -4510,7 +4653,7 @@ orders.giftwraps,"CREATE TABLE orders.giftwraps (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT giftwraps_id PRIMARY KEY (id)
 );"
 orders.handling,"CREATE TABLE orders.handling (
     id varchar(40) NOT NULL,
@@ -4541,7 +4684,7 @@ orders.handling,"CREATE TABLE orders.handling (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT handling_id PRIMARY KEY (id)
 );"
 orders.messages,"CREATE TABLE orders.messages (
     id varchar(40) NOT NULL,
@@ -4576,7 +4719,7 @@ orders.messages,"CREATE TABLE orders.messages (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT messages_id PRIMARY KEY (id)
 );"
 orders.orderdetaildiscountamounts,"CREATE TABLE orders.orderdetaildiscountamounts (
     id varchar(40) NOT NULL,
@@ -4611,7 +4754,7 @@ orders.orderdetaildiscountamounts,"CREATE TABLE orders.orderdetaildiscountamount
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetaildiscountamounts_id PRIMARY KEY (id)
 );"
 orders.orderdetailmessages,"CREATE TABLE orders.orderdetailmessages (
     id varchar(40) NOT NULL,
@@ -4646,7 +4789,7 @@ orders.orderdetailmessages,"CREATE TABLE orders.orderdetailmessages (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetailmessages_id PRIMARY KEY (id)
 );"
 orders.orderdetailoptions,"CREATE TABLE orders.orderdetailoptions (
     id varchar(40) NOT NULL,
@@ -4694,7 +4837,7 @@ orders.orderdetailoptions,"CREATE TABLE orders.orderdetailoptions (
     effectiverank varchar(50),
     preorderitem varchar(50),
     isgift bool,
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetailoptions_id PRIMARY KEY (id)
 );"
 orders.orderdetailpriceamounts,"CREATE TABLE orders.orderdetailpriceamounts (
     id varchar(40) NOT NULL,
@@ -4726,7 +4869,7 @@ orders.orderdetailpriceamounts,"CREATE TABLE orders.orderdetailpriceamounts (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetailpriceamounts_id PRIMARY KEY (id)
 );"
 orders.orderdetailrowamounts,"CREATE TABLE orders.orderdetailrowamounts (
     id varchar(40) NOT NULL,
@@ -4754,7 +4897,7 @@ orders.orderdetailrowamounts,"CREATE TABLE orders.orderdetailrowamounts (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetailrowamounts_id PRIMARY KEY (id)
 );"
 orders.orderdetails,"CREATE TABLE orders.orderdetails (
     id varchar(40) NOT NULL,
@@ -4872,7 +5015,7 @@ orders.orderdetails,"CREATE TABLE orders.orderdetails (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetails_id PRIMARY KEY (id)
 );"
 orders.orderdetailtaxamounts,"CREATE TABLE orders.orderdetailtaxamounts (
     id varchar(40) NOT NULL,
@@ -4907,7 +5050,7 @@ orders.orderdetailtaxamounts,"CREATE TABLE orders.orderdetailtaxamounts (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetailtaxamounts_id PRIMARY KEY (id)
 );"
 orders.orderdetailtaxes,"CREATE TABLE orders.orderdetailtaxes (
     id varchar(40) NOT NULL,
@@ -4938,7 +5081,7 @@ orders.orderdetailtaxes,"CREATE TABLE orders.orderdetailtaxes (
     createdlocation varchar(200),
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdetailtaxes_id PRIMARY KEY (id)
 );"
 orders.orderdiscountamounts,"CREATE TABLE orders.orderdiscountamounts (
     id varchar(40) NOT NULL,
@@ -4971,7 +5114,7 @@ orders.orderdiscountamounts,"CREATE TABLE orders.orderdiscountamounts (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT orderdiscountamounts_id PRIMARY KEY (id)
 );"
 orders.orderoptions,"CREATE TABLE orders.orderoptions (
     id varchar(40) NOT NULL,
@@ -5016,7 +5159,7 @@ orders.orderoptions,"CREATE TABLE orders.orderoptions (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT orderoptions_id PRIMARY KEY (id)
 );"
 orders.orders,"CREATE TABLE orders.orders (
     id varchar(40) NOT NULL,
@@ -5066,7 +5209,7 @@ orders.orders,"CREATE TABLE orders.orders (
     channelnumber varchar(256),
     documentpurchaseordernumber varchar(30),
     purchaseorderedat timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT orders_id PRIMARY KEY (id)
 );"
 orders.ordershippingamounts,"CREATE TABLE orders.ordershippingamounts (
     id varchar(40) NOT NULL,
@@ -5111,7 +5254,7 @@ orders.ordershippingamounts,"CREATE TABLE orders.ordershippingamounts (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT ordershippingamounts_id PRIMARY KEY (id)
 );"
 orders.ordershippingchargeamounts,"CREATE TABLE orders.ordershippingchargeamounts (
     id varchar(40) NOT NULL,
@@ -5170,7 +5313,7 @@ orders.ordershippingchargeamounts,"CREATE TABLE orders.ordershippingchargeamount
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT ordershippingchargeamounts_id PRIMARY KEY (id)
 );"
 orders.ordersubtotalamounts,"CREATE TABLE orders.ordersubtotalamounts (
     id varchar(40) NOT NULL,
@@ -5204,7 +5347,7 @@ orders.ordersubtotalamounts,"CREATE TABLE orders.ordersubtotalamounts (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT ordersubtotalamounts_id PRIMARY KEY (id)
 );"
 orders.ordertotalamounts,"CREATE TABLE orders.ordertotalamounts (
     id varchar(40) NOT NULL,
@@ -5250,7 +5393,7 @@ orders.ordertotalamounts,"CREATE TABLE orders.ordertotalamounts (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT ordertotalamounts_id PRIMARY KEY (id)
 );"
 orders.ordertotaltaxamounts,"CREATE TABLE orders.ordertotaltaxamounts (
     id varchar(40) NOT NULL,
@@ -5282,7 +5425,7 @@ orders.ordertotaltaxamounts,"CREATE TABLE orders.ordertotaltaxamounts (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT ordertotaltaxamounts_id PRIMARY KEY (id)
 );"
 orders.paymentinformation,"CREATE TABLE orders.paymentinformation (
     id varchar(40) NOT NULL,
@@ -5350,7 +5493,7 @@ orders.paymentinformation,"CREATE TABLE orders.paymentinformation (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT paymentinformation_id PRIMARY KEY (id)
 );"
 orders.paymentinformationshippingchargetaxes,"CREATE TABLE orders.paymentinformationshippingchargetaxes (
     id varchar(40) NOT NULL,
@@ -5381,7 +5524,7 @@ orders.paymentinformationshippingchargetaxes,"CREATE TABLE orders.paymentinforma
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT paymentinformationshippingchargetaxes_id PRIMARY KEY (id)
 );"
 orders.paymentinformationtaxes,"CREATE TABLE orders.paymentinformationtaxes (
     id varchar(40) NOT NULL,
@@ -5412,7 +5555,7 @@ orders.paymentinformationtaxes,"CREATE TABLE orders.paymentinformationtaxes (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT paymentinformationtaxes_id PRIMARY KEY (id)
 );"
 orders.pickupoptions,"CREATE TABLE orders.pickupoptions (
     id varchar(40) NOT NULL,
@@ -5445,7 +5588,7 @@ orders.pickupoptions,"CREATE TABLE orders.pickupoptions (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT pickupoptions_id PRIMARY KEY (id)
 );"
 orders.shipments,"CREATE TABLE orders.shipments (
     id varchar(40) NOT NULL,
@@ -5478,7 +5621,7 @@ orders.shipments,"CREATE TABLE orders.shipments (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT shipments_id PRIMARY KEY (id)
 );"
 orders.shipping,"CREATE TABLE orders.shipping (
     id varchar(40) NOT NULL,
@@ -5609,7 +5752,7 @@ orders.shipping,"CREATE TABLE orders.shipping (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT shipping_id PRIMARY KEY (id)
 );"
 orders.shippingchargetaxes,"CREATE TABLE orders.shippingchargetaxes (
     id varchar(40) NOT NULL,
@@ -5640,7 +5783,7 @@ orders.shippingchargetaxes,"CREATE TABLE orders.shippingchargetaxes (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT shippingchargetaxes_id PRIMARY KEY (id)
 );"
 orders.shippinglines,"CREATE TABLE orders.shippinglines (
     id varchar(40) NOT NULL,
@@ -5687,7 +5830,7 @@ orders.shippinglines,"CREATE TABLE orders.shippinglines (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT shippinglines_id PRIMARY KEY (id)
 );"
 orders.shippinglinetaxes,"CREATE TABLE orders.shippinglinetaxes (
     id varchar(40) NOT NULL,
@@ -5713,7 +5856,7 @@ orders.shippinglinetaxes,"CREATE TABLE orders.shippinglinetaxes (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT shippinglinetaxes_id PRIMARY KEY (id)
 );"
 orders.tags,"CREATE TABLE orders.tags (
     id varchar(40) NOT NULL,
@@ -5740,7 +5883,7 @@ orders.tags,"CREATE TABLE orders.tags (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT tags_id PRIMARY KEY (id)
 );"
 orders.tagvalues,"CREATE TABLE orders.tagvalues (
     id varchar(40) NOT NULL,
@@ -5767,7 +5910,33 @@ orders.tagvalues,"CREATE TABLE orders.tagvalues (
     businessunitid varchar(50),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id, id, id)
+	CONSTRAINT tagvalues_id PRIMARY KEY (id, id, id)
+);"
+picking.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE picking.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
+);"
+picking.SQL_MIGRATION_HISTORY_2025-2200,"CREATE TABLE picking.SQL_MIGRATION_HISTORY_2025-2200 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-2200_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 picking.pickingplate,"CREATE TABLE picking.pickingplate (
     id varchar(40) NOT NULL,
@@ -5844,7 +6013,7 @@ picking.pickingplate,"CREATE TABLE picking.pickingplate (
     taskidentifier varchar(50),
     vendorid varchar(50),
     containertypedescription varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT pickingplate_id PRIMARY KEY (id)
 );"
 picking.pickingplateitem,"CREATE TABLE picking.pickingplateitem (
     id varchar(40) NOT NULL,
@@ -5901,7 +6070,7 @@ picking.pickingplateitem,"CREATE TABLE picking.pickingplateitem (
     updatedlocation varchar(200),
     lastsyncdate timestamp,
     platenumber varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT pickingplateitem_id PRIMARY KEY (id)
 );"
 picking.pickingplatetags,"CREATE TABLE picking.pickingplatetags (
     id varchar(50) NOT NULL,
@@ -5920,7 +6089,7 @@ picking.pickingplatetags,"CREATE TABLE picking.pickingplatetags (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     lastsyncdate timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT pickingplatetags_id PRIMARY KEY (id)
 );"
 picking.picklist,"CREATE TABLE picking.picklist (
     id varchar(40) NOT NULL,
@@ -6007,7 +6176,7 @@ picking.picklist,"CREATE TABLE picking.picklist (
     zcoordinate int4,
     xcoordinate int4,
     ycoordinate int4,
-    PRIMARY KEY (id)
+	CONSTRAINT picklist_id PRIMARY KEY (id)
 );"
 picking.picksettings,"CREATE TABLE picking.picksettings (
     id varchar(40) NOT NULL,
@@ -6043,7 +6212,7 @@ picking.picksettings,"CREATE TABLE picking.picksettings (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     warehouseid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT picksettings_id PRIMARY KEY (id)
 );"
 picking.picktask,"CREATE TABLE picking.picktask (
     id varchar(40) NOT NULL,
@@ -6123,7 +6292,7 @@ picking.picktask,"CREATE TABLE picking.picktask (
     totalvolume numeric,
     activityid varchar(50),
     parenttaskidentifier varchar(20),
-    PRIMARY KEY (id)
+	CONSTRAINT picktask_id PRIMARY KEY (id)
 );"
 picking.picktaskerrors,"CREATE TABLE picking.picktaskerrors (
     id varchar(50) NOT NULL,
@@ -6150,7 +6319,7 @@ picking.picktaskerrors,"CREATE TABLE picking.picktaskerrors (
     warehouseid varchar(40),
     accountid varchar(40),
     businessunitid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT picktaskerrors_id PRIMARY KEY (id)
 );"
 picking.picktasktags,"CREATE TABLE picking.picktasktags (
     id varchar(50) NOT NULL,
@@ -6169,7 +6338,7 @@ picking.picktasktags,"CREATE TABLE picking.picktasktags (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     lastsyncdate timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT picktasktags_id PRIMARY KEY (id)
 );"
 picking.subtask,"CREATE TABLE picking.subtask (
     id varchar(40) NOT NULL,
@@ -6224,7 +6393,7 @@ picking.subtask,"CREATE TABLE picking.subtask (
     confirmedpickuom varchar(20),
     pickstatuscode numeric,
     pickcompleted timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT subtask_id PRIMARY KEY (id)
 );"
 picking.tagvalues,"CREATE TABLE picking.tagvalues (
     id varchar(40) NOT NULL,
@@ -6250,7 +6419,20 @@ picking.tagvalues,"CREATE TABLE picking.tagvalues (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id, id, id)
+	CONSTRAINT tagvalues_id PRIMARY KEY (id, id, id)
+);"
+returns.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE returns.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 returns.return,"CREATE TABLE returns.return (
     id varchar(40) NOT NULL,
@@ -6354,7 +6536,7 @@ returns.return,"CREATE TABLE returns.return (
     receivercountry varchar(100),
     carrier varchar(50),
     deliveryservice varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT return_id PRIMARY KEY (id)
 );"
 returns.returnitem,"CREATE TABLE returns.returnitem (
     id varchar(40) NOT NULL,
@@ -6431,7 +6613,7 @@ returns.returnitem,"CREATE TABLE returns.returnitem (
     returndisposition bpchar,
     itembusinessunitid varchar(40),
     returnreasoncode varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT returnitem_id PRIMARY KEY (id)
 );"
 returns.returnsdefaultpolicy,"CREATE TABLE returns.returnsdefaultpolicy (
     id varchar(40) NOT NULL,
@@ -6458,7 +6640,7 @@ returns.returnsdefaultpolicy,"CREATE TABLE returns.returnsdefaultpolicy (
     businessunitnumber varchar(20),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT returnsdefaultpolicy_id PRIMARY KEY (id)
 );"
 returns.returnsemailtemplate,"CREATE TABLE returns.returnsemailtemplate (
     id varchar(40) NOT NULL,
@@ -6491,7 +6673,7 @@ returns.returnsemailtemplate,"CREATE TABLE returns.returnsemailtemplate (
     businessunitnumber varchar(20),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT returnsemailtemplate_id PRIMARY KEY (id)
 );"
 returns.returnsmailinginstruction,"CREATE TABLE returns.returnsmailinginstruction (
     id varchar(40) NOT NULL,
@@ -6518,7 +6700,7 @@ returns.returnsmailinginstruction,"CREATE TABLE returns.returnsmailinginstructio
     businessunitnumber varchar(20),
     customerid varchar(50),
     warehouseid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT returnsmailinginstruction_id PRIMARY KEY (id)
 );"
 returns.returnsreason,"CREATE TABLE returns.returnsreason (
     id varchar(40) NOT NULL,
@@ -6546,7 +6728,7 @@ returns.returnsreason,"CREATE TABLE returns.returnsreason (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     isdefault bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT returnsreason_id PRIMARY KEY (id)
 );"
 returns.returnssetting,"CREATE TABLE returns.returnssetting (
     id varchar(40) NOT NULL,
@@ -6593,7 +6775,7 @@ returns.returnssetting,"CREATE TABLE returns.returnssetting (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT returnssetting_id PRIMARY KEY (id)
 );"
 returns.returnsubtask,"CREATE TABLE returns.returnsubtask (
     id varchar(40) NOT NULL,
@@ -6629,7 +6811,7 @@ returns.returnsubtask,"CREATE TABLE returns.returnsubtask (
     updatedlocation varchar(200),
     returnreasoncode varchar(50),
     returnsubtaskerrorid varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT returnsubtask_id PRIMARY KEY (id)
 );"
 returns.returntask,"CREATE TABLE returns.returntask (
     id varchar(50) NOT NULL,
@@ -6666,7 +6848,7 @@ returns.returntask,"CREATE TABLE returns.returntask (
     account varchar(20),
     businessunit varchar(20),
     isdefault bpchar,
-    PRIMARY KEY (id)
+	CONSTRAINT returntask_id PRIMARY KEY (id)
 );"
 returns.tagvalues,"CREATE TABLE returns.tagvalues (
     id varchar(40) NOT NULL,
@@ -6693,7 +6875,20 @@ returns.tagvalues,"CREATE TABLE returns.tagvalues (
     modifiedlocation varchar(200),
     updatedlocation varchar(200),
     hashkey varchar(256),
-    PRIMARY KEY (id, id, id)
+	CONSTRAINT tagvalues_id PRIMARY KEY (id, id, id)
+);"
+returnsmanagement.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE returnsmanagement.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 returnsmanagement.plate,"CREATE TABLE returnsmanagement.plate (
     id varchar(50) NOT NULL,
@@ -6730,7 +6925,7 @@ returnsmanagement.plate,"CREATE TABLE returnsmanagement.plate (
     locationname varchar(40),
     dispositionid varchar(50),
     statusdescription varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT plate_id PRIMARY KEY (id)
 );"
 returnsmanagement.returneditemimages,"CREATE TABLE returnsmanagement.returneditemimages (
     id varchar(50) NOT NULL,
@@ -6750,7 +6945,7 @@ returnsmanagement.returneditemimages,"CREATE TABLE returnsmanagement.returnedite
     createdlocation varchar(200),
     updatedlocation varchar(200),
     lastsyncdate timestamp,
-    PRIMARY KEY (id)
+	CONSTRAINT returneditemimages_id PRIMARY KEY (id)
 );"
 returnsmanagement.returneditems,"CREATE TABLE returnsmanagement.returneditems (
     id varchar(50) NOT NULL,
@@ -6797,7 +6992,7 @@ returnsmanagement.returneditems,"CREATE TABLE returnsmanagement.returneditems (
     returnreasoncode varchar(50),
     parentlicenseplatenumber varchar(50),
     parentplatelocationid varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT returneditems_id PRIMARY KEY (id)
 );"
 returnsmanagement.returnorderfulfillment,"CREATE TABLE returnsmanagement.returnorderfulfillment (
     id varchar(50) NOT NULL,
@@ -6825,7 +7020,7 @@ returnsmanagement.returnorderfulfillment,"CREATE TABLE returnsmanagement.returno
     updatedlocation varchar(200),
     preholdstatus varchar(50),
     preholdstatusdescription varchar(200),
-    PRIMARY KEY (id)
+	CONSTRAINT returnorderfulfillment_id PRIMARY KEY (id)
 );"
 returnsmanagement.reviewresponses,"CREATE TABLE returnsmanagement.reviewresponses (
     id varchar(50) NOT NULL,
@@ -6850,7 +7045,20 @@ returnsmanagement.reviewresponses,"CREATE TABLE returnsmanagement.reviewresponse
     reworkinstruction text,
     reworkinstructionpriority int2,
     response text,
-    PRIMARY KEY (id)
+	CONSTRAINT reviewresponses_id PRIMARY KEY (id)
+);"
+shipping.SQL_MIGRATION_HISTORY_2025-22,"CREATE TABLE shipping.SQL_MIGRATION_HISTORY_2025-22 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-22_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 shipping.auditlog,"CREATE TABLE shipping.auditlog (
     id varchar(50) NOT NULL,
@@ -6872,7 +7080,7 @@ shipping.auditlog,"CREATE TABLE shipping.auditlog (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT auditlog_id PRIMARY KEY (id, id)
 );"
 shipping.carrieraccounts,"CREATE TABLE shipping.carrieraccounts (
     id varchar(50) NOT NULL,
@@ -6911,7 +7119,7 @@ shipping.carrieraccounts,"CREATE TABLE shipping.carrieraccounts (
     allowcustomrates bpchar,
     allowcustomtimeintransit bpchar,
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT carrieraccounts_id PRIMARY KEY (id, id)
 );"
 shipping.carrierservices,"CREATE TABLE shipping.carrierservices (
     id varchar(50) NOT NULL,
@@ -6941,7 +7149,7 @@ shipping.carrierservices,"CREATE TABLE shipping.carrierservices (
     createdlocation varchar(200),
     updatedlocation varchar(200),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT carrierservices_id PRIMARY KEY (id, id)
 );"
 shipping.commodityitems,"CREATE TABLE shipping.commodityitems (
     id varchar(50) NOT NULL,
@@ -6975,7 +7183,143 @@ shipping.commodityitems,"CREATE TABLE shipping.commodityitems (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT commodityitems_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.commodityitems_default,"CREATE TABLE shipping.commodityitems_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    itemid varchar(50),
+    productcode varchar(25),
+    itemdescription varchar(250),
+    itemquantity numeric,
+    harmonizedtariff varchar(25),
+    itemunitweight numeric,
+    itemunitweightunit varchar(5),
+    itemunitmeasure varchar(10),
+    itemunitvalue numeric,
+    itemunitvalueunit varchar(5),
+    countryoforigin varchar(2),
+    ishazmat bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT commodityitems_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.commodityitems_p20240101,"CREATE TABLE shipping.commodityitems_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    itemid varchar(50),
+    productcode varchar(25),
+    itemdescription varchar(250),
+    itemquantity numeric,
+    harmonizedtariff varchar(25),
+    itemunitweight numeric,
+    itemunitweightunit varchar(5),
+    itemunitmeasure varchar(10),
+    itemunitvalue numeric,
+    itemunitvalueunit varchar(5),
+    countryoforigin varchar(2),
+    ishazmat bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT commodityitems_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.commodityitems_p20250101,"CREATE TABLE shipping.commodityitems_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    itemid varchar(50),
+    productcode varchar(25),
+    itemdescription varchar(250),
+    itemquantity numeric,
+    harmonizedtariff varchar(25),
+    itemunitweight numeric,
+    itemunitweightunit varchar(5),
+    itemunitmeasure varchar(10),
+    itemunitvalue numeric,
+    itemunitvalueunit varchar(5),
+    countryoforigin varchar(2),
+    ishazmat bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT commodityitems_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.commodityitems_p20260101,"CREATE TABLE shipping.commodityitems_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    itemid varchar(50),
+    productcode varchar(25),
+    itemdescription varchar(250),
+    itemquantity numeric,
+    harmonizedtariff varchar(25),
+    itemunitweight numeric,
+    itemunitweightunit varchar(5),
+    itemunitmeasure varchar(10),
+    itemunitvalue numeric,
+    itemunitvalueunit varchar(5),
+    countryoforigin varchar(2),
+    ishazmat bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT commodityitems_p20260101_id PRIMARY KEY (id, partitionkey)
 );"
 shipping.hazmatitems,"CREATE TABLE shipping.hazmatitems (
     id varchar(50) NOT NULL,
@@ -7022,7 +7366,195 @@ shipping.hazmatitems,"CREATE TABLE shipping.hazmatitems (
     warehouseid varchar(50),
     itemid varchar(50),
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT hazmatitems_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.hazmatitems_default,"CREATE TABLE shipping.hazmatitems_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    propershippingname varchar(255),
+    hazmatclass varchar(25),
+    unnumber varchar(50),
+    technicalname varchar(250),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    quantity int4,
+    packagingtype varchar(150),
+    packaginggroup varchar(25),
+    packaging varchar(100),
+    weight numeric,
+    weightunit varchar(5),
+    regulation varchar(20),
+    regulationset varchar(20),
+    propershippingname2 varchar(150),
+    naergnumber varchar(100),
+    primarychemcode varchar(100),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    packinginstructions varchar(150),
+    limitedquantity bpchar,
+    nonhazardouslithiumbatteries bpchar,
+    ishazardous bpchar,
+    hazmatcode varchar(50),
+    batterycount int4,
+    cellcount int4,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    itemid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT hazmatitems_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.hazmatitems_p20240101,"CREATE TABLE shipping.hazmatitems_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    propershippingname varchar(255),
+    hazmatclass varchar(25),
+    unnumber varchar(50),
+    technicalname varchar(250),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    quantity int4,
+    packagingtype varchar(150),
+    packaginggroup varchar(25),
+    packaging varchar(100),
+    weight numeric,
+    weightunit varchar(5),
+    regulation varchar(20),
+    regulationset varchar(20),
+    propershippingname2 varchar(150),
+    naergnumber varchar(100),
+    primarychemcode varchar(100),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    packinginstructions varchar(150),
+    limitedquantity bpchar,
+    nonhazardouslithiumbatteries bpchar,
+    ishazardous bpchar,
+    hazmatcode varchar(50),
+    batterycount int4,
+    cellcount int4,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    itemid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT hazmatitems_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.hazmatitems_p20250101,"CREATE TABLE shipping.hazmatitems_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    propershippingname varchar(255),
+    hazmatclass varchar(25),
+    unnumber varchar(50),
+    technicalname varchar(250),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    quantity int4,
+    packagingtype varchar(150),
+    packaginggroup varchar(25),
+    packaging varchar(100),
+    weight numeric,
+    weightunit varchar(5),
+    regulation varchar(20),
+    regulationset varchar(20),
+    propershippingname2 varchar(150),
+    naergnumber varchar(100),
+    primarychemcode varchar(100),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    packinginstructions varchar(150),
+    limitedquantity bpchar,
+    nonhazardouslithiumbatteries bpchar,
+    ishazardous bpchar,
+    hazmatcode varchar(50),
+    batterycount int4,
+    cellcount int4,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    itemid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT hazmatitems_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.hazmatitems_p20260101,"CREATE TABLE shipping.hazmatitems_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    packageid varchar(50),
+    propershippingname varchar(255),
+    hazmatclass varchar(25),
+    unnumber varchar(50),
+    technicalname varchar(250),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    quantity int4,
+    packagingtype varchar(150),
+    packaginggroup varchar(25),
+    packaging varchar(100),
+    weight numeric,
+    weightunit varchar(5),
+    regulation varchar(20),
+    regulationset varchar(20),
+    propershippingname2 varchar(150),
+    naergnumber varchar(100),
+    primarychemcode varchar(100),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    packinginstructions varchar(150),
+    limitedquantity bpchar,
+    nonhazardouslithiumbatteries bpchar,
+    ishazardous bpchar,
+    hazmatcode varchar(50),
+    batterycount int4,
+    cellcount int4,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    itemid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT hazmatitems_p20260101_id PRIMARY KEY (id, partitionkey)
 );"
 shipping.manifestdocuments,"CREATE TABLE shipping.manifestdocuments (
     id varchar(50) NOT NULL,
@@ -7048,7 +7580,111 @@ shipping.manifestdocuments,"CREATE TABLE shipping.manifestdocuments (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT manifestdocuments_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.manifestdocuments_default,"CREATE TABLE shipping.manifestdocuments_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    content text,
+    documentformat varchar(50),
+    documenttype varchar(200),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    documenturl varchar(150),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifestdocuments_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifestdocuments_p20240101,"CREATE TABLE shipping.manifestdocuments_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    content text,
+    documentformat varchar(50),
+    documenttype varchar(200),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    documenturl varchar(150),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifestdocuments_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifestdocuments_p20250101,"CREATE TABLE shipping.manifestdocuments_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    content text,
+    documentformat varchar(50),
+    documenttype varchar(200),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    documenturl varchar(150),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifestdocuments_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifestdocuments_p20260101,"CREATE TABLE shipping.manifestdocuments_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    content text,
+    documentformat varchar(50),
+    documenttype varchar(200),
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    documenturl varchar(150),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifestdocuments_p20260101_id PRIMARY KEY (id, partitionkey)
 );"
 shipping.manifests,"CREATE TABLE shipping.manifests (
     id varchar(50) NOT NULL,
@@ -7082,7 +7718,143 @@ shipping.manifests,"CREATE TABLE shipping.manifests (
     statusreason text,
     carriermessage varchar(500),
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT manifests_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.manifests_default,"CREATE TABLE shipping.manifests_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    carrieraccountname varchar(50),
+    accountid varchar(40),
+    businessunitid varchar(40),
+    warehouseid varchar(50),
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timezone varchar(50),
+    timeinepoch numeric,
+    carrieraccountsid varchar(50),
+    carriercode varchar(50),
+    closeoutgroupcode varchar(50),
+    shipdate timestamp,
+    status varchar(15),
+    hasdocuments bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    closeoutdatetime timestamp,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    baseurl varchar(150),
+    customerid varchar(50),
+    servicecode varchar(50),
+    statusreason text,
+    carriermessage varchar(500),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifests_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifests_p20240101,"CREATE TABLE shipping.manifests_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    carrieraccountname varchar(50),
+    accountid varchar(40),
+    businessunitid varchar(40),
+    warehouseid varchar(50),
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timezone varchar(50),
+    timeinepoch numeric,
+    carrieraccountsid varchar(50),
+    carriercode varchar(50),
+    closeoutgroupcode varchar(50),
+    shipdate timestamp,
+    status varchar(15),
+    hasdocuments bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    closeoutdatetime timestamp,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    baseurl varchar(150),
+    customerid varchar(50),
+    servicecode varchar(50),
+    statusreason text,
+    carriermessage varchar(500),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifests_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifests_p20250101,"CREATE TABLE shipping.manifests_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    carrieraccountname varchar(50),
+    accountid varchar(40),
+    businessunitid varchar(40),
+    warehouseid varchar(50),
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timezone varchar(50),
+    timeinepoch numeric,
+    carrieraccountsid varchar(50),
+    carriercode varchar(50),
+    closeoutgroupcode varchar(50),
+    shipdate timestamp,
+    status varchar(15),
+    hasdocuments bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    closeoutdatetime timestamp,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    baseurl varchar(150),
+    customerid varchar(50),
+    servicecode varchar(50),
+    statusreason text,
+    carriermessage varchar(500),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifests_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifests_p20260101,"CREATE TABLE shipping.manifests_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    carrieraccountname varchar(50),
+    accountid varchar(40),
+    businessunitid varchar(40),
+    warehouseid varchar(50),
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timezone varchar(50),
+    timeinepoch numeric,
+    carrieraccountsid varchar(50),
+    carriercode varchar(50),
+    closeoutgroupcode varchar(50),
+    shipdate timestamp,
+    status varchar(15),
+    hasdocuments bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    closeoutdatetime timestamp,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    baseurl varchar(150),
+    customerid varchar(50),
+    servicecode varchar(50),
+    statusreason text,
+    carriermessage varchar(500),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifests_p20260101_id PRIMARY KEY (id, partitionkey)
 );"
 shipping.manifeststages,"CREATE TABLE shipping.manifeststages (
     id varchar(50) NOT NULL,
@@ -7107,7 +7879,107 @@ shipping.manifeststages,"CREATE TABLE shipping.manifeststages (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT manifeststages_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.manifeststages_default,"CREATE TABLE shipping.manifeststages_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    stage varchar(30),
+    status varchar(50),
+    errormessage text,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifeststages_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifeststages_p20240101,"CREATE TABLE shipping.manifeststages_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    stage varchar(30),
+    status varchar(50),
+    errormessage text,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifeststages_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifeststages_p20250101,"CREATE TABLE shipping.manifeststages_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    stage varchar(30),
+    status varchar(50),
+    errormessage text,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifeststages_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.manifeststages_p20260101,"CREATE TABLE shipping.manifeststages_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    manifestid varchar(50),
+    stage varchar(30),
+    status varchar(50),
+    errormessage text,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    accountid varchar(50),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    warehouseid varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT manifeststages_p20260101_id PRIMARY KEY (id, partitionkey)
 );"
 shipping.packageaudit,"CREATE TABLE shipping.packageaudit (
     id varchar(50) NOT NULL,
@@ -7145,7 +8017,7 @@ shipping.packageaudit,"CREATE TABLE shipping.packageaudit (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT packageaudit_id PRIMARY KEY (id, id)
 );"
 shipping.packagelabels,"CREATE TABLE shipping.packagelabels (
     id varchar(50) NOT NULL,
@@ -7182,7 +8054,7 @@ shipping.packagelabels,"CREATE TABLE shipping.packagelabels (
     labeltypedescription varchar(150),
     labeltypesequencenumber int4,
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT packagelabels_id PRIMARY KEY (id, id)
 );"
 shipping.packages,"CREATE TABLE shipping.packages (
     id varchar(50) NOT NULL,
@@ -7300,7 +8172,479 @@ shipping.packages,"CREATE TABLE shipping.packages (
     onshipment bpchar,
     ontender bpchar,
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT packages_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.packages_default,"CREATE TABLE shipping.packages_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    shipmentid varchar(50),
+    packageidentifier varchar(100),
+    fulfillmentid varchar(100),
+    status varchar(25),
+    orderid varchar(100),
+    orderdate timestamp,
+    purchaseordernumber varchar(100),
+    description varchar(250),
+    carrierinstructions varchar(2000),
+    length numeric,
+    width numeric,
+    height numeric,
+    dimensionunit varchar(5),
+    weight numeric,
+    weightunit varchar(5),
+    packagetype varchar(25),
+    lossprotectionmethod varchar(100),
+    lossprotectioncost numeric,
+    lossprotectionunit varchar(5),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    dryiceweight numeric,
+    dryiceweightunit varchar(5),
+    dryicepurpose varchar(50),
+    signatorytitle varchar(150),
+    signatoryname varchar(150),
+    signatorycompany varchar(150),
+    signatoryaddress1 varchar(200),
+    signatoryaddress2 varchar(150),
+    signatoryaddress3 varchar(150),
+    signatorycity varchar(150),
+    signatorystate varchar(250),
+    signatoryzipcode varchar(15),
+    signatorycountry varchar(2),
+    signatoryphone varchar(20),
+    signatoryemail varchar(150),
+    signatorydestinationtype varchar(20),
+    reasonofexport varchar(100),
+    ioraccountnumber varchar(25),
+    portofentry varchar(150),
+    destinationcountry varchar(2),
+    commercialinvoicemethod varchar(50),
+    declaredvalue numeric,
+    declaredvalueunit varchar(5),
+    iorname varchar(150),
+    iorcompany varchar(150),
+    ioraddress1 varchar(200),
+    ioraddress2 varchar(150),
+    ioraddress3 varchar(150),
+    iorcity varchar(150),
+    iorstate varchar(250),
+    iorzipcode varchar(15),
+    iorcountry varchar(2),
+    iorphone varchar(20),
+    ioremail varchar(150),
+    iordestinationtype varchar(20),
+    customsbrokername varchar(150),
+    customsbrokercompany varchar(150),
+    customsbrokeraddress1 varchar(200),
+    customsbrokeraddress2 varchar(150),
+    customsbrokeraddress3 varchar(150),
+    customsbrokercity varchar(150),
+    customsbrokerstate varchar(250),
+    customsbrokerzipcode varchar(15),
+    customsbrokercountry varchar(2),
+    customsbrokerphone varchar(20),
+    customsbrokeremail varchar(150),
+    customsbrokerdestinationtype varchar(20),
+    customstransactionnumber varchar(100),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    carriershipmentid varchar(150),
+    mastertrackingnumber varchar(150),
+    trackingnumber varchar(150),
+    trackingnumber2 varchar(150),
+    ismachinable bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    trackingnumber3 varchar(150),
+    trackingnumber4 varchar(150),
+    trackingnumber5 varchar(150),
+    templatedatasource varchar(600),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    hazmatpackagingtype varchar(150),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    signatoryisothreecountry varchar(3),
+    iorisothreecountry varchar(3),
+    customsbrokerisothreecountry varchar(3),
+    ismanual bpchar,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    warehouseid varchar(50),
+    customerid varchar(50),
+    ondelivery bpchar,
+    onestimateddelivery bpchar,
+    onexception bpchar,
+    onshipment bpchar,
+    ontender bpchar,
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT packages_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.packages_p20240101,"CREATE TABLE shipping.packages_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    shipmentid varchar(50),
+    packageidentifier varchar(100),
+    fulfillmentid varchar(100),
+    status varchar(25),
+    orderid varchar(100),
+    orderdate timestamp,
+    purchaseordernumber varchar(100),
+    description varchar(250),
+    carrierinstructions varchar(2000),
+    length numeric,
+    width numeric,
+    height numeric,
+    dimensionunit varchar(5),
+    weight numeric,
+    weightunit varchar(5),
+    packagetype varchar(25),
+    lossprotectionmethod varchar(100),
+    lossprotectioncost numeric,
+    lossprotectionunit varchar(5),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    dryiceweight numeric,
+    dryiceweightunit varchar(5),
+    dryicepurpose varchar(50),
+    signatorytitle varchar(150),
+    signatoryname varchar(150),
+    signatorycompany varchar(150),
+    signatoryaddress1 varchar(200),
+    signatoryaddress2 varchar(150),
+    signatoryaddress3 varchar(150),
+    signatorycity varchar(150),
+    signatorystate varchar(250),
+    signatoryzipcode varchar(15),
+    signatorycountry varchar(2),
+    signatoryphone varchar(20),
+    signatoryemail varchar(150),
+    signatorydestinationtype varchar(20),
+    reasonofexport varchar(100),
+    ioraccountnumber varchar(25),
+    portofentry varchar(150),
+    destinationcountry varchar(2),
+    commercialinvoicemethod varchar(50),
+    declaredvalue numeric,
+    declaredvalueunit varchar(5),
+    iorname varchar(150),
+    iorcompany varchar(150),
+    ioraddress1 varchar(200),
+    ioraddress2 varchar(150),
+    ioraddress3 varchar(150),
+    iorcity varchar(150),
+    iorstate varchar(250),
+    iorzipcode varchar(15),
+    iorcountry varchar(2),
+    iorphone varchar(20),
+    ioremail varchar(150),
+    iordestinationtype varchar(20),
+    customsbrokername varchar(150),
+    customsbrokercompany varchar(150),
+    customsbrokeraddress1 varchar(200),
+    customsbrokeraddress2 varchar(150),
+    customsbrokeraddress3 varchar(150),
+    customsbrokercity varchar(150),
+    customsbrokerstate varchar(250),
+    customsbrokerzipcode varchar(15),
+    customsbrokercountry varchar(2),
+    customsbrokerphone varchar(20),
+    customsbrokeremail varchar(150),
+    customsbrokerdestinationtype varchar(20),
+    customstransactionnumber varchar(100),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    carriershipmentid varchar(150),
+    mastertrackingnumber varchar(150),
+    trackingnumber varchar(150),
+    trackingnumber2 varchar(150),
+    ismachinable bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    trackingnumber3 varchar(150),
+    trackingnumber4 varchar(150),
+    trackingnumber5 varchar(150),
+    templatedatasource varchar(600),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    hazmatpackagingtype varchar(150),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    signatoryisothreecountry varchar(3),
+    iorisothreecountry varchar(3),
+    customsbrokerisothreecountry varchar(3),
+    ismanual bpchar,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    warehouseid varchar(50),
+    customerid varchar(50),
+    ondelivery bpchar,
+    onestimateddelivery bpchar,
+    onexception bpchar,
+    onshipment bpchar,
+    ontender bpchar,
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT packages_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.packages_p20250101,"CREATE TABLE shipping.packages_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    shipmentid varchar(50),
+    packageidentifier varchar(100),
+    fulfillmentid varchar(100),
+    status varchar(25),
+    orderid varchar(100),
+    orderdate timestamp,
+    purchaseordernumber varchar(100),
+    description varchar(250),
+    carrierinstructions varchar(2000),
+    length numeric,
+    width numeric,
+    height numeric,
+    dimensionunit varchar(5),
+    weight numeric,
+    weightunit varchar(5),
+    packagetype varchar(25),
+    lossprotectionmethod varchar(100),
+    lossprotectioncost numeric,
+    lossprotectionunit varchar(5),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    dryiceweight numeric,
+    dryiceweightunit varchar(5),
+    dryicepurpose varchar(50),
+    signatorytitle varchar(150),
+    signatoryname varchar(150),
+    signatorycompany varchar(150),
+    signatoryaddress1 varchar(200),
+    signatoryaddress2 varchar(150),
+    signatoryaddress3 varchar(150),
+    signatorycity varchar(150),
+    signatorystate varchar(250),
+    signatoryzipcode varchar(15),
+    signatorycountry varchar(2),
+    signatoryphone varchar(20),
+    signatoryemail varchar(150),
+    signatorydestinationtype varchar(20),
+    reasonofexport varchar(100),
+    ioraccountnumber varchar(25),
+    portofentry varchar(150),
+    destinationcountry varchar(2),
+    commercialinvoicemethod varchar(50),
+    declaredvalue numeric,
+    declaredvalueunit varchar(5),
+    iorname varchar(150),
+    iorcompany varchar(150),
+    ioraddress1 varchar(200),
+    ioraddress2 varchar(150),
+    ioraddress3 varchar(150),
+    iorcity varchar(150),
+    iorstate varchar(250),
+    iorzipcode varchar(15),
+    iorcountry varchar(2),
+    iorphone varchar(20),
+    ioremail varchar(150),
+    iordestinationtype varchar(20),
+    customsbrokername varchar(150),
+    customsbrokercompany varchar(150),
+    customsbrokeraddress1 varchar(200),
+    customsbrokeraddress2 varchar(150),
+    customsbrokeraddress3 varchar(150),
+    customsbrokercity varchar(150),
+    customsbrokerstate varchar(250),
+    customsbrokerzipcode varchar(15),
+    customsbrokercountry varchar(2),
+    customsbrokerphone varchar(20),
+    customsbrokeremail varchar(150),
+    customsbrokerdestinationtype varchar(20),
+    customstransactionnumber varchar(100),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    carriershipmentid varchar(150),
+    mastertrackingnumber varchar(150),
+    trackingnumber varchar(150),
+    trackingnumber2 varchar(150),
+    ismachinable bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    trackingnumber3 varchar(150),
+    trackingnumber4 varchar(150),
+    trackingnumber5 varchar(150),
+    templatedatasource varchar(600),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    hazmatpackagingtype varchar(150),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    signatoryisothreecountry varchar(3),
+    iorisothreecountry varchar(3),
+    customsbrokerisothreecountry varchar(3),
+    ismanual bpchar,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    warehouseid varchar(50),
+    customerid varchar(50),
+    ondelivery bpchar,
+    onestimateddelivery bpchar,
+    onexception bpchar,
+    onshipment bpchar,
+    ontender bpchar,
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT packages_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.packages_p20260101,"CREATE TABLE shipping.packages_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    timeinepoch numeric,
+    shipmentid varchar(50),
+    packageidentifier varchar(100),
+    fulfillmentid varchar(100),
+    status varchar(25),
+    orderid varchar(100),
+    orderdate timestamp,
+    purchaseordernumber varchar(100),
+    description varchar(250),
+    carrierinstructions varchar(2000),
+    length numeric,
+    width numeric,
+    height numeric,
+    dimensionunit varchar(5),
+    weight numeric,
+    weightunit varchar(5),
+    packagetype varchar(25),
+    lossprotectionmethod varchar(100),
+    lossprotectioncost numeric,
+    lossprotectionunit varchar(5),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    dryiceweight numeric,
+    dryiceweightunit varchar(5),
+    dryicepurpose varchar(50),
+    signatorytitle varchar(150),
+    signatoryname varchar(150),
+    signatorycompany varchar(150),
+    signatoryaddress1 varchar(200),
+    signatoryaddress2 varchar(150),
+    signatoryaddress3 varchar(150),
+    signatorycity varchar(150),
+    signatorystate varchar(250),
+    signatoryzipcode varchar(15),
+    signatorycountry varchar(2),
+    signatoryphone varchar(20),
+    signatoryemail varchar(150),
+    signatorydestinationtype varchar(20),
+    reasonofexport varchar(100),
+    ioraccountnumber varchar(25),
+    portofentry varchar(150),
+    destinationcountry varchar(2),
+    commercialinvoicemethod varchar(50),
+    declaredvalue numeric,
+    declaredvalueunit varchar(5),
+    iorname varchar(150),
+    iorcompany varchar(150),
+    ioraddress1 varchar(200),
+    ioraddress2 varchar(150),
+    ioraddress3 varchar(150),
+    iorcity varchar(150),
+    iorstate varchar(250),
+    iorzipcode varchar(15),
+    iorcountry varchar(2),
+    iorphone varchar(20),
+    ioremail varchar(150),
+    iordestinationtype varchar(20),
+    customsbrokername varchar(150),
+    customsbrokercompany varchar(150),
+    customsbrokeraddress1 varchar(200),
+    customsbrokeraddress2 varchar(150),
+    customsbrokeraddress3 varchar(150),
+    customsbrokercity varchar(150),
+    customsbrokerstate varchar(250),
+    customsbrokerzipcode varchar(15),
+    customsbrokercountry varchar(2),
+    customsbrokerphone varchar(20),
+    customsbrokeremail varchar(150),
+    customsbrokerdestinationtype varchar(20),
+    customstransactionnumber varchar(100),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    carriershipmentid varchar(150),
+    mastertrackingnumber varchar(150),
+    trackingnumber varchar(150),
+    trackingnumber2 varchar(150),
+    ismachinable bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    trackingnumber3 varchar(150),
+    trackingnumber4 varchar(150),
+    trackingnumber5 varchar(150),
+    templatedatasource varchar(600),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    hazmatpackagingtype varchar(150),
+    emergencycontact varchar(150),
+    emergencyphone varchar(50),
+    signatoryisothreecountry varchar(3),
+    iorisothreecountry varchar(3),
+    customsbrokerisothreecountry varchar(3),
+    ismanual bpchar,
+    accountid varchar(50),
+    businessunitid varchar(50),
+    warehouseid varchar(50),
+    customerid varchar(50),
+    ondelivery bpchar,
+    onestimateddelivery bpchar,
+    onexception bpchar,
+    onshipment bpchar,
+    ontender bpchar,
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT packages_p20260101_id PRIMARY KEY (id, partitionkey)
 );"
 shipping.rateshopresultaudit,"CREATE TABLE shipping.rateshopresultaudit (
     id varchar(50) NOT NULL,
@@ -7336,7 +8680,7 @@ shipping.rateshopresultaudit,"CREATE TABLE shipping.rateshopresultaudit (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT rateshopresultaudit_id PRIMARY KEY (id, id)
 );"
 shipping.shipmentaudit,"CREATE TABLE shipping.shipmentaudit (
     id varchar(50) NOT NULL,
@@ -7416,7 +8760,7 @@ shipping.shipmentaudit,"CREATE TABLE shipping.shipmentaudit (
     customerid varchar(50),
     warehouseid varchar(50),
     partitionkey varchar(10),
-    PRIMARY KEY (id, id)
+	CONSTRAINT shipmentaudit_id PRIMARY KEY (id, id)
 );"
 shipping.shipments,"CREATE TABLE shipping.shipments (
     id varchar(50) NOT NULL,
@@ -7563,7 +8907,608 @@ shipping.shipments,"CREATE TABLE shipping.shipments (
     ratedaddressgroup varchar(50),
     ratedshipmentgroup varchar(50),
     partitionkey varchar(10) NOT NULL,
-    PRIMARY KEY (id, id, partitionkey)
+	CONSTRAINT shipments_id PRIMARY KEY (id, id, partitionkey)
+);"
+shipping.shipments_default,"CREATE TABLE shipping.shipments_default (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    accountid varchar(50),
+    deliverytype varchar(50),
+    deliverydatetime timestamp,
+    pickuptype varchar(50),
+    deliveryconfirmation varchar(50),
+    holdatname varchar(150),
+    holdataddress1 varchar(200),
+    holdataddress2 varchar(150),
+    holdataddress3 varchar(150),
+    holdatcompany varchar(150),
+    holdatstate varchar(2),
+    holdatcity varchar(150),
+    holdatzipcode varchar(15),
+    holdatcountry varchar(2),
+    holdatphone varchar(20),
+    holdatemail varchar(150),
+    holdatdestinationtype varchar(20),
+    isadditionalhandling bpchar,
+    accountcode varchar(40),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    businessunitcode varchar(40),
+    carrierid varchar,
+    carrierdescription varchar(150),
+    carrieraccountname varchar,
+    carrieraccountnumber varchar,
+    closeoutgroupcode varchar,
+    closeoutgroupdescription varchar,
+    servicedescription varchar(150),
+    warehouseid varchar(50),
+    shipby varchar(40),
+    voidby varchar(40),
+    timeinepoch numeric,
+    parcelid varchar(50),
+    shipmenttype varchar(15),
+    sendername varchar(150),
+    sendercompany varchar(150),
+    senderaddress1 varchar(200),
+    senderaddress2 varchar(150),
+    senderaddress3 varchar(150),
+    sendercity varchar(150),
+    senderstate varchar(250),
+    senderzipcode varchar(15),
+    sendercountry varchar(2),
+    senderphone varchar(20),
+    senderemail varchar(150),
+    senderdestinationtype varchar(20),
+    receivername varchar(150),
+    receivercompany varchar(150),
+    receiveraddress1 varchar(200),
+    receiveraddress2 varchar(150),
+    receiveraddress3 varchar(150),
+    receivercity varchar(150),
+    receiverstate varchar(250),
+    receiverzipcode varchar(15),
+    receivercountry varchar(2),
+    receiverphone varchar(20),
+    receiveremail varchar(150),
+    receiverdestinationtype varchar(20),
+    receiverisresidential bpchar,
+    returntoname varchar(150),
+    returntocompany varchar(150),
+    returntoaddress1 varchar(200),
+    returntoaddress2 varchar(150),
+    returntoaddress3 varchar(150),
+    returntocity varchar(150),
+    returntostate varchar(250),
+    returntozipcode varchar(15),
+    returntocountry varchar(2),
+    returntophone varchar(20),
+    returntoemail varchar(150),
+    returntodestinationtype varchar(20),
+    carriercode varchar(50),
+    servicecode varchar(50),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    billtoname varchar(150),
+    billtocompany varchar(150),
+    billtoaddress1 varchar(200),
+    billtoaddress2 varchar(150),
+    billtoaddress3 varchar(150),
+    billtocity varchar(150),
+    billtostate varchar(250),
+    billtozipcode varchar(15),
+    billtocountry varchar(2),
+    billtophone varchar(20),
+    billtoemail varchar(150),
+    billtodestinationtype varchar(20),
+    billtoaccount varchar(50),
+    paymenttermscode varchar(50),
+    termsofsalecode varchar(50),
+    dutiestaxespaymentaccount varchar(50),
+    parcelweight numeric,
+    parcelweightunit varchar(5),
+    shipdate timestamp,
+    expecteddeliverydate timestamp,
+    carriershipmentid varchar(100),
+    carrieraccountsid varchar(50),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    timeintransit numeric,
+    labelrotation varchar(3),
+    manifestid varchar(50),
+    orderdate timestamp,
+    commitmentdate timestamp,
+    rateshoptype varchar(50),
+    rateshopcode varchar(40),
+    voided bpchar,
+    voidmessage varchar(500),
+    closed bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    processeddatetime timestamp,
+    voideddatetime timestamp,
+    timezone varchar(50),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    ordertype varchar(50),
+    senderisothreecountry varchar(3),
+    receiverisothreecountry varchar(3),
+    returntoisothreecountry varchar(3),
+    billtoisothreecountry varchar(3),
+    carriersymbol varchar(50),
+    orderid varchar(50),
+    isreturnonlyshipment bpchar,
+    rateshopflag bpchar,
+    rateshopgroup varchar(100),
+    cidocumenturl varchar(300),
+    ratedaddressgroup varchar(50),
+    ratedshipmentgroup varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT shipments_default_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.shipments_p20240101,"CREATE TABLE shipping.shipments_p20240101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    accountid varchar(50),
+    deliverytype varchar(50),
+    deliverydatetime timestamp,
+    pickuptype varchar(50),
+    deliveryconfirmation varchar(50),
+    holdatname varchar(150),
+    holdataddress1 varchar(200),
+    holdataddress2 varchar(150),
+    holdataddress3 varchar(150),
+    holdatcompany varchar(150),
+    holdatstate varchar(2),
+    holdatcity varchar(150),
+    holdatzipcode varchar(15),
+    holdatcountry varchar(2),
+    holdatphone varchar(20),
+    holdatemail varchar(150),
+    holdatdestinationtype varchar(20),
+    isadditionalhandling bpchar,
+    accountcode varchar(40),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    businessunitcode varchar(40),
+    carrierid varchar,
+    carrierdescription varchar(150),
+    carrieraccountname varchar,
+    carrieraccountnumber varchar,
+    closeoutgroupcode varchar,
+    closeoutgroupdescription varchar,
+    servicedescription varchar(150),
+    warehouseid varchar(50),
+    shipby varchar(40),
+    voidby varchar(40),
+    timeinepoch numeric,
+    parcelid varchar(50),
+    shipmenttype varchar(15),
+    sendername varchar(150),
+    sendercompany varchar(150),
+    senderaddress1 varchar(200),
+    senderaddress2 varchar(150),
+    senderaddress3 varchar(150),
+    sendercity varchar(150),
+    senderstate varchar(250),
+    senderzipcode varchar(15),
+    sendercountry varchar(2),
+    senderphone varchar(20),
+    senderemail varchar(150),
+    senderdestinationtype varchar(20),
+    receivername varchar(150),
+    receivercompany varchar(150),
+    receiveraddress1 varchar(200),
+    receiveraddress2 varchar(150),
+    receiveraddress3 varchar(150),
+    receivercity varchar(150),
+    receiverstate varchar(250),
+    receiverzipcode varchar(15),
+    receivercountry varchar(2),
+    receiverphone varchar(20),
+    receiveremail varchar(150),
+    receiverdestinationtype varchar(20),
+    receiverisresidential bpchar,
+    returntoname varchar(150),
+    returntocompany varchar(150),
+    returntoaddress1 varchar(200),
+    returntoaddress2 varchar(150),
+    returntoaddress3 varchar(150),
+    returntocity varchar(150),
+    returntostate varchar(250),
+    returntozipcode varchar(15),
+    returntocountry varchar(2),
+    returntophone varchar(20),
+    returntoemail varchar(150),
+    returntodestinationtype varchar(20),
+    carriercode varchar(50),
+    servicecode varchar(50),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    billtoname varchar(150),
+    billtocompany varchar(150),
+    billtoaddress1 varchar(200),
+    billtoaddress2 varchar(150),
+    billtoaddress3 varchar(150),
+    billtocity varchar(150),
+    billtostate varchar(250),
+    billtozipcode varchar(15),
+    billtocountry varchar(2),
+    billtophone varchar(20),
+    billtoemail varchar(150),
+    billtodestinationtype varchar(20),
+    billtoaccount varchar(50),
+    paymenttermscode varchar(50),
+    termsofsalecode varchar(50),
+    dutiestaxespaymentaccount varchar(50),
+    parcelweight numeric,
+    parcelweightunit varchar(5),
+    shipdate timestamp,
+    expecteddeliverydate timestamp,
+    carriershipmentid varchar(100),
+    carrieraccountsid varchar(50),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    timeintransit numeric,
+    labelrotation varchar(3),
+    manifestid varchar(50),
+    orderdate timestamp,
+    commitmentdate timestamp,
+    rateshoptype varchar(50),
+    rateshopcode varchar(40),
+    voided bpchar,
+    voidmessage varchar(500),
+    closed bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    processeddatetime timestamp,
+    voideddatetime timestamp,
+    timezone varchar(50),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    ordertype varchar(50),
+    senderisothreecountry varchar(3),
+    receiverisothreecountry varchar(3),
+    returntoisothreecountry varchar(3),
+    billtoisothreecountry varchar(3),
+    carriersymbol varchar(50),
+    orderid varchar(50),
+    isreturnonlyshipment bpchar,
+    rateshopflag bpchar,
+    rateshopgroup varchar(100),
+    cidocumenturl varchar(300),
+    ratedaddressgroup varchar(50),
+    ratedshipmentgroup varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT shipments_p20240101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.shipments_p20250101,"CREATE TABLE shipping.shipments_p20250101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    accountid varchar(50),
+    deliverytype varchar(50),
+    deliverydatetime timestamp,
+    pickuptype varchar(50),
+    deliveryconfirmation varchar(50),
+    holdatname varchar(150),
+    holdataddress1 varchar(200),
+    holdataddress2 varchar(150),
+    holdataddress3 varchar(150),
+    holdatcompany varchar(150),
+    holdatstate varchar(2),
+    holdatcity varchar(150),
+    holdatzipcode varchar(15),
+    holdatcountry varchar(2),
+    holdatphone varchar(20),
+    holdatemail varchar(150),
+    holdatdestinationtype varchar(20),
+    isadditionalhandling bpchar,
+    accountcode varchar(40),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    businessunitcode varchar(40),
+    carrierid varchar,
+    carrierdescription varchar(150),
+    carrieraccountname varchar,
+    carrieraccountnumber varchar,
+    closeoutgroupcode varchar,
+    closeoutgroupdescription varchar,
+    servicedescription varchar(150),
+    warehouseid varchar(50),
+    shipby varchar(40),
+    voidby varchar(40),
+    timeinepoch numeric,
+    parcelid varchar(50),
+    shipmenttype varchar(15),
+    sendername varchar(150),
+    sendercompany varchar(150),
+    senderaddress1 varchar(200),
+    senderaddress2 varchar(150),
+    senderaddress3 varchar(150),
+    sendercity varchar(150),
+    senderstate varchar(250),
+    senderzipcode varchar(15),
+    sendercountry varchar(2),
+    senderphone varchar(20),
+    senderemail varchar(150),
+    senderdestinationtype varchar(20),
+    receivername varchar(150),
+    receivercompany varchar(150),
+    receiveraddress1 varchar(200),
+    receiveraddress2 varchar(150),
+    receiveraddress3 varchar(150),
+    receivercity varchar(150),
+    receiverstate varchar(250),
+    receiverzipcode varchar(15),
+    receivercountry varchar(2),
+    receiverphone varchar(20),
+    receiveremail varchar(150),
+    receiverdestinationtype varchar(20),
+    receiverisresidential bpchar,
+    returntoname varchar(150),
+    returntocompany varchar(150),
+    returntoaddress1 varchar(200),
+    returntoaddress2 varchar(150),
+    returntoaddress3 varchar(150),
+    returntocity varchar(150),
+    returntostate varchar(250),
+    returntozipcode varchar(15),
+    returntocountry varchar(2),
+    returntophone varchar(20),
+    returntoemail varchar(150),
+    returntodestinationtype varchar(20),
+    carriercode varchar(50),
+    servicecode varchar(50),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    billtoname varchar(150),
+    billtocompany varchar(150),
+    billtoaddress1 varchar(200),
+    billtoaddress2 varchar(150),
+    billtoaddress3 varchar(150),
+    billtocity varchar(150),
+    billtostate varchar(250),
+    billtozipcode varchar(15),
+    billtocountry varchar(2),
+    billtophone varchar(20),
+    billtoemail varchar(150),
+    billtodestinationtype varchar(20),
+    billtoaccount varchar(50),
+    paymenttermscode varchar(50),
+    termsofsalecode varchar(50),
+    dutiestaxespaymentaccount varchar(50),
+    parcelweight numeric,
+    parcelweightunit varchar(5),
+    shipdate timestamp,
+    expecteddeliverydate timestamp,
+    carriershipmentid varchar(100),
+    carrieraccountsid varchar(50),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    timeintransit numeric,
+    labelrotation varchar(3),
+    manifestid varchar(50),
+    orderdate timestamp,
+    commitmentdate timestamp,
+    rateshoptype varchar(50),
+    rateshopcode varchar(40),
+    voided bpchar,
+    voidmessage varchar(500),
+    closed bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    processeddatetime timestamp,
+    voideddatetime timestamp,
+    timezone varchar(50),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    ordertype varchar(50),
+    senderisothreecountry varchar(3),
+    receiverisothreecountry varchar(3),
+    returntoisothreecountry varchar(3),
+    billtoisothreecountry varchar(3),
+    carriersymbol varchar(50),
+    orderid varchar(50),
+    isreturnonlyshipment bpchar,
+    rateshopflag bpchar,
+    rateshopgroup varchar(100),
+    cidocumenturl varchar(300),
+    ratedaddressgroup varchar(50),
+    ratedshipmentgroup varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT shipments_p20250101_id PRIMARY KEY (id, partitionkey)
+);"
+shipping.shipments_p20260101,"CREATE TABLE shipping.shipments_p20260101 (
+    id varchar(50) NOT NULL,
+    createddate timestamp,
+    createdby varchar(320),
+    modifieddate timestamp,
+    modifiedby varchar(320),
+    accountid varchar(50),
+    deliverytype varchar(50),
+    deliverydatetime timestamp,
+    pickuptype varchar(50),
+    deliveryconfirmation varchar(50),
+    holdatname varchar(150),
+    holdataddress1 varchar(200),
+    holdataddress2 varchar(150),
+    holdataddress3 varchar(150),
+    holdatcompany varchar(150),
+    holdatstate varchar(2),
+    holdatcity varchar(150),
+    holdatzipcode varchar(15),
+    holdatcountry varchar(2),
+    holdatphone varchar(20),
+    holdatemail varchar(150),
+    holdatdestinationtype varchar(20),
+    isadditionalhandling bpchar,
+    accountcode varchar(40),
+    businessunitid varchar(50),
+    customerid varchar(50),
+    businessunitcode varchar(40),
+    carrierid varchar,
+    carrierdescription varchar(150),
+    carrieraccountname varchar,
+    carrieraccountnumber varchar,
+    closeoutgroupcode varchar,
+    closeoutgroupdescription varchar,
+    servicedescription varchar(150),
+    warehouseid varchar(50),
+    shipby varchar(40),
+    voidby varchar(40),
+    timeinepoch numeric,
+    parcelid varchar(50),
+    shipmenttype varchar(15),
+    sendername varchar(150),
+    sendercompany varchar(150),
+    senderaddress1 varchar(200),
+    senderaddress2 varchar(150),
+    senderaddress3 varchar(150),
+    sendercity varchar(150),
+    senderstate varchar(250),
+    senderzipcode varchar(15),
+    sendercountry varchar(2),
+    senderphone varchar(20),
+    senderemail varchar(150),
+    senderdestinationtype varchar(20),
+    receivername varchar(150),
+    receivercompany varchar(150),
+    receiveraddress1 varchar(200),
+    receiveraddress2 varchar(150),
+    receiveraddress3 varchar(150),
+    receivercity varchar(150),
+    receiverstate varchar(250),
+    receiverzipcode varchar(15),
+    receivercountry varchar(2),
+    receiverphone varchar(20),
+    receiveremail varchar(150),
+    receiverdestinationtype varchar(20),
+    receiverisresidential bpchar,
+    returntoname varchar(150),
+    returntocompany varchar(150),
+    returntoaddress1 varchar(200),
+    returntoaddress2 varchar(150),
+    returntoaddress3 varchar(150),
+    returntocity varchar(150),
+    returntostate varchar(250),
+    returntozipcode varchar(15),
+    returntocountry varchar(2),
+    returntophone varchar(20),
+    returntoemail varchar(150),
+    returntodestinationtype varchar(20),
+    carriercode varchar(50),
+    servicecode varchar(50),
+    reference1 varchar(100),
+    reference2 varchar(100),
+    reference3 varchar(100),
+    reference4 varchar(100),
+    reference5 varchar(100),
+    billtoname varchar(150),
+    billtocompany varchar(150),
+    billtoaddress1 varchar(200),
+    billtoaddress2 varchar(150),
+    billtoaddress3 varchar(150),
+    billtocity varchar(150),
+    billtostate varchar(250),
+    billtozipcode varchar(15),
+    billtocountry varchar(2),
+    billtophone varchar(20),
+    billtoemail varchar(150),
+    billtodestinationtype varchar(20),
+    billtoaccount varchar(50),
+    paymenttermscode varchar(50),
+    termsofsalecode varchar(50),
+    dutiestaxespaymentaccount varchar(50),
+    parcelweight numeric,
+    parcelweightunit varchar(5),
+    shipdate timestamp,
+    expecteddeliverydate timestamp,
+    carriershipmentid varchar(100),
+    carrieraccountsid varchar(50),
+    shipmentcost numeric,
+    sellcost numeric,
+    shipmentcostunit varchar(5),
+    sellcostunit varchar(5),
+    timeintransit numeric,
+    labelrotation varchar(3),
+    manifestid varchar(50),
+    orderdate timestamp,
+    commitmentdate timestamp,
+    rateshoptype varchar(50),
+    rateshopcode varchar(40),
+    voided bpchar,
+    voidmessage varchar(500),
+    closed bpchar,
+    isdeleted bpchar,
+    isarchived bpchar,
+    isdefault bpchar,
+    processeddatetime timestamp,
+    voideddatetime timestamp,
+    timezone varchar(50),
+    currentappversion varchar(7),
+    modifiedappversion varchar(7),
+    createdlocation varchar(200),
+    updatedlocation varchar(200),
+    ordertype varchar(50),
+    senderisothreecountry varchar(3),
+    receiverisothreecountry varchar(3),
+    returntoisothreecountry varchar(3),
+    billtoisothreecountry varchar(3),
+    carriersymbol varchar(50),
+    orderid varchar(50),
+    isreturnonlyshipment bpchar,
+    rateshopflag bpchar,
+    rateshopgroup varchar(100),
+    cidocumenturl varchar(300),
+    ratedaddressgroup varchar(50),
+    ratedshipmentgroup varchar(50),
+    partitionkey varchar(10) NOT NULL,
+	CONSTRAINT shipments_p20260101_id PRIMARY KEY (id, partitionkey)
+);"
+tracking.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE tracking.SQL_MIGRATION_HISTORY_2025-18 (
+    installed_rank int4 NOT NULL,
+    version varchar(50),
+    description varchar(200) NOT NULL,
+    type varchar(20) NOT NULL,
+    script varchar(1000) NOT NULL,
+    checksum int4,
+    installed_by varchar(100) NOT NULL,
+    installed_on timestamp NOT NULL,
+    execution_time int4 NOT NULL,
+    success bool NOT NULL,
+	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 tracking.carriertracking,"CREATE TABLE tracking.carriertracking (
     id varchar(40) NOT NULL,
@@ -7651,7 +9596,7 @@ tracking.carriertracking,"CREATE TABLE tracking.carriertracking (
     stage varchar(40),
     statuscode varchar(40),
     statusdescription varchar(40),
-    PRIMARY KEY (id)
+	CONSTRAINT carriertracking_id PRIMARY KEY (id)
 );"
 tracking.trackingactivity,"CREATE TABLE tracking.trackingactivity (
     id varchar(40) NOT NULL,
@@ -7694,7 +9639,7 @@ tracking.trackingactivity,"CREATE TABLE tracking.trackingactivity (
     activitytypedescription varchar(50),
     carrieractivitytypedescription varchar(50),
     activitystage varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT trackingactivity_id PRIMARY KEY (id)
 );"
 tracking.trackingdelivery,"CREATE TABLE tracking.trackingdelivery (
     id varchar(40) NOT NULL,
@@ -7746,7 +9691,7 @@ tracking.trackingdelivery,"CREATE TABLE tracking.trackingdelivery (
     warehouseid varchar(50),
     activitytypedescription varchar(50),
     activitystage varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT trackingdelivery_id PRIMARY KEY (id)
 );"
 tracking.trackingexception,"CREATE TABLE tracking.trackingexception (
     id varchar(40) NOT NULL,
@@ -7801,7 +9746,7 @@ tracking.trackingexception,"CREATE TABLE tracking.trackingexception (
     customerid varchar(50),
     warehouseid varchar(50),
     exceptionstage varchar(50),
-    PRIMARY KEY (id)
+	CONSTRAINT trackingexception_id PRIMARY KEY (id)
 );"
 wave.itembusinessunit,"CREATE TABLE wave.itembusinessunit (
     id varchar(40) NOT NULL,
@@ -7856,7 +9801,7 @@ wave.itembusinessunit,"CREATE TABLE wave.itembusinessunit (
     extlines varchar(40),
     condition varchar(40),
     producttype varchar(40),
-    PRIMARY KEY (id, id)
+	CONSTRAINT itembusinessunit_id PRIMARY KEY (id, id)
 );"
 wave.itemmaintenance,"CREATE TABLE wave.itemmaintenance (
     id varchar(40) NOT NULL,
@@ -7887,5 +9832,5 @@ wave.itemmaintenance,"CREATE TABLE wave.itemmaintenance (
     modifiedappversion varchar(7),
     createdlocation varchar(200),
     updatedlocation varchar(200),
-    PRIMARY KEY (id, id)
+	CONSTRAINT itemmaintenance_id PRIMARY KEY (id, id)
 );"

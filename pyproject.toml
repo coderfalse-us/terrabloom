@@ -5,6 +5,7 @@ description = "RAG based SQL chatbot"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "coverage>=7.8.2",
     "faiss-cpu>=1.11.0",
     "langchain>=0.3.25",
     "langchain-community>=0.3.24",
@@ -14,6 +15,9 @@ dependencies = [
     "numpy>=2.2.6",
     "pandas>=2.2.3",
     "psycopg2-binary>=2.9.10",
+    "pytest>=8.4.0",
+    "pytest-cov>=6.1.1",
+    "pytest-mock>=3.14.1",
     "sqlalchemy>=2.0.41",
     "streamlit>=1.45.1",
     "typing-extensions>=4.14.0",
