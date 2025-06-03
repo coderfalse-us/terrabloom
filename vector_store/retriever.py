@@ -32,14 +32,41 @@ class IVFFAISSRetriever:
         # Load schema data
         df = pd.read_csv(config.TABLE_SCHEMA_PATH)
         
-        # Prepare documents and metadata
         documents = []
         metadata = []
         
         for i, row in df.iterrows():
-            # Extract column definitions from DDL
-            column_pattern = r'(\w+)\s+(\w+(?:\(\d+\))?)\s+(\w+)?'
-            columns = re.findall(column_pattern, row['DDL'])
+            # Improved regex pattern to extract column definitions
+            # This pattern specifically looks for column definitions and excludes constraints
+            ddl_lines = row['DDL'].split('\n')
+            columns = []
+            
+            for line in ddl_lines:
+                line = line.strip()
+                # Skip empty lines, opening/closing braces, and constraint lines
+                if (not line or 
+                    line.startswith('CREATE TABLE') or 
+                    line.startswith('(') or 
+                    line.startswith(')') or 
+                    line.startswith('CONSTRAINT') or
+                    line.startswith('PRIMARY KEY') or
+                    line.startswith('FOREIGN KEY') or
+                    line.startswith('UNIQUE') or
+                    line.startswith('CHECK') or
+                    line.endswith(';')):
+                    continue
+                
+                # Remove trailing comma and whitespace
+                line = line.rstrip(',').strip()
+                
+                # Match column definition pattern: column_name data_type [constraints]
+                # This is more specific than the original pattern
+                column_match = re.match(r'^(\w+)\s+((?:varchar|int\d*|float\d*|numeric|timestamp|bpchar|text|boolean|date|time)(?:\(\d+(?:,\d+)?\))?)', line, re.IGNORECASE)
+                
+                if column_match:
+                    col_name = column_match.group(1)
+                    col_type = column_match.group(2)
+                    columns.append((col_name, col_type))
             
             # Create document for table
             table_doc = {
@@ -56,29 +83,28 @@ class IVFFAISSRetriever:
             metadata.append(table_meta)
             
             # Create documents for each column
-            for col in columns:
-                if len(col) >= 2:
-                    col_name, col_type = col[0], col[1]
-                    col_doc = {
-                        'content': f"TABLE: {row['table_name']} COLUMN: {col_name} TYPE: {col_type}",
-                        'type': 'column_info'
-                    }
-                    
-                    col_meta = {
-                        'table': row['table_name'],
-                        'column': col_name,
-                        'type': 'column_info'
-                    }
-                    
-                    documents.append(col_doc)
-                    metadata.append(col_meta)
+            for col_name, col_type in columns:
+                col_doc = {
+                    'content': f"TABLE: {row['table_name']} COLUMN: {col_name} TYPE: {col_type}",
+                    'type': 'column_info'
+                }
+                
+                col_meta = {
+                    'table': row['table_name'],
+                    'column': col_name,
+                    'type': 'column_info',
+                    'data_type': col_type
+                }
+                
+                documents.append(col_doc)
+                metadata.append(col_meta)
         
         # Get embeddings for all documents
         texts = [doc['content'] for doc in documents]
         embeddings = np.array(self.embeddings_model.embed_documents(texts))
         
         # Create IVF store
-        store = IVFFAISSStore(embedding_dim=embeddings.shape[1], nlist=config.NLIST)
+        store = IVFFAISSStore(embedding_dim=embeddings.shape[1], nlist=50)
         store.add_documents(embeddings, documents, metadata)
         
         # Save the store
