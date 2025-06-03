@@ -32,7 +32,7 @@ class Config:
         self.EMBEDDING_DIM = 768
         self.NLIST = 50
         self.SCHEMA_STORE_PATH = "ivf_schema_store"
-        self.TABLE_SCHEMA_PATH = "table_schema.csv"
+        self.TABLE_SCHEMA_PATH = "data/table_schema.csv"
         
     def get_db_url(self) -> str:
         """Get database connection URL"""

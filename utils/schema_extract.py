@@ -53,56 +53,103 @@ def get_table_schema(schema_name, table_name, connection):
         ON 
             tc.constraint_name = kcu.constraint_name
         WHERE 
-            tc.table_schema = %s
-            AND tc.table_name = %s
-            AND tc.constraint_type = 'PRIMARY KEY';
+            tc.table_schema = %s AND tc.table_name = %s AND tc.constraint_type = 'PRIMARY KEY'
+        ORDER BY kcu.ordinal_position;
         """
 
-        # Execute the queries
+        # Query to get foreign keys
+        foreign_key_query = """
+        SELECT
+            kcu.column_name,
+            ccu.table_schema AS foreign_table_schema,
+            ccu.table_name AS foreign_table_name,
+            ccu.column_name AS foreign_column_name
+        FROM 
+            information_schema.table_constraints AS tc 
+        JOIN 
+            information_schema.key_column_usage AS kcu
+        ON 
+            tc.constraint_name = kcu.constraint_name
+        JOIN 
+            information_schema.constraint_column_usage AS ccu
+        ON 
+            ccu.constraint_name = tc.constraint_name
+        WHERE 
+            tc.constraint_type = 'FOREIGN KEY' AND tc.table_schema = %s AND tc.table_name = %s;
+        """
+
+        # Execute queries
         cursor.execute(column_query, (schema_name, table_name))
         columns = cursor.fetchall()
 
         cursor.execute(primary_key_query, (schema_name, table_name))
         primary_keys = [row[0] for row in cursor.fetchall()]
 
-        # Start building the CREATE TABLE statement
-        create_table_query = f"CREATE TABLE {schema_name}.{table_name} (\n"
+        cursor.execute(foreign_key_query, (schema_name, table_name))
+        foreign_keys = cursor.fetchall()
 
-        # Add columns to the CREATE TABLE statement
+        # Build CREATE TABLE statement
+        ddl = f"CREATE TABLE {schema_name}.{table_name} (\n"
+        
         column_definitions = []
-        for column in columns:
-            column_name = column[0]
-            data_type = column[1]
-            char_length = column[2]
-            is_nullable = column[3]
-
-            # Handle data type with length (e.g., varchar(50))
-            if char_length:
-                data_type = f"{data_type}({char_length})"
-
-            # Handle NOT NULL constraint
-            null_constraint = "NOT NULL" if is_nullable == "NO" else "NULL"
-
-            column_definitions.append(f"\t{column_name} {data_type} {null_constraint}")
-
-        # Add columns to the final query
-        create_table_query += ",\n".join(column_definitions)
-
+        for col in columns:
+            col_name, data_type, max_length, is_nullable = col
+            
+            # Format data type
+            if max_length and data_type in ['varchar', 'char']:
+                type_def = f"{data_type}({max_length})"
+            else:
+                type_def = data_type
+            
+            # Add nullable constraint
+            nullable = "" if is_nullable == 'YES' else " NOT NULL"
+            
+            column_definitions.append(f"    {col_name} {type_def}{nullable}")
+        
+        ddl += ",\n".join(column_definitions)
+        
         # Add primary key constraint
         if primary_keys:
-            primary_keys_str = ", ".join(primary_keys)
-            create_table_query += f",\n\tCONSTRAINT {table_name}_id PRIMARY KEY ({primary_keys_str})"
-
-        # Close the table
-        create_table_query += "\n);"
-
-        return create_table_query
-
+            ddl += f",\n    PRIMARY KEY ({', '.join(primary_keys)})"
+        
+        ddl += "\n);"
+        
+        return ddl
+        
     except Exception as e:
         logger.error(f"Error extracting schema for {table_name}: {e}")
         return None
     finally:
         cursor.close()
+
+def get_all_schemas(connection):
+    """
+    Get all schemas in the database (excluding system schemas).
+    
+    Args:
+        connection: Database connection object
+        
+    Returns:
+        list: List of schema names
+    """
+    try:
+        cursor = connection.cursor()
+        query = """
+        SELECT schema_name 
+        FROM information_schema.schemata 
+        WHERE schema_name NOT IN ('information_schema', 'pg_catalog', 'pg_toast')
+        AND schema_name NOT LIKE 'pg_temp_%'
+        AND schema_name NOT LIKE 'pg_toast_temp_%'
+        ORDER BY schema_name;
+        """
+        cursor.execute(query)
+        #schemas = [row[0] for row in cursor.fetchall()]
+        schemas=['automation', 'customersetup', 'document', 'inventorycontrol', 'item', 'orders','picking', 'receiving', 'returns', 'returnsmanagement', 'shipping', 'tracking', 'wave']
+        cursor.close()
+        return schemas
+    except Exception as e:
+        logger.error(f"Error getting schemas: {e}")
+        return []
 
 def get_all_tables(schema_name, connection):
     """
@@ -134,14 +181,12 @@ def get_all_tables(schema_name, connection):
 
 def extract_all_table_schemas():
     """
-    Extract schemas for all tables in the database.
+    Extract schemas for all tables in all schemas of the database.
     
     Returns:
-        dict: Dictionary mapping table names to their DDL schemas
+        dict: Dictionary mapping "schema.table" to their DDL schemas
     """
-    # Get database configuration
-    db_schema = config.DB_SCHEMA
-    logger.info(f"Using database schema: {db_schema}")
+    logger.info("Starting schema-independent extraction for all database tables")
     
     # Create connection
     try:
@@ -158,23 +203,37 @@ def extract_all_table_schemas():
         return {}
     
     try:
-        # Get all tables
-        tables = get_all_tables(db_schema, conn)
-        logger.info(f"Found {len(tables)} tables in schema {db_schema}")
+        # Get all schemas
+        schemas = get_all_schemas(conn)
+        logger.info(f"Found {len(schemas)} schemas: {schemas}")
         
-        # Dictionary to store schemas
-        schemas = {}
+        # Dictionary to store all table schemas
+        all_schemas = {}
+        total_tables = 0
         
-        # Extract schema for each table
-        for table in tables:
-            logger.info(f"Extracting schema for table: {table}")
-            ddl = get_table_schema(db_schema, table, conn)
-            if ddl:
-                schemas[table] = ddl
-                logger.info(f"Successfully extracted schema for {table}")
-            else:
-                logger.warning(f"Failed to extract schema for {table}")
-                schemas[table] = f"Error: Failed to extract schema for {table}"
+        # Extract schema for each schema and its tables
+        for schema_name in schemas:
+            logger.info(f"Processing schema: {schema_name}")
+            
+            # Get all tables in this schema
+            tables = get_all_tables(schema_name, conn)
+            logger.info(f"Found {len(tables)} tables in schema {schema_name}")
+            
+            # Extract schema for each table
+            for table in tables:
+                table_key = f"{schema_name}.{table}"
+                logger.info(f"Extracting schema for: {table_key}")
+                
+                ddl = get_table_schema(schema_name, table, conn)
+                if ddl:
+                    all_schemas[table_key] = ddl
+                    logger.info(f"Successfully extracted schema for {table_key}")
+                    total_tables += 1
+                else:
+                    logger.warning(f"Failed to extract schema for {table_key}")
+                    all_schemas[table_key] = f"Error: Failed to extract schema for {table_key}"
+        
+        logger.info(f"Total tables processed: {total_tables}")
         
         # Save to CSV
         project_root = Path(__file__).resolve().parent.parent
@@ -183,14 +242,14 @@ def extract_all_table_schemas():
         
         output_path = data_dir / "table_schema.csv"
         df = pd.DataFrame({
-            'table_name': list(schemas.keys()),
-            'DDL': list(schemas.values())
+            'table_name': list(all_schemas.keys()),
+            'DDL': list(all_schemas.values())
         })
         
         df.to_csv(output_path, index=False)
-        logger.info(f"Saved {len(schemas)} table schemas to {output_path}")
+        logger.info(f"Saved {len(all_schemas)} table schemas to {output_path}")
         
-        return schemas
+        return all_schemas
         
     except Exception as e:
         logger.error(f"Error in schema extraction: {e}")

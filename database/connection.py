@@ -18,8 +18,9 @@ class DatabaseManager:
             # Create the engine
             self.engine = create_engine(config.get_db_url())
             
-            # Create the SQLDatabase object with schema
-            self.db = SQLDatabase(self.engine, schema=config.DB_SCHEMA)
+            # Create the SQLDatabase object without schema restriction
+            # This allows access to all schemas in the database
+            self.db = SQLDatabase(self.engine)
             
             # Create query tool
             self.query_tool = QuerySQLDataBaseTool(db=self.db)

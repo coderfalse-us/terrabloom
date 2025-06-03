@@ -101,8 +101,10 @@ with st.sidebar:
     
     # Configuration info
     st.markdown("**Configuration:**")
+    st.text(f"Host: {config.DB_HOST}:{config.DB_PORT}")
     st.text(f"Database: {config.DB_NAME}")
-    st.text(f"Schema: {config.DB_SCHEMA}")
+    st.text(f"User: {config.DB_USER}")
+    st.text(f"Schema-Independent: All schemas accessible")
     st.text(f"Model: {config.LLM_MODEL}")
     
     st.markdown("---")

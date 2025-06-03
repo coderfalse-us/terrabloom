@@ -93,7 +93,7 @@ class IVFFAISSStore:
         doc_json = zlib.decompress(compressed_doc).decode('utf-8')
         return json.loads(doc_json)
     
-    def search(self, query_embedding: np.ndarray, k: int = 5) -> List[Dict]:
+    def search(self, query_embedding: np.ndarray, k: int = 3) -> List[Dict]:
         """Search with IVF index"""
         if self.index is None:
             return []
