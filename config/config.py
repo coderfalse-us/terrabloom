@@ -8,6 +8,7 @@ class Config:
         # API Keys
         self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBc_8Ls8yQQsgOgeMusRW3Y8jcC3EO1E_k")
         self.GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyCKHLCrRFIlREEr37RMuqf83E0ezWxdghY")
+        self.GROQ_API_KEY= os.getenv("GROQ_API_KEY", "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")
         self.LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY", "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") # Add LangSmith API Key
 
         # LangSmith Configuration
@@ -21,10 +22,9 @@ class Config:
         self.DB_HOST = os.getenv("DB_HOST", "alspgbdvit01q.ohl.com")
         self.DB_NAME = os.getenv("DB_NAME", "vite_reporting_r_qa")
         self.DB_PORT = int(os.getenv("DB_PORT", "6432"))
-        self.DB_SCHEMA = os.getenv("DB_SCHEMA", "customersetup")
         
         # Model Configuration
-        self.LLM_MODEL = "gemini-2.0-flash"
+        self.LLM_MODEL = "llama-3.3-70b-versatile"
         self.EMBEDDING_MODEL = "models/text-embedding-004"
         self.TEMPERATURE = 0
         
@@ -42,6 +42,7 @@ class Config:
         """Set environment variables for API keys"""
         os.environ["GEMINI_API_KEY"] = self.GEMINI_API_KEY
         os.environ["GOOGLE_API_KEY"] = self.GOOGLE_API_KEY
+        os.environ["GROQ_API_KEY"] = self.GROQ_API_KEY
         os.environ["LANGCHAIN_API_KEY"] = self.LANGCHAIN_API_KEY
         os.environ["LANGCHAIN_TRACING_V2"] = self.LANGCHAIN_TRACING_V2
         os.environ["LANGCHAIN_ENDPOINT"] = self.LANGCHAIN_ENDPOINT

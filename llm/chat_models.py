@@ -1,4 +1,5 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
@@ -12,7 +13,7 @@ class LLMManager:
         config.set_environment_variables()
         
         # Initialize LLM
-        self.llm = ChatGoogleGenerativeAI(
+        self.llm = ChatGroq(
             model=config.LLM_MODEL,
             temperature=config.TEMPERATURE
         )
