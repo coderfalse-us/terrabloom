@@ -47,7 +47,14 @@ class RAGChain:
     
     def _generate_query(self, inputs):
         """Generate SQL query using LLM"""
-        print("Schema----",inputs["schema"])
+        print("Schema----", inputs["schema"])
+        print("Schema type:", type(inputs["schema"]))
+        print("Schema length:", len(inputs["schema"]) if isinstance(inputs["schema"], str) else "Not a string")
+        
+        if not inputs["schema"]:
+            print("WARNING: Empty schema context! This will likely result in poor query generation.")
+            print("Question was:", inputs["question"])
+        
         return llm_manager.generate_sql_query(
             question=inputs["question"],
             schema=inputs["schema"],

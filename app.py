@@ -85,6 +85,48 @@ with st.sidebar:
                 st.error(f"Error extracting schemas: {str(e)}")
             st.success("✅ Done")
             init_message.empty()
+        
+    # Add a debug section for testing schema retrieval
+        if st.checkbox("Debug Mode"):
+            st.markdown("### Schema Retrieval Test")
+            test_query = st.text_input("Test Query", "Show me information about customers")
+            
+            if st.button("Test Retriever"):
+                from vector_store.retriever import IVFFAISSRetriever
+                from langchain_google_genai import GoogleGenerativeAIEmbeddings
+                
+                st.markdown("#### Test Results")
+                with st.spinner("Testing retriever..."):
+                    try:
+                        # Initialize the retriever
+                        embeddings = GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
+                        retriever = IVFFAISSRetriever()
+                        
+                        # Get documents
+                        documents = retriever.invoke(test_query, k=10)
+                        
+                        # Display results
+                        st.write(f"Retrieved {len(documents)} documents")
+                        
+                        if documents:
+                            # Show first document details
+                            st.markdown("#### First Document")
+                            st.write(f"Content type: {type(documents[0].page_content)}")
+                            st.write(f"Content length: {len(documents[0].page_content)}")
+                            st.write(f"Metadata: {documents[0].metadata}")
+                            
+                            # Show all documents in expandable sections
+                            st.markdown("#### All Documents")
+                            for i, doc in enumerate(documents):
+                                with st.expander(f"Document {i+1} - {doc.metadata.get('type', 'unknown')} - {doc.metadata.get('table', 'unknown')}"):
+                                    st.write(doc.page_content)
+                                    st.write("Metadata:", doc.metadata)
+                        else:
+                            st.error("No documents retrieved!")
+                    except Exception as e:
+                        st.error(f"Error: {str(e)}")
+                        import traceback
+                        st.code(traceback.format_exc())
         st.markdown("**Vector Store Statistics:**")
         stats = rag_chain.get_store_stats()
         if "error" not in stats:

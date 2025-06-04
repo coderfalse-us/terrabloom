@@ -93,37 +93,65 @@ class IVFFAISSStore:
         doc_json = zlib.decompress(compressed_doc).decode('utf-8')
         return json.loads(doc_json)
     
-    def search(self, query_embedding: np.ndarray, k: int = 3) -> List[Dict]:
-        """Search with IVF index"""
+    def search(self, query_embedding: np.ndarray, k: int = 4) -> List[Dict]:
+        """Search the IVF index for similar documents"""
+        print(f"IVFFAISSStore search called with k={k}")
+        print(f"Query embedding shape: {query_embedding.shape}")
+        
         if self.index is None:
+            print("ERROR: FAISS index is None!")
             return []
             
-        # Search the IVF index
-        distances, indices = self.index.search(
-            query_embedding.reshape(1, -1).astype('float32'), k
-        )
+        if self.id_counter == 0:
+            print("ERROR: No documents in store (id_counter=0)")
+            return []
         
-        results = []
-        for i, idx in enumerate(indices[0]):
-            if idx >= 0 and idx < self.id_counter:  # Valid result
-                # Get metadata (always available)
-                metadata = self.metadata_store.get(idx, {})
-                
-                # Decompress document only when needed
-                if idx in self.document_store:
-                    doc = self._decompress_document(self.document_store[idx])
-                    content = doc.get('content', '')
+        print(f"Index ntotal: {self.index.ntotal}")
+        print(f"Document store size: {len(self.document_store)}")
+        print(f"Metadata store size: {len(self.metadata_store)}")
+            
+        try:
+            # Search the IVF index
+            print("Executing FAISS search...")
+            distances, indices = self.index.search(
+                query_embedding.reshape(1, -1).astype('float32'), k
+            )
+            
+            print(f"Search returned {len(indices[0])} indices")
+            print(f"Indices: {indices[0]}")
+            print(f"Distances: {distances[0]}")
+            
+            results = []
+            for i, idx in enumerate(indices[0]):
+                if idx >= 0 and idx < self.id_counter:  # Valid result
+                    print(f"Processing valid result idx={idx}")
+                    # Get metadata (always available)
+                    metadata = self.metadata_store.get(idx, {})
+                    
+                    # Decompress document only when needed
+                    if idx in self.document_store:
+                        doc = self._decompress_document(self.document_store[idx])
+                        content = doc.get('content', '')
+                    else:
+                        print(f"WARNING: Document {idx} not found in document_store!")
+                        content = f"Document {idx} not found"
+                    
+                    results.append({
+                        'content': content,
+                        'metadata': metadata,
+                        'distance': float(distances[0][i]),
+                        'doc_id': idx
+                    })
                 else:
-                    content = f"Document {idx} not found"
-                
-                results.append({
-                    'content': content,
-                    'metadata': metadata,
-                    'distance': float(distances[0][i]),
-                    'doc_id': idx
-                })
-        
-        return results
+                    print(f"Skipping invalid index {idx} (not in range 0-{self.id_counter-1})")
+            
+            print(f"Returning {len(results)} search results")
+            return results
+        except Exception as e:
+            print(f"ERROR in FAISS search: {str(e)}")
+            import traceback
+            print(traceback.format_exc())
+            return []
     
     def get_stats(self) -> Dict:
         """Get statistics about the IVF store"""
