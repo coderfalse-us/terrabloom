@@ -1,17 +1,4 @@
 table_name,DDL
-automation.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE automation.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
-);"
 automation.ordersubtasks,"CREATE TABLE automation.ordersubtasks (
     id varchar(40) NOT NULL,
     ordertaskid varchar(40),
@@ -140,32 +127,6 @@ automation.ordertasktags,"CREATE TABLE automation.ordertasktags (
     createdlocation varchar(200),
     updatedlocation varchar(200),
 	CONSTRAINT ordertasktags_id PRIMARY KEY (id)
-);"
-customersetup.SQL_MIGRATION_HISTORY_2025-16,"CREATE TABLE customersetup.SQL_MIGRATION_HISTORY_2025-16 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-16_id PRIMARY KEY (installed_rank)
-);"
-customersetup.SQL_MIGRATION_HISTORY_2025-2200,"CREATE TABLE customersetup.SQL_MIGRATION_HISTORY_2025-2200 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-2200_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 customersetup.accounts,"CREATE TABLE customersetup.accounts (
     id varchar(50) NOT NULL,
@@ -810,19 +771,6 @@ customersetup.warehousesites,"CREATE TABLE customersetup.warehousesites (
     sitecode varchar(40) NOT NULL,
 	CONSTRAINT warehousesites_id PRIMARY KEY (id)
 );"
-document.SQL_MIGRATION_HISTORY_2025-22,"CREATE TABLE document.SQL_MIGRATION_HISTORY_2025-22 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-22_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
-);"
 document.labeltemplates,"CREATE TABLE document.labeltemplates (
     id varchar(50) NOT NULL,
     createddate timestamp,
@@ -952,58 +900,6 @@ document.templatecodes,"CREATE TABLE document.templatecodes (
     warehouseid varchar(50),
     partitionkey varchar(10),
 	CONSTRAINT templatecodes_id PRIMARY KEY (id, id)
-);"
-inventorycontrol.SQL_MIGRATION_HISTORY_2024-48,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2024-48 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2024-48_id PRIMARY KEY (installed_rank)
-);"
-inventorycontrol.SQL_MIGRATION_HISTORY_2025-08,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2025-08 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-08_id PRIMARY KEY (installed_rank)
-);"
-inventorycontrol.SQL_MIGRATION_HISTORY_2025-14,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2025-14 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-14_id PRIMARY KEY (installed_rank)
-);"
-inventorycontrol.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE inventorycontrol.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 inventorycontrol.cyclecountactivitydetail,"CREATE TABLE inventorycontrol.cyclecountactivitydetail (
     id varchar(40) NOT NULL,
@@ -1861,32 +1757,6 @@ inventorycontrol.pirequest,"CREATE TABLE inventorycontrol.pirequest (
     createdlocation varchar(200),
     updatedlocation varchar(200),
 	CONSTRAINT pirequest_id PRIMARY KEY (id)
-);"
-item.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE item.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
-);"
-item.SQL_MIGRATION_HISTORY_2025-2200,"CREATE TABLE item.SQL_MIGRATION_HISTORY_2025-2200 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-2200_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 item.biologicsubstancesregulations,"CREATE TABLE item.biologicsubstancesregulations (
     id varchar(40) NOT NULL,
@@ -3251,19 +3121,6 @@ item.vendorunitofmeasureconversion,"CREATE TABLE item.vendorunitofmeasureconvers
     touomdescription varchar(40),
     velocitydescription varchar(40),
 	CONSTRAINT vendorunitofmeasureconversion_id PRIMARY KEY (id)
-);"
-orders.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE orders.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 orders.billing,"CREATE TABLE orders.billing (
     id varchar(40) NOT NULL,
@@ -5912,32 +5769,6 @@ orders.tagvalues,"CREATE TABLE orders.tagvalues (
     warehouseid varchar(50),
 	CONSTRAINT tagvalues_id PRIMARY KEY (id, id, id)
 );"
-picking.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE picking.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
-);"
-picking.SQL_MIGRATION_HISTORY_2025-2200,"CREATE TABLE picking.SQL_MIGRATION_HISTORY_2025-2200 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-2200_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
-);"
 picking.pickingplate,"CREATE TABLE picking.pickingplate (
     id varchar(40) NOT NULL,
     warehouseid varchar(40),
@@ -6421,19 +6252,6 @@ picking.tagvalues,"CREATE TABLE picking.tagvalues (
     updatedlocation varchar(200),
 	CONSTRAINT tagvalues_id PRIMARY KEY (id, id, id)
 );"
-returns.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE returns.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
-);"
 returns.return,"CREATE TABLE returns.return (
     id varchar(40) NOT NULL,
     accountid varchar(40),
@@ -6877,19 +6695,6 @@ returns.tagvalues,"CREATE TABLE returns.tagvalues (
     hashkey varchar(256),
 	CONSTRAINT tagvalues_id PRIMARY KEY (id, id, id)
 );"
-returnsmanagement.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE returnsmanagement.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
-);"
 returnsmanagement.plate,"CREATE TABLE returnsmanagement.plate (
     id varchar(50) NOT NULL,
     businessunitid varchar(50),
@@ -7046,19 +6851,6 @@ returnsmanagement.reviewresponses,"CREATE TABLE returnsmanagement.reviewresponse
     reworkinstructionpriority int2,
     response text,
 	CONSTRAINT reviewresponses_id PRIMARY KEY (id)
-);"
-shipping.SQL_MIGRATION_HISTORY_2025-22,"CREATE TABLE shipping.SQL_MIGRATION_HISTORY_2025-22 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-22_id PRIMARY KEY (installed_rank, installed_rank, installed_rank)
 );"
 shipping.auditlog,"CREATE TABLE shipping.auditlog (
     id varchar(50) NOT NULL,
@@ -7772,19 +7564,6 @@ shipping.shipments,"CREATE TABLE shipping.shipments (
     ratedshipmentgroup varchar(50),
     partitionkey varchar(10) NOT NULL,
 	CONSTRAINT shipments_id PRIMARY KEY (id, id, partitionkey)
-);"
-tracking.SQL_MIGRATION_HISTORY_2025-18,"CREATE TABLE tracking.SQL_MIGRATION_HISTORY_2025-18 (
-    installed_rank int4 NOT NULL,
-    version varchar(50),
-    description varchar(200) NOT NULL,
-    type varchar(20) NOT NULL,
-    script varchar(1000) NOT NULL,
-    checksum int4,
-    installed_by varchar(100) NOT NULL,
-    installed_on timestamp NOT NULL,
-    execution_time int4 NOT NULL,
-    success bool NOT NULL,
-	CONSTRAINT SQL_MIGRATION_HISTORY_2025-18_id PRIMARY KEY (installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank, installed_rank)
 );"
 tracking.carriertracking,"CREATE TABLE tracking.carriertracking (
     id varchar(40) NOT NULL,
