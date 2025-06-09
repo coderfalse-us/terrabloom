@@ -93,6 +93,7 @@ with st.sidebar:
             
             if st.button("Test Retriever"):
                 from vector_store.retriever import IVFFAISSRetriever
+                from config.config import config
                 from langchain_google_genai import GoogleGenerativeAIEmbeddings
                 
                 st.markdown("#### Test Results")

@@ -48,6 +48,93 @@ class Config:
         os.environ["LANGCHAIN_ENDPOINT"] = self.LANGCHAIN_ENDPOINT
         os.environ["LANGCHAIN_PROJECT"] = self.LANGCHAIN_PROJECT
 
+    def foreign_key_patterns(self) -> Dict[str, Any]:
+        """Get foreign key patterns for table schema"""
+        return {
+    # Core entity references
+    'customerid': 'customersetup.customers.id',
+    'accountid': 'customersetup.accounts.id',
+    'businessunitid': 'customersetup.businessunits.id',
+    'warehouseid': 'customersetup.warehouses.id',
+    'locationid': 'customersetup.locations.id',
+    'vendorid': 'customersetup.vendor.id',
+    'buildingid': 'customersetup.building.id',
+    
+    # Orders related references
+    'orderid': 'orders.orders.id',
+    'fulfillmentid': 'orders.fulfillments.id',
+    'shippingid': 'orders.shipping.id',
+    'orderdetailid': 'orders.orderdetails.id',
+    'cartinformationid': 'orders.cartinformation.id',
+    'customerinformationid': 'orders.customerinformation.id',
+    'paymentinformationid': 'orders.paymentinformation.id',
+    'fulfillmentorderdetailid': 'orders.fulfillmentorderdetails.id',
+    
+    # Items references
+    'itemid': 'item.itembusinessunit.id',
+    'itembusinessunitid': 'item.itembusinessunit.id',
+    'itemvendorid': 'item.itemvendor.id',
+    'productgroupbusinessunitid': 'item.productgroupbusinessunit.id',
+    'itemkitmaintenanceid': 'item.itemkitmaintenance.id',
+    'iteminboundid': 'item.iteminbound.id',
+    'itemoutboundid': 'item.itemoutbound.id',
+    
+    # Shipping references
+    'shipmentid': 'shipping.shipments.id',
+    'packageid': 'shipping.packages.id',
+    'manifestid': 'shipping.manifests.id',
+    'carrieraccountsid': 'shipping.carrieraccounts.id',
+    'parcelid': 'shipping.shipments.id',
+    'carrierId': 'shipping.carrieraccounts.id',
+    'shipperid': 'shipping.carrieraccounts.id',
+    
+    # Returns references
+    'returnid': 'returns.return.id',
+    'returneditemid': 'returnsmanagement.returneditems.id',
+    'returnorderfulfillmentid': 'returnsmanagement.returnorderfulfillment.id',
+    'returnssettingid': 'returns.returnssetting.id',
+    'returnitemid': 'returns.returnitem.id',
+    'returntaskid': 'returns.returntask.id',
+    
+    # Picking references
+    'picktaskid': 'picking.picktask.id',
+    'pickingplateid': 'picking.pickingplate.id',
+    'subtaskid': 'picking.subtask.id',
+    'plateid': 'picking.pickingplate.id',
+    
+    # Tracking references
+    'carriertrackingid': 'tracking.carriertracking.id',
+    'carrieractivitytypeid': 'tracking.trackingactivity.id',
+    
+    # Inventory references
+    'cyclecountid': 'inventorycontrol.cyclecounttask.id',
+    'cyclecountactivityid': 'inventorycontrol.cyclecountactivitydetail.id',
+    'physicalinventoryid': 'inventorycontrol.physicalinventorytask.id',
+    'pirequestid': 'inventorycontrol.pirequest.id',
+    
+    # Document references
+    'templateid': 'document.labeltemplates.id',
+    'typeid': 'document.labeltypes.id',
+    'shipserviceid': 'document.shipservices.id',
+    'templatecodeid': 'document.templatecodes.id',
+    
+    # Organization references
+    'organizationid': 'customersetup.organizations.id',
+    'shiftid': 'customersetup.organizationshifts.id',
+    'storeid': 'customersetup.organizationstores.id',
+    
+    # Wave references (related to picking/order processing)
+    'waveid': 'picking.picktask.id',
+    'batchid': 'picking.picktask.id',
+    
+    # Automation references
+    'ordertaskid': 'automation.ordertasks.id',
+    'ordersubtaskid': 'automation.ordersubtasks.id',
+    
+    # Tag references
+    'tagid': 'orders.tags.id',
+    'tagvalue': 'orders.tagvalues.id'
+}
 # Global config instance
 config = Config()
 config.set_environment_variables() # Ensure env vars are set at import time
