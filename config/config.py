@@ -24,7 +24,7 @@ class Config:
         self.DB_PORT = int(os.getenv("DB_PORT", "6432"))
         
         # Model Configuration
-        self.LLM_MODEL = "llama-3.3-70b-versatile"
+        self.LLM_MODEL = "gemini-2.0-flash"  # Gemini model
         self.EMBEDDING_MODEL = "models/text-embedding-004"
         self.TEMPERATURE = 0
         

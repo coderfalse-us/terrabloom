@@ -13,7 +13,7 @@ class LLMManager:
         config.set_environment_variables()
         
         # Initialize LLM
-        self.llm = ChatGroq(
+        self.llm = ChatGoogleGenerativeAI(
             model=config.LLM_MODEL,
             temperature=config.TEMPERATURE
         )
@@ -29,15 +29,17 @@ class LLMManager:
             SystemMessage(content="""You are an SQL expert. Generate SQL queries based on the user's question and provided schema context.
 Follow these rules:
 1. Use only tables and columns mentioned in the schema context
-2. Write clear, efficient SQL queries
-3. Consider table relationships and column types from the schema"""),
+2. Write only clear, efficient SQL queries without any explanations and only one query is more than enough
+3. Strictly refer to the history as there will be follow up questions
+4. When user mentions "refer [table_name]" in a follow-up, JOIN that table with the previous query context using appropriate foreign keys
+5. Maintain any WHERE conditions from previous queries while adding the requested table data"""),
             MessagesPlaceholder(variable_name="chat_history", n_messages=2),
             ("human", "Schema Context: {schema}\nQuestion: {question}")
         ])
         
         # Response formatting prompt
         self.chat_prompt = ChatPromptTemplate.from_messages([
-            SystemMessage(content="Rephrase the answer to the question based on the from LLM and schema context."),
+            SystemMessage(content="Rephrase the SQL result based on the from LLM in one line dont add more details if there is a confusion in the result on looking into schema add a follow up question"),
             ("human", "Question: {question}\nSQL Query: {query}\nSQL Result: {result}\nSchema Context: {schema}")
         ])
     
