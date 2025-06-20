@@ -7,6 +7,7 @@ class Config:
     def __init__(self):
         # API Keys
         self.GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "AIzaSyBc_8Ls8yQQsgOgeMusRW3Y8jcC3EO1E_k")
+        self.OPENAI_API_KEY= os.getenv("OPENAI_API_KEY", "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") # Add OpenAI API Key
         self.GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyCKHLCrRFIlREEr37RMuqf83E0ezWxdghY")
         self.GROQ_API_KEY= os.getenv("GROQ_API_KEY", "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")
         self.LANGCHAIN_API_KEY = os.getenv("LANGCHAIN_API_KEY", "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") # Add LangSmith API Key
@@ -25,6 +26,7 @@ class Config:
         
         # Model Configuration
         self.LLM_MODEL = "gemini-2.0-flash"  # Gemini model
+        self.OPENROUTER_MODEL="deepseek/deepseek-chat-v3-0324:free"
         self.EMBEDDING_MODEL = "models/text-embedding-004"
         self.TEMPERATURE = 0
         
@@ -47,6 +49,7 @@ class Config:
         os.environ["LANGCHAIN_TRACING_V2"] = self.LANGCHAIN_TRACING_V2
         os.environ["LANGCHAIN_ENDPOINT"] = self.LANGCHAIN_ENDPOINT
         os.environ["LANGCHAIN_PROJECT"] = self.LANGCHAIN_PROJECT
+        os.environ["OPENAI_API_KEY"] = self.OPENAI_API_KEY
 
     def foreign_key_patterns(self) -> Dict[str, Any]:
         """Get foreign key patterns for table schema"""

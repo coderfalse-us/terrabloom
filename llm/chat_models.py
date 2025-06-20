@@ -4,6 +4,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
 from config.config import config
+from langchain_openai import ChatOpenAI
 
 class LLMManager:
     """Manages LLM interactions for SQL generation and response formatting"""
@@ -13,9 +14,10 @@ class LLMManager:
         config.set_environment_variables()
         
         # Initialize LLM
-        self.llm = ChatGoogleGenerativeAI(
-            model=config.LLM_MODEL,
-            temperature=config.TEMPERATURE
+        self.llm = ChatOpenAI(
+            model=config.OPENROUTER_MODEL,
+            temperature=config.TEMPERATURE,
+            base_url="https://openrouter.ai/api/v1"
         )
         
         # Initialize prompts and chains
@@ -32,11 +34,12 @@ Follow these rules:
 2. Write only clear, efficient SQL queries without any explanations and only one query is more than enough
 3. Strictly refer to the history as there will be follow up questions
 4. When user mentions "refer [table_name]" in a follow-up, JOIN that table with the previous query context using appropriate foreign keys
-5. Maintain any WHERE conditions from previous queries while adding the requested table data"""),
+5. Maintain any WHERE conditions from previous queries while adding the requested table data
+6.For boolean values, use '1' or '0'
+7.If you have multiple tables with same column to refer or confution in table names just ask a follow up question"""),
             MessagesPlaceholder(variable_name="chat_history", n_messages=2),
             ("human", "Schema Context: {schema}\nQuestion: {question}")
         ])
-        
         # Response formatting prompt
         self.chat_prompt = ChatPromptTemplate.from_messages([
             SystemMessage(content="Rephrase the SQL result based on the from LLM in one line dont add more details if there is a confusion in the result on looking into schema add a follow up question"),
