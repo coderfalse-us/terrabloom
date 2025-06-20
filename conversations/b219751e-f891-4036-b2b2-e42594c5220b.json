@@ -1,0 +1,92 @@
+{
+  "id": "b219751e-f891-4036-b2b2-e42594c5220b",
+  "title": "customer name with shipment id...",
+  "created_at": "2025-06-20T14:56:28.012486",
+  "updated_at": "2025-06-20T14:58:15.828638",
+  "messages": [
+    {
+      "type": "human",
+      "data": {
+        "content": "customer name with shipment id 1234\\",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "human",
+        "name": null,
+        "id": null,
+        "example": false
+      }
+    },
+    {
+      "type": "ai",
+      "data": {
+        "content": "SELECT ci.fullname \nFROM orders.customerinformation ci\nJOIN orders.shipments os ON ci.customerid = os.customerid\nWHERE os.id = '1234';",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    },
+    {
+      "type": "ai",
+      "data": {
+        "content": "The SQL query returned no results for shipment ID 1234. Would you like me to check if the shipment ID exists in the database?",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    },
+    {
+      "type": "human",
+      "data": {
+        "content": "refer customers table for name",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "human",
+        "name": null,
+        "id": null,
+        "example": false
+      }
+    },
+    {
+      "type": "ai",
+      "data": {
+        "content": "```sql\nSELECT c.name \nFROM customersetup.customers c\nJOIN orders.customerinformation ci ON c.id = ci.customerid\nWHERE ci.id = '1234';\n```",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    },
+    {
+      "type": "ai",
+      "data": {
+        "content": "The query retrieves the customer name from the customers table for the customer associated with order ID '1234'. \n\nFollow-up question: Should we be using the `fullname` field from orders.customerinformation instead of joining to customersetup.customers, since orders.customerinformation already contains customer name information?",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    }
+  ]
+}

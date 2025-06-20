@@ -1,0 +1,77 @@
+{
+  "id": "9bac38ea-a92d-4b4d-b2ec-abd3d6b4e91d",
+  "title": "customer name with shipment id...",
+  "created_at": "2025-06-20T15:22:40.877164",
+  "updated_at": "2025-06-20T15:23:46.846299",
+  "messages": [
+    {
+      "type": "ai",
+      "data": {
+        "content": "Welcome to TerraBLOOM RAG System! \ud83c\udf31\n\nI can help you query your database using natural language. Just ask me questions about your data, and I'll generate the appropriate SQL queries and provide answers.\n\n**Examples:**\n- How many customers do we have?\n- Show me all containers with weight capacity over 1000\n- What are the different types of locations?",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    },
+    {
+      "type": "human",
+      "data": {
+        "content": "customer name with shipment id 1234\\",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "human",
+        "name": null,
+        "id": null,
+        "example": false
+      }
+    },
+    {
+      "type": "ai",
+      "data": {
+        "content": "```sql\nSELECT c.fullname \nFROM orders.customerinformation c\nJOIN shipping.shipments s ON c.customerid = s.customerid\nWHERE s.id = '1234';\n```",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    },
+    {
+      "type": "human",
+      "data": {
+        "content": "use customers table for name",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "human",
+        "name": null,
+        "id": null,
+        "example": false
+      }
+    },
+    {
+      "type": "ai",
+      "data": {
+        "content": "```sql\nSELECT c.name \nFROM customersetup.customers c\nJOIN shipping.shipments s ON c.id = s.customerid\nWHERE s.id = '1234';\n```",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "ai",
+        "name": null,
+        "id": null,
+        "example": false,
+        "tool_calls": [],
+        "invalid_tool_calls": [],
+        "usage_metadata": null
+      }
+    }
+  ]
+}

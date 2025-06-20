@@ -1,6 +1,8 @@
 import streamlit as st
 import sys
 import os
+import datetime
+from langchain_core.messages import AIMessage, HumanMessage
 
 # Add the current directory to Python path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -151,16 +153,76 @@ with st.sidebar:
     st.text(f"Model: {config.LLM_MODEL}")
     
     st.markdown("---")
+      # Conversation management
+    st.markdown("### Conversations")
     
-    # Clear history button
-    if st.button("🗑️ Clear Chat History", use_container_width=True):
+    # New conversation button
+    if st.button("➕ New Conversation", use_container_width=True):
+        # Create a new conversation
+        conv_id = rag_chain.create_conversation("New Conversation")
+        
+        # Reset UI messages
+        if 'messages' in st.session_state:
+            st.session_state.messages = []
+            
+        # Set as active conversation
+        st.session_state.active_conversation_id = conv_id
+        
+        st.success("New conversation started!")
+        st.rerun()
+    
+    # List existing conversations
+    conversations = rag_chain.get_all_conversations()
+    if conversations:
+        st.markdown("**Previous Conversations:**")
+        
+        # For each conversation, show a button to load it
+        for conv in conversations:
+            col1, col2 = st.columns([4, 1])
+            
+            # Format the title with message count
+            title = f"{conv['title']} ({conv['message_count']} messages)"
+            
+            with col1:
+                if st.button(title, key=f"load_{conv['id']}", use_container_width=True):
+                    # Load the conversation
+                    rag_chain.load_conversation(conv['id'])
+                    
+                    # Update UI messages from conversation history
+                    messages = []
+                    for msg in rag_chain.chat_history:
+                        role = "assistant" if isinstance(msg, AIMessage) else "user"
+                        messages.append({"role": role, "content": msg.content})
+                    
+                    st.session_state.messages = messages
+                    st.session_state.active_conversation_id = conv['id']
+                    
+                    st.success(f"Loaded conversation: {conv['title']}")
+                    st.rerun()
+            
+            with col2:
+                if st.button("🗑️", key=f"del_{conv['id']}"):
+                    # Delete the conversation
+                    if rag_chain.delete_conversation(conv['id']):
+                        # If deleted conversation was active, reset UI
+                        if st.session_state.get('active_conversation_id') == conv['id']:
+                            st.session_state.messages = []
+                            st.session_state.active_conversation_id = None
+                        
+                        st.success(f"Deleted conversation: {conv['title']}")
+                        st.rerun()
+                    else:
+                        st.error("Failed to delete conversation")
+    
+    # Clear current conversation button
+    if st.button("🧹 Clear Current Chat", use_container_width=True):
         rag_chain.clear_history()
         if 'messages' in st.session_state:
             st.session_state.messages = []
         st.success("Chat history cleared!")
         st.rerun()
 
-# Initialize chat history
+# Initialize session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
     # Add welcome message
@@ -174,6 +236,36 @@ if "messages" not in st.session_state:
         "- What are the different types of locations?"
     )
     st.session_state.messages.append({"role": "assistant", "content": welcome_msg})
+    
+    # Create initial conversation
+    init_conv_id = rag_chain.create_conversation("Initial Conversation")
+    st.session_state.active_conversation_id = init_conv_id
+    
+    # Add welcome message to conversation history
+    rag_chain.chat_history.append(AIMessage(content=welcome_msg))
+    rag_chain.save_current_conversation()
+elif "active_conversation_id" not in st.session_state:
+    # If we have messages but no active conversation ID, create one
+    conversations = rag_chain.get_all_conversations()
+    if conversations:
+        # Load the most recent conversation
+        most_recent = conversations[0]
+        rag_chain.load_conversation(most_recent["id"])
+        st.session_state.active_conversation_id = most_recent["id"]
+    else:
+        # Create a new conversation and add existing UI messages to it
+        new_conv_id = rag_chain.create_conversation("Imported Conversation")
+        st.session_state.active_conversation_id = new_conv_id
+        
+        # Convert UI messages to LangChain messages
+        for msg in st.session_state.messages:
+            if msg["role"] == "user":
+                rag_chain.chat_history.append(HumanMessage(content=msg["content"]))
+            else:
+                rag_chain.chat_history.append(AIMessage(content=msg["content"]))
+        
+        # Save the conversation
+        rag_chain.save_current_conversation()
 
 # Display chat messages
 for message in st.session_state.messages:
@@ -182,27 +274,37 @@ for message in st.session_state.messages:
 
 # Chat input
 if prompt := st.chat_input("Ask me anything about your database..."):
-    # Add user message to chat history
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    
-    # Display user message
-    with st.chat_message("user"):
-        st.markdown(prompt)
-    
-    # Generate response
-    with st.chat_message("assistant"):
-        with st.spinner("Thinking..."):
-            try:
-                response = rag_chain.ask_question(prompt)
-                st.markdown(response)
-                
-                # Add assistant response to chat history
-                st.session_state.messages.append({"role": "assistant", "content": response})
-                
-            except Exception as e:
-                error_msg = f"Sorry, I encountered an error: {str(e)}"
-                st.error(error_msg)
-                st.session_state.messages.append({"role": "assistant", "content": error_msg})
+    # Validate input
+    if not prompt or prompt.strip() == "":
+        st.error("Please enter a valid question")
+    else:
+        # Add user message to chat history
+        st.session_state.messages.append({"role": "user", "content": prompt})
+        
+        # Display user message
+        with st.chat_message("user"):
+            st.markdown(prompt)
+            
+        # Update conversation title with first message summary if new conversation
+        if len(st.session_state.messages) <= 2:  # Welcome message + first user message
+            # Use the first few words as a title (max 30 chars)
+            title = prompt[:30] + ("..." if len(prompt) > 30 else "")
+            rag_chain.update_conversation_title(title)
+
+        # Generate response
+        with st.chat_message("assistant"):
+            with st.spinner("Thinking..."):
+                try:
+                    response = rag_chain.ask_question(prompt)
+                    st.markdown(response)
+                    
+                    # Add assistant response to chat history
+                    st.session_state.messages.append({"role": "assistant", "content": response})
+                    
+                except Exception as e:
+                    error_msg = f"Sorry, I encountered an error: {str(e)}"
+                    st.error(error_msg)
+                    st.session_state.messages.append({"role": "assistant", "content": error_msg})
 
 # Footer
 st.markdown("---")

@@ -1,5 +1,3 @@
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_groq import ChatGroq
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import SystemMessage
 from langchain_core.output_parsers import StrOutputParser
@@ -50,16 +48,23 @@ Follow these rules:
         """Setup LangChain chains"""
         # SQL generation chain
         self.generate_query = self.sql_prompt | self.llm | StrOutputParser()
-        
-        # Response formatting chain
+          # Response formatting chain
         self.rephrase_answer = self.chat_prompt | self.llm | StrOutputParser()
     
     def generate_sql_query(self, question: str, schema: str, chat_history: list = None) -> str:
         """Generate SQL query from question and schema"""
+        # Ensure chat_history is properly formatted for the prompt
+        history = chat_history or []
+        
+        # Debug: print history to verify it's being passed correctly
+        print(f"Chat history being used (length: {len(history)}):")
+        for msg in history:
+            print(f"  - {msg.__class__.__name__}: {msg.content[:50]}...")
+        
         inputs = {
             "question": question,
             "schema": schema,
-            "chat_history": chat_history or []
+            "chat_history": history
         }
         return self.generate_query.invoke(inputs)
     
