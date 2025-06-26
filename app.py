@@ -152,14 +152,17 @@ with st.sidebar:
     st.text(f"Schema-Independent: All schemas accessible")
     st.text(f"Model: {config.LLM_MODEL}")
     
-    st.markdown("---")
-      # Conversation management
+    st.markdown("---")    # Conversation management
     st.markdown("### Conversations")
     
+    title=st.text_input("➕ New Conversation")
     # New conversation button
-    if st.button("➕ New Conversation", use_container_width=True):
+    if st.button("Create Conversation"):
+        # Use user provided title or default to a timestamp-based name
+        conversation_title = title if title.strip() else f"Conversation {datetime.datetime.now().strftime('%Y-%m-%d %H:%M')}"
+        
         # Create a new conversation
-        conv_id = rag_chain.create_conversation("New Conversation")
+        conv_id = rag_chain.create_conversation(conversation_title)
         
         # Reset UI messages
         if 'messages' in st.session_state:
@@ -238,8 +241,8 @@ if "messages" not in st.session_state:
     st.session_state.messages.append({"role": "assistant", "content": welcome_msg})
     
     # Create initial conversation
-    init_conv_id = rag_chain.create_conversation("Initial Conversation")
-    st.session_state.active_conversation_id = init_conv_id
+    # init_conv_id = rag_chain.create_conversation("Initial Conversation")
+    #st.session_state.active_conversation_id = init_conv_id
     
     # Add welcome message to conversation history
     rag_chain.chat_history.append(AIMessage(content=welcome_msg))

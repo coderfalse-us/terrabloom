@@ -1,13 +1,25 @@
 {
-  "id": "85f1baf2-1748-434f-803f-6e06e2293378",
-  "title": "how many customrs do we have",
-  "created_at": "2025-06-20T16:13:21.182933",
-  "updated_at": "2025-06-20T16:14:05.159306",
+  "id": "68a559a2-8c07-435f-ba20-bd13e1742dfe",
+  "title": "customer name of the order 123...",
+  "created_at": "2025-06-23T11:30:28.045849",
+  "updated_at": "2025-06-23T11:33:00.309356",
   "messages": [
+    {
+      "type": "human",
+      "data": {
+        "content": "customer name of the order 1234",
+        "additional_kwargs": {},
+        "response_metadata": {},
+        "type": "human",
+        "name": null,
+        "id": null,
+        "example": false
+      }
+    },
     {
       "type": "ai",
       "data": {
-        "content": "Welcome to TerraBLOOM RAG System! \ud83c\udf31\n\nI can help you query your database using natural language. Just ask me questions about your data, and I'll generate the appropriate SQL queries and provide answers.\n\n**Examples:**\n- How many customers do we have?\n- Show me all containers with weight capacity over 1000\n- What are the different types of locations?",
+        "content": "SELECT fullname \nFROM orders.customerinformation \nWHERE ordername = '1234';",
         "additional_kwargs": {},
         "response_metadata": {},
         "type": "ai",
@@ -22,7 +34,7 @@
     {
       "type": "human",
       "data": {
-        "content": "how many customrs do we have",
+        "content": "use the customers table for name",
         "additional_kwargs": {},
         "response_metadata": {},
         "type": "human",
@@ -34,7 +46,7 @@
     {
       "type": "ai",
       "data": {
-        "content": "SELECT COUNT(*) FROM customersetup.customers;",
+        "content": "```sql\nSELECT c.name \nFROM orders.customerinformation ci\nJOIN customersetup.customers c ON ci.customerid = c.id\nWHERE ci.ordername = '1234';\n```",
         "additional_kwargs": {},
         "response_metadata": {},
         "type": "ai",

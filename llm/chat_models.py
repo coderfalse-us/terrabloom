@@ -40,7 +40,8 @@ Follow these rules:
         ])
         # Response formatting prompt
         self.chat_prompt = ChatPromptTemplate.from_messages([
-            SystemMessage(content="Rephrase the SQL result based on the from LLM in one line dont add more details if there is a confusion in the result on looking into schema add a follow up question"),
+            SystemMessage(content="Rephrase the executed SQL result in one concise line. If no data is returned, respond with 'No such details found.' If the result contains bulk data, show only the first 5 rows. Do not add extra details. If the result is ambiguous or unclear based on the schema, respond with a follow-up question instead."
+ ),
             ("human", "Question: {question}\nSQL Query: {query}\nSQL Result: {result}\nSchema Context: {schema}")
         ])
     

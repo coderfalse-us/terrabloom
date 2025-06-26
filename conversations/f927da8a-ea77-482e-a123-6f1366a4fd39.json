@@ -1,8 +1,8 @@
 {
-  "id": "9bac38ea-a92d-4b4d-b2ec-abd3d6b4e91d",
-  "title": "customer name with shipment id...",
-  "created_at": "2025-06-20T15:22:40.877164",
-  "updated_at": "2025-06-20T15:23:46.846299",
+  "id": "f927da8a-ea77-482e-a123-6f1366a4fd39",
+  "title": "is there a customer name simil...",
+  "created_at": "2025-06-25T12:38:24.596664",
+  "updated_at": "2025-06-25T12:38:55.251707",
   "messages": [
     {
       "type": "ai",
@@ -22,7 +22,7 @@
     {
       "type": "human",
       "data": {
-        "content": "customer name with shipment id 1234\\",
+        "content": "is there a customer name similar to CANADA",
         "additional_kwargs": {},
         "response_metadata": {},
         "type": "human",
@@ -34,34 +34,7 @@
     {
       "type": "ai",
       "data": {
-        "content": "```sql\nSELECT c.fullname \nFROM orders.customerinformation c\nJOIN shipping.shipments s ON c.customerid = s.customerid\nWHERE s.id = '1234';\n```",
-        "additional_kwargs": {},
-        "response_metadata": {},
-        "type": "ai",
-        "name": null,
-        "id": null,
-        "example": false,
-        "tool_calls": [],
-        "invalid_tool_calls": [],
-        "usage_metadata": null
-      }
-    },
-    {
-      "type": "human",
-      "data": {
-        "content": "use customers table for name",
-        "additional_kwargs": {},
-        "response_metadata": {},
-        "type": "human",
-        "name": null,
-        "id": null,
-        "example": false
-      }
-    },
-    {
-      "type": "ai",
-      "data": {
-        "content": "```sql\nSELECT c.name \nFROM customersetup.customers c\nJOIN shipping.shipments s ON c.id = s.customerid\nWHERE s.id = '1234';\n```",
+        "content": "SELECT id, name \nFROM customersetup.customers \nWHERE name LIKE '%CANADA%';",
         "additional_kwargs": {},
         "response_metadata": {},
         "type": "ai",
